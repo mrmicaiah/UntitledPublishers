@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled Publishers | Where Stories Find Their Voice</title>
+    <meta name="description" content="Untitled Publishers - A modern publishing house dedicated to amplifying diverse voices and bringing compelling stories to life.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #faf8f5;
+            --cream: #f5f0e8;
+            --accent: #c4a77d;
+            --accent-dark: #8b7355;
+            --muted: #6b6b6b;
+            --border: #e0dcd4;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background-color: var(--paper); color: var(--ink); line-height: 1.7; font-size: 16px; overflow-x: hidden; }
+        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.2; }
+        h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 400; letter-spacing: -0.02em; }
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 500; }
+        h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); }
+        p { max-width: 65ch; }
+        a { color: inherit; text-decoration: none; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 var(--space-md); }
+        section { padding: var(--space-xl) 0; }
+
+        /* Header */
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--paper); border-bottom: 1px solid var(--border); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) var(--space-md); max-width: 1400px; margin: 0 auto; }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .logo span { font-weight: 400; font-style: italic; text-transform: none; letter-spacing: 0; }
+        nav { display: flex; gap: var(--space-md); }
+        nav a { font-size: 0.875rem; letter-spacing: 0.05em; text-transform: uppercase; position: relative; padding: var(--space-xs) 0; }
+        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--ink); transition: width 0.3s ease; }
+        nav a:hover::after { width: 100%; }
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: var(--space-xs); }
+        .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: 0.3s; }
+
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 80%, rgba(196, 167, 125, 0.1) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(196, 167, 125, 0.08) 0%, transparent 50%); pointer-events: none; }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; padding: var(--space-md); }
+        .hero-tagline { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--accent-dark); margin-bottom: var(--space-sm); letter-spacing: 0.1em; text-transform: uppercase; animation: fadeInUp 0.8s ease forwards; opacity: 0; }
+        .hero h1 { margin-bottom: var(--space-md); animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; }
+        .hero h1 em { font-style: italic; color: var(--accent-dark); }
+        .hero-description { font-size: 1.25rem; color: var(--muted); margin: 0 auto var(--space-lg); animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0; }
+        .hero-cta { display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s forwards; opacity: 0; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; font-family: var(--font-body); font-size: 0.875rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--ink); background: transparent; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background: var(--ink); color: var(--paper); }
+        .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+        .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+        .scroll-indicator { position: absolute; bottom: var(--space-lg); left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
+        .scroll-indicator svg { width: 24px; height: 24px; stroke: var(--muted); }
+
+        /* About */
+        .about { background: var(--cream); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+        .about-content { max-width: 500px; }
+        .section-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: var(--space-sm); }
+        .about h2 { margin-bottom: var(--space-md); }
+        .about p { color: var(--muted); margin-bottom: var(--space-sm); }
+        .about-image { position: relative; aspect-ratio: 4/5; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .about-image::before { content: '"'; font-family: var(--font-display); font-size: 40rem; color: rgba(255,255,255,0.1); position: absolute; top: -8rem; left: -2rem; line-height: 1; }
+        .about-image-text { font-family: var(--font-display); font-size: 2rem; color: white; text-align: center; padding: var(--space-md); font-style: italic; max-width: 300px; }
+
+        /* Services */
+        .services { background: var(--ink); color: var(--paper); }
+        .services .section-label { color: var(--accent); }
+        .services h2 { margin-bottom: var(--space-lg); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md); }
+        .service-card { padding: var(--space-lg) var(--space-md); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover { background: rgba(255,255,255,0.03); }
+        .service-number { font-family: var(--font-display); font-size: 3rem; color: var(--accent); line-height: 1; margin-bottom: var(--space-sm); }
+        .service-card h3 { margin-bottom: var(--space-sm); }
+        .service-card p { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
+
+        /* Team */
+        .team { text-align: center; }
+        .team h2 { margin-bottom: var(--space-lg); }
+        .team-grid { display: flex; justify-content: center; gap: var(--space-lg); flex-wrap: wrap; }
+        .team-member { max-width: 300px; }
+        .team-photo { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, var(--cream) 0%, var(--border) 100%); margin: 0 auto var(--space-md); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 4rem; color: var(--accent-dark); }
+        .team-member h3 { margin-bottom: var(--space-xs); }
+        .team-role { font-size: 0.875rem; color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* Contact */
+        .contact { background: var(--cream); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+        .contact h2 { margin-bottom: var(--space-md); }
+        .contact-form { display: flex; flex-direction: column; gap: var(--space-sm); }
+        .form-group { display: flex; flex-direction: column; gap: var(--space-xs); }
+        .form-group label { font-size: 0.875rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .form-group input, .form-group textarea { padding: 1rem; border: 1px solid var(--border); background: var(--paper); font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-dark); }
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        .contact-info { padding-top: var(--space-md); }
+        .contact-info p { margin-bottom: var(--space-md); color: var(--muted); }
+        .contact-details { margin-top: var(--space-lg); }
+        .contact-item { margin-bottom: var(--space-md); }
+        .contact-item-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: var(--space-xs); }
+        .contact-item-value { font-family: var(--font-display); font-size: 1.25rem; }
+
+        /* Footer */
+        footer { background: var(--ink); color: var(--paper); padding: var(--space-lg) 0 var(--space-md); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md); }
+        .footer-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: 0.05em; }
+        .footer-links { display: flex; gap: var(--space-md); }
+        .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--paper); }
+        .footer-bottom { margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.875rem; color: rgba(255,255,255,0.4); }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-10px); } 60% { transform: translateX(-50%) translateY(-5px); } }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+            .about-image { max-width: 400px; margin: 0 auto; }
+        }
+        @media (max-width: 768px) {
+            nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--paper); flex-direction: column; padding: var(--space-md); border-bottom: 1px solid var(--border); }
+            nav.active { display: flex; }
+            .menu-toggle { display: block; }
+            .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
+            section { padding: var(--space-lg) 0; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo">Untitled <span>Publishers</span></a>
+            <nav id="nav">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#team">Team</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('active')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-tagline">Est. 2024</p>
+            <h1>Where Stories Find Their <em>Voice</em></h1>
+            <p class="hero-description">We are a modern publishing house dedicated to amplifying diverse voices and bringing compelling stories to life through innovative publishing and content strategies.</p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn btn-primary">Work With Us</a>
+                <a href="#services" class="btn btn-secondary">Our Services</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <p class="section-label">Our Story</p>
+                    <h2>Publishing Reimagined for the Digital Age</h2>
+                    <p>Untitled Publishers was born from a simple belief: every story deserves to be heard, and every author deserves a partner who understands both the art and science of modern publishing.</p>
+                    <p>We combine traditional publishing expertise with cutting-edge digital marketing strategies, ensuring your work reaches the readers who need it most.</p>
+                    <p>From manuscript to market, we're with you every step of the way—crafting launch strategies, building audiences, and turning your vision into reality.</p>
+                </div>
+                <div class="about-image">
+                    <p class="about-image-text">Every story has a beginning. Let us help write yours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <p class="section-label">What We Do</p>
+            <h2>Full-Service Publishing Solutions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-number">01</div>
+                    <h3>Book Publishing</h3>
+                    <p>End-to-end publishing services including editing, design, formatting, and distribution across all major platforms.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">02</div>
+                    <h3>Launch Strategy</h3>
+                    <p>Comprehensive launch planning with proven frameworks to maximize your book's impact and reach from day one.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">03</div>
+                    <h3>Content Marketing</h3>
+                    <p>Strategic content creation across TikTok, email newsletters, and social platforms to build engaged audiences.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">04</div>
+                    <h3>Author Platform</h3>
+                    <p>Build your author brand with professional websites, email lists, and a cohesive online presence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team">
+        <div class="container">
+            <p class="section-label">The Team</p>
+            <h2>Meet the Publishers</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-photo">M</div>
+                    <h3>Micaiah</h3>
+                    <p class="team-role">Founder & Publisher</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">I</div>
+                    <h3>Irene</h3>
+                    <p class="team-role">Creative Director</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <p class="section-label">Get In Touch</p>
+                    <h2>Let's Create Something Beautiful Together</h2>
+                    <p>Whether you're an author with a manuscript, a creator looking to expand your reach, or a business seeking publishing solutions—we'd love to hear from you.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <p class="contact-item-label">Email</p>
+                            <p class="contact-item-value">hello@untitledpublishers.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <p class="contact-item-label">Follow Us</p>
+                            <p class="contact-item-value">@UntitledPublishers</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Untitled Publishers</div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Untitled Publishers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                document.getElementById('nav').classList.remove('active');
+            });
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll be in touch soon.');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
