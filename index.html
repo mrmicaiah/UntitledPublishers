@@ -1,327 +1,1173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untitled Publishers | Where Stories Find Their Voice</title>
-    <meta name="description" content="Untitled Publishers - A modern publishing house dedicated to amplifying diverse voices and bringing compelling stories to life.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr. Gutter | Huntsville's Premier Gutter Installation</title>
+  <meta name="description" content="25+ years protecting Huntsville homes. Seamless gutters, gutter guards, repairs & copper gutters. Free estimates.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy: #0a1628;
+      --navy-light: #162340;
+      --copper: #b87333;
+      --copper-light: #d4956a;
+      --copper-glow: rgba(184, 115, 51, 0.3);
+      --white: #ffffff;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Source Sans 3', sans-serif;
+      
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.2);
+      --shadow-copper: 0 0 60px var(--copper-glow);
+    }
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     
-    <style>
-        :root {
-            --ink: #1a1a1a;
-            --paper: #faf8f5;
-            --cream: #f5f0e8;
-            --accent: #c4a77d;
-            --accent-dark: #8b7355;
-            --muted: #6b6b6b;
-            --border: #e0dcd4;
-            --font-display: 'Cormorant Garamond', Georgia, serif;
-            --font-body: 'DM Sans', -apple-system, sans-serif;
-            --space-xs: 0.5rem;
-            --space-sm: 1rem;
-            --space-md: 2rem;
-            --space-lg: 4rem;
-            --space-xl: 8rem;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font-body); background-color: var(--paper); color: var(--ink); line-height: 1.7; font-size: 16px; overflow-x: hidden; }
-        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.2; }
-        h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 400; letter-spacing: -0.02em; }
-        h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 500; }
-        h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); }
-        p { max-width: 65ch; }
-        a { color: inherit; text-decoration: none; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 var(--space-md); }
-        section { padding: var(--space-xl) 0; }
-
-        /* Header */
-        header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--paper); border-bottom: 1px solid var(--border); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
-        .header-inner { display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) var(--space-md); max-width: 1400px; margin: 0 auto; }
-        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-        .logo span { font-weight: 400; font-style: italic; text-transform: none; letter-spacing: 0; }
-        nav { display: flex; gap: var(--space-md); }
-        nav a { font-size: 0.875rem; letter-spacing: 0.05em; text-transform: uppercase; position: relative; padding: var(--space-xs) 0; }
-        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--ink); transition: width 0.3s ease; }
-        nav a:hover::after { width: 100%; }
-        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: var(--space-xs); }
-        .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: 0.3s; }
-
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 80%, rgba(196, 167, 125, 0.1) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(196, 167, 125, 0.08) 0%, transparent 50%); pointer-events: none; }
-        .hero-content { position: relative; z-index: 1; max-width: 900px; padding: var(--space-md); }
-        .hero-tagline { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--accent-dark); margin-bottom: var(--space-sm); letter-spacing: 0.1em; text-transform: uppercase; animation: fadeInUp 0.8s ease forwards; opacity: 0; }
-        .hero h1 { margin-bottom: var(--space-md); animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; }
-        .hero h1 em { font-style: italic; color: var(--accent-dark); }
-        .hero-description { font-size: 1.25rem; color: var(--muted); margin: 0 auto var(--space-lg); animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0; }
-        .hero-cta { display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s forwards; opacity: 0; }
-        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; font-family: var(--font-body); font-size: 0.875rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--ink); background: transparent; cursor: pointer; transition: all 0.3s ease; }
-        .btn-primary { background: var(--ink); color: var(--paper); }
-        .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
-        .btn-secondary:hover { background: var(--ink); color: var(--paper); }
-        .scroll-indicator { position: absolute; bottom: var(--space-lg); left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
-        .scroll-indicator svg { width: 24px; height: 24px; stroke: var(--muted); }
-
-        /* About */
-        .about { background: var(--cream); }
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
-        .about-content { max-width: 500px; }
-        .section-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: var(--space-sm); }
-        .about h2 { margin-bottom: var(--space-md); }
-        .about p { color: var(--muted); margin-bottom: var(--space-sm); }
-        .about-image { position: relative; aspect-ratio: 4/5; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .about-image::before { content: '"'; font-family: var(--font-display); font-size: 40rem; color: rgba(255,255,255,0.1); position: absolute; top: -8rem; left: -2rem; line-height: 1; }
-        .about-image-text { font-family: var(--font-display); font-size: 2rem; color: white; text-align: center; padding: var(--space-md); font-style: italic; max-width: 300px; }
-
-        /* Services */
-        .services { background: var(--ink); color: var(--paper); }
-        .services .section-label { color: var(--accent); }
-        .services h2 { margin-bottom: var(--space-lg); }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md); }
-        .service-card { padding: var(--space-lg) var(--space-md); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
-        .service-card:hover::before { transform: scaleX(1); }
-        .service-card:hover { background: rgba(255,255,255,0.03); }
-        .service-number { font-family: var(--font-display); font-size: 3rem; color: var(--accent); line-height: 1; margin-bottom: var(--space-sm); }
-        .service-card h3 { margin-bottom: var(--space-sm); }
-        .service-card p { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
-
-        /* Team */
-        .team { text-align: center; }
-        .team h2 { margin-bottom: var(--space-lg); }
-        .team-grid { display: flex; justify-content: center; gap: var(--space-lg); flex-wrap: wrap; }
-        .team-member { max-width: 300px; }
-        .team-photo { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, var(--cream) 0%, var(--border) 100%); margin: 0 auto var(--space-md); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 4rem; color: var(--accent-dark); }
-        .team-member h3 { margin-bottom: var(--space-xs); }
-        .team-role { font-size: 0.875rem; color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.1em; }
-
-        /* Contact */
-        .contact { background: var(--cream); }
-        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
-        .contact h2 { margin-bottom: var(--space-md); }
-        .contact-form { display: flex; flex-direction: column; gap: var(--space-sm); }
-        .form-group { display: flex; flex-direction: column; gap: var(--space-xs); }
-        .form-group label { font-size: 0.875rem; letter-spacing: 0.05em; text-transform: uppercase; }
-        .form-group input, .form-group textarea { padding: 1rem; border: 1px solid var(--border); background: var(--paper); font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s ease; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-dark); }
-        .form-group textarea { min-height: 150px; resize: vertical; }
-        .contact-info { padding-top: var(--space-md); }
-        .contact-info p { margin-bottom: var(--space-md); color: var(--muted); }
-        .contact-details { margin-top: var(--space-lg); }
-        .contact-item { margin-bottom: var(--space-md); }
-        .contact-item-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: var(--space-xs); }
-        .contact-item-value { font-family: var(--font-display); font-size: 1.25rem; }
-
-        /* Footer */
-        footer { background: var(--ink); color: var(--paper); padding: var(--space-lg) 0 var(--space-md); }
-        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md); }
-        .footer-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: 0.05em; }
-        .footer-links { display: flex; gap: var(--space-md); }
-        .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.3s ease; }
-        .footer-links a:hover { color: var(--paper); }
-        .footer-bottom { margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.875rem; color: rgba(255,255,255,0.4); }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-10px); } 60% { transform: translateX(-50%) translateY(-5px); } }
-
-        /* Responsive */
-        @media (max-width: 968px) {
-            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-            .about-image { max-width: 400px; margin: 0 auto; }
-        }
-        @media (max-width: 768px) {
-            nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--paper); flex-direction: column; padding: var(--space-md); border-bottom: 1px solid var(--border); }
-            nav.active { display: flex; }
-            .menu-toggle { display: block; }
-            .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
-            section { padding: var(--space-lg) 0; }
-        }
-    </style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      color: var(--navy);
+      line-height: 1.6;
+      background: var(--white);
+      overflow-x: hidden;
+    }
+    
+    /* Utility Classes */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 22, 40, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 0;
+      transition: all 0.3s ease;
+    }
+    
+    header.scrolled {
+      padding: 12px 0;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    
+    .logo span {
+      color: var(--copper);
+    }
+    
+    nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    
+    nav a {
+      color: var(--gray-200);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+    
+    nav a:hover {
+      color: var(--copper-light);
+    }
+    
+    .phone-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--copper);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .phone-cta:hover {
+      background: var(--copper-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-copper);
+    }
+    
+    .mobile-menu {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .mobile-menu span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      margin: 6px 0;
+      transition: all 0.3s ease;
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 80%, var(--copper-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(22, 35, 64, 0.8) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .hero-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding-top: 100px;
+    }
+    
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(184, 115, 51, 0.15);
+      border: 1px solid var(--copper);
+      color: var(--copper-light);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      color: var(--white);
+      line-height: 0.95;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+    
+    .hero h1 span {
+      color: var(--copper);
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--gray-400);
+      max-width: 540px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: var(--copper);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background: var(--copper-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-copper);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--gray-400);
+    }
+    
+    .btn-secondary:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    
+    .stat {
+      text-align: left;
+    }
+    
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: var(--copper);
+      letter-spacing: 2px;
+    }
+    
+    .stat-label {
+      color: var(--gray-400);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Services Section */
+    .services {
+      padding: 120px 0;
+      background: var(--gray-100);
+    }
+    
+    .section-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 60px;
+    }
+    
+    .section-tag {
+      display: inline-block;
+      color: var(--copper);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--navy);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    
+    .section-header p {
+      color: var(--gray-600);
+      font-size: 1.125rem;
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    
+    .service-card {
+      background: var(--white);
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--copper);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--copper) 0%, var(--copper-light) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    
+    .service-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--navy);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    
+    .service-card p {
+      color: var(--gray-600);
+      margin-bottom: 20px;
+    }
+    
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--copper);
+      font-weight: 600;
+      text-decoration: none;
+      transition: gap 0.2s ease;
+    }
+    
+    .service-link:hover {
+      gap: 12px;
+    }
+    
+    /* Why Choose Section */
+    .why-choose {
+      padding: 120px 0;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .why-choose::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--copper-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .why-choose .section-header {
+      text-align: left;
+      margin: 0;
+    }
+    
+    .why-choose .section-header h2 {
+      color: var(--white);
+    }
+    
+    .why-choose .section-header p {
+      color: var(--gray-400);
+    }
+    
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    
+    .why-features {
+      display: grid;
+      gap: 32px;
+    }
+    
+    .why-feature {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .why-feature-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: rgba(184, 115, 51, 0.15);
+      border: 1px solid var(--copper);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .why-feature-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--copper);
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .why-feature h4 {
+      color: var(--white);
+      font-size: 1.125rem;
+      margin-bottom: 8px;
+    }
+    
+    .why-feature p {
+      color: var(--gray-400);
+      font-size: 0.95rem;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      padding: 120px 0;
+      background: var(--white);
+    }
+    
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+    
+    .testimonial-card {
+      background: var(--gray-100);
+      padding: 32px;
+      border-radius: 8px;
+      position: relative;
+    }
+    
+    .testimonial-card::before {
+      content: '"';
+      font-family: var(--font-display);
+      font-size: 6rem;
+      color: var(--copper);
+      opacity: 0.2;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      line-height: 1;
+    }
+    
+    .testimonial-stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    
+    .testimonial-stars svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--copper);
+    }
+    
+    .testimonial-card p {
+      color: var(--gray-600);
+      font-style: italic;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--navy);
+    }
+    
+    .testimonial-location {
+      color: var(--gray-400);
+      font-size: 0.875rem;
+    }
+    
+    /* CTA Section */
+    .cta {
+      padding: 100px 0;
+      background: linear-gradient(135deg, var(--copper) 0%, #9a5f28 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    
+    .cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--white);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    
+    .cta p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.25rem;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    
+    .cta .btn {
+      background: var(--navy);
+      color: var(--white);
+      font-size: 1.125rem;
+      position: relative;
+    }
+    
+    .cta .btn:hover {
+      background: var(--navy-light);
+      transform: translateY(-2px);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--navy);
+      padding: 80px 0 40px;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+    
+    .footer-brand .logo {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    
+    .footer-brand p {
+      color: var(--gray-400);
+      max-width: 300px;
+      margin-bottom: 24px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    
+    .social-links a:hover {
+      background: var(--copper);
+      transform: translateY(-2px);
+    }
+    
+    .social-links svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--white);
+    }
+    
+    .footer-column h4 {
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column li {
+      margin-bottom: 12px;
+    }
+    
+    .footer-column a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .footer-column a:hover {
+      color: var(--copper-light);
+    }
+    
+    .footer-bottom {
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--gray-400);
+      font-size: 0.875rem;
+    }
+    
+    .footer-bottom a {
+      color: var(--gray-400);
+      text-decoration: none;
+    }
+    
+    .footer-bottom a:hover {
+      color: var(--copper-light);
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Scroll Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .why-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <a href="#" class="logo">Untitled <span>Publishers</span></a>
-            <nav id="nav">
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#team">Team</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('active')">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </header>
+  <!-- Header -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">MR.<span>GUTTER</span></a>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#why">Why Us</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a href="tel:2568811900" class="phone-cta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          (256) 881-1900
+        </a>
+      </nav>
+      <button class="mobile-menu" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <p class="hero-tagline">Est. 2024</p>
-            <h1>Where Stories Find Their <em>Voice</em></h1>
-            <p class="hero-description">We are a modern publishing house dedicated to amplifying diverse voices and bringing compelling stories to life through innovative publishing and content strategies.</p>
-            <div class="hero-cta">
-                <a href="#contact" class="btn btn-primary">Work With Us</a>
-                <a href="#services" class="btn btn-secondary">Our Services</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          Top-Rated in Huntsville Since 1999
+        </div>
+        <h1>PROTECT YOUR HOME.<br><span>THE RIGHT WAY.</span></h1>
+        <p>Huntsville's most trusted gutter installation experts. Seamless gutters, premium materials, and craftsmanship that stands the test of time.</p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">
+            Get Free Estimate
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="tel:2568811900" class="btn btn-secondary">
+            Call Now
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-value">25+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">5,000+</div>
+            <div class="stat-label">Homes Protected</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">5★</div>
+            <div class="stat-label">Google Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Our Services</span>
+        <h2>COMPLETE GUTTER SOLUTIONS</h2>
+        <p>From installation to repairs, we handle every aspect of your gutter system with precision and care.</p>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>SEAMLESS GUTTERS</h3>
+          <p>Custom-fabricated on-site for a perfect fit. Our 5" and 6" seamless aluminum gutters eliminate leaks and protect your home's foundation.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>GUTTER GUARDS</h3>
+          <p>Never clean your gutters again. Our premium leaf protection systems keep debris out while allowing maximum water flow.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3>GUTTER REPAIR</h3>
+          <p>Leaking, sagging, or damaged gutters? No job is too small. We restore your system to perfect working condition.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <h3>COPPER GUTTERS</h3>
+          <p>Make a statement with premium copper gutters. Elegant, durable, and designed to develop a beautiful patina over time.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <h3>UNDERGROUND DRAINS</h3>
+          <p>Move water far from your foundation with professionally installed underground drainage systems.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3>GUTTER CLEANING</h3>
+          <p>Professional gutter cleaning to keep your system flowing freely. Safe ladder work by trained technicians.</p>
+          <a href="#" class="service-link">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="why-choose" id="why">
+    <div class="container">
+      <div class="why-grid">
+        <div class="section-header reveal">
+          <span class="section-tag">Why Mr. Gutter</span>
+          <h2>HUNTSVILLE'S TRUSTED<br>GUTTER EXPERTS</h2>
+          <p>We've been protecting North Alabama homes for over 25 years. Our reputation is built on quality work and customer satisfaction.</p>
+        </div>
+        
+        <div class="why-features">
+          <div class="why-feature reveal">
+            <div class="why-feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-content">
-                    <p class="section-label">Our Story</p>
-                    <h2>Publishing Reimagined for the Digital Age</h2>
-                    <p>Untitled Publishers was born from a simple belief: every story deserves to be heard, and every author deserves a partner who understands both the art and science of modern publishing.</p>
-                    <p>We combine traditional publishing expertise with cutting-edge digital marketing strategies, ensuring your work reaches the readers who need it most.</p>
-                    <p>From manuscript to market, we're with you every step of the way—crafting launch strategies, building audiences, and turning your vision into reality.</p>
-                </div>
-                <div class="about-image">
-                    <p class="about-image-text">Every story has a beginning. Let us help write yours.</p>
-                </div>
+            <div>
+              <h4>Licensed & Insured</h4>
+              <p>Fully licensed, bonded, and insured for your complete peace of mind.</p>
             </div>
-        </div>
-    </section>
-
-    <section id="services" class="services">
-        <div class="container">
-            <p class="section-label">What We Do</p>
-            <h2>Full-Service Publishing Solutions</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-number">01</div>
-                    <h3>Book Publishing</h3>
-                    <p>End-to-end publishing services including editing, design, formatting, and distribution across all major platforms.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">02</div>
-                    <h3>Launch Strategy</h3>
-                    <p>Comprehensive launch planning with proven frameworks to maximize your book's impact and reach from day one.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">03</div>
-                    <h3>Content Marketing</h3>
-                    <p>Strategic content creation across TikTok, email newsletters, and social platforms to build engaged audiences.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">04</div>
-                    <h3>Author Platform</h3>
-                    <p>Build your author brand with professional websites, email lists, and a cohesive online presence.</p>
-                </div>
+          </div>
+          
+          <div class="why-feature reveal">
+            <div class="why-feature-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
-        </div>
-    </section>
-
-    <section id="team" class="team">
-        <div class="container">
-            <p class="section-label">The Team</p>
-            <h2>Meet the Publishers</h2>
-            <div class="team-grid">
-                <div class="team-member">
-                    <div class="team-photo">M</div>
-                    <h3>Micaiah</h3>
-                    <p class="team-role">Founder & Publisher</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-photo">I</div>
-                    <h3>Irene</h3>
-                    <p class="team-role">Creative Director</p>
-                </div>
+            <div>
+              <h4>5-Year Installation Warranty</h4>
+              <p>We stand behind our work with a comprehensive warranty on all installations.</p>
             </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <p class="section-label">Get In Touch</p>
-                    <h2>Let's Create Something Beautiful Together</h2>
-                    <p>Whether you're an author with a manuscript, a creator looking to expand your reach, or a business seeking publishing solutions—we'd love to hear from you.</p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <p class="contact-item-label">Email</p>
-                            <p class="contact-item-value">hello@untitledpublishers.com</p>
-                        </div>
-                        <div class="contact-item">
-                            <p class="contact-item-label">Follow Us</p>
-                            <p class="contact-item-value">@UntitledPublishers</p>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form" onsubmit="handleSubmit(event)">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+          </div>
+          
+          <div class="why-feature reveal">
+            <div class="why-feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">Untitled Publishers</div>
-                <div class="footer-links">
-                    <a href="#about">About</a>
-                    <a href="#services">Services</a>
-                    <a href="#contact">Contact</a>
-                </div>
+            <div>
+              <h4>Experienced Crews</h4>
+              <p>Our installers have been with us for years. No subcontractors, ever.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Untitled Publishers. All rights reserved.</p>
+          </div>
+          
+          <div class="why-feature reveal">
+            <div class="why-feature-icon">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
+            <div>
+              <h4>Financing Available</h4>
+              <p>Flexible payment options to fit your budget. Apply online in minutes.</p>
+            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Customer Reviews</span>
+        <h2>WHAT HOMEOWNERS SAY</h2>
+        <p>Don't just take our word for it. See what our customers have to say about their experience with Mr. Gutter.</p>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>Mr. Gutter was competitive on price and delivered exactly according to their estimate. The install was extremely smooth. Clean up was done and gutters look great!</p>
+          <div class="testimonial-author">Mike B.</div>
+          <div class="testimonial-location">Huntsville, AL</div>
+        </div>
+        
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>Very happy with the installation. My house looks great, and the icing on the cake is Mr. Gutter was half the price of another company I called.</p>
+          <div class="testimonial-author">Nancy C.</div>
+          <div class="testimonial-location">Madison, AL</div>
+        </div>
+        
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>Mr. Gutter to the rescue! For the first time since our house was built, we can relax when it rains. They came up with a perfect solution.</p>
+          <div class="testimonial-author">Wayne S.</div>
+          <div class="testimonial-location">Harvest, AL</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                document.getElementById('nav').classList.remove('active');
-            });
-        });
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="container">
+      <h2 class="reveal">READY TO PROTECT YOUR HOME?</h2>
+      <p class="reveal">Get a free, no-obligation estimate today. Most quotes provided same-day.</p>
+      <a href="tel:2568811900" class="btn reveal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        Call (256) 881-1900
+      </a>
+    </div>
+  </section>
 
-        function handleSubmit(e) {
-            e.preventDefault();
-            alert('Thank you for your message! We\'ll be in touch soon.');
-            e.target.reset();
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">MR.<span>GUTTER</span></a>
+          <p>Huntsville's trusted gutter experts since 1999. Protecting homes across Madison, Morgan, and Marshall Counties.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Google">
+              <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h4>SERVICES</h4>
+          <ul>
+            <li><a href="#">Seamless Gutters</a></li>
+            <li><a href="#">Gutter Guards</a></li>
+            <li><a href="#">Gutter Repair</a></li>
+            <li><a href="#">Copper Gutters</a></li>
+            <li><a href="#">Underground Drains</a></li>
+            <li><a href="#">Gutter Cleaning</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>SERVICE AREA</h4>
+          <ul>
+            <li><a href="#">Huntsville</a></li>
+            <li><a href="#">Madison</a></li>
+            <li><a href="#">Meridianville</a></li>
+            <li><a href="#">Harvest</a></li>
+            <li><a href="#">Guntersville</a></li>
+            <li><a href="#">Owens Cross Roads</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>CONTACT</h4>
+          <ul>
+            <li><a href="tel:2568811900">(256) 881-1900</a></li>
+            <li><a href="#">Get a Quote</a></li>
+            <li><a href="#">Financing</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2025 Mr. Gutter of Huntsville. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    
+    const revealOnScroll = () => {
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          el.classList.add('visible');
         }
-    </script>
+      });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // Initial check
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
