@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Audition to become a voice talent for Untitled Publishers audiobook productions. Competitive rates, remote recording, ongoing opportunities.">
+    <title>Voice Talent Auditions | Untitled Publishers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⌨</span>
+                    <span class="logo-text">UNTITLED <span class="logo-accent">PUBLISHERS</span></span>
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="about.html">About</a>
+                    <a href="catalog.html">Catalog</a>
+                    <a href="authors.html">Authors</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <a href="submit.html" class="btn btn-primary">Submit Work</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-tag">Voice Talent</span>
+            <h1>Bring Stories <span class="text-gradient">to Life</span></h1>
+            <p>Join our roster of exceptional narrators for audiobook productions. All genres, all styles, competitive compensation.</p>
+        </div>
+    </section>
+
+    <!-- Why Join -->
+    <section class="content-section">
+        <div class="container">
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">🎧</div>
+                    <h3>Remote Recording</h3>
+                    <p>Work from your home studio. We provide direction and quality control remotely.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">💰</div>
+                    <h3>Competitive Rates</h3>
+                    <p>Per-finished-hour rates or royalty share options. You choose what works best.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">📚</div>
+                    <h3>Diverse Catalog</h3>
+                    <p>Fiction, non-fiction, business, self-help, and more. Find projects that match your voice.</p>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <div class="submission-form">
+                <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-validate>
+                    <input type="hidden" name="_subject" value="New Voice Talent Application">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="location">Location (City, State/Country) <span class="required">*</span></label>
+                            <input type="text" id="location" name="location" class="form-input" required placeholder="e.g., Atlanta, GA">
+                        </div>
+                    </div>
+                    
+                    <!-- Experience -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Narration Experience</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="experience">Years of Narration Experience <span class="required">*</span></label>
+                            <select id="experience" name="experience" class="form-select" required>
+                                <option value="">Select...</option>
+                                <option value="0-1">Less than 1 year</option>
+                                <option value="1-3">1-3 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="5-10">5-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Preferred Genres <span class="required">*</span></label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 0.5rem;">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="fiction">
+                                    <span>Fiction</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="mystery-thriller">
+                                    <span>Mystery/Thriller</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="romance">
+                                    <span>Romance</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="sci-fi-fantasy">
+                                    <span>Sci-Fi/Fantasy</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="business">
+                                    <span>Business</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="self-help">
+                                    <span>Self-Help</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="memoir">
+                                    <span>Memoir</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" name="genres" value="non-fiction">
+                                    <span>Non-Fiction</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="completedBooks">Audiobooks Completed</label>
+                            <input type="number" id="completedBooks" name="completedBooks" class="form-input" placeholder="Approximate number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="background">Background & Training</label>
+                            <textarea id="background" name="background" class="form-textarea" placeholder="Acting training, voice coaching, notable projects, awards..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Technical Setup -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Technical Setup</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="microphone">Microphone <span class="required">*</span></label>
+                            <input type="text" id="microphone" name="microphone" class="form-input" required placeholder="e.g., Shure SM7B, Rode NT1, Blue Yeti">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="daw">Recording Software (DAW) <span class="required">*</span></label>
+                            <input type="text" id="daw" name="daw" class="form-input" required placeholder="e.g., Adobe Audition, Audacity, Pro Tools">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="acoustics">Recording Space</label>
+                            <textarea id="acoustics" name="acoustics" class="form-textarea" style="min-height: 80px;" placeholder="Describe your recording space and acoustic treatment..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Demo & Links -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Demo & Portfolio</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="demoLink">Demo Reel Link <span class="required">*</span></label>
+                            <input type="url" id="demoLink" name="demoLink" class="form-input" required placeholder="https://...">
+                            <p class="form-hint">Link to your demo reel on SoundCloud, YouTube, personal website, or similar platform.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="website">Website/Portfolio</label>
+                            <input type="url" id="website" name="website" class="form-input" placeholder="https://...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="acx">ACX/Audible Profile</label>
+                            <input type="url" id="acx" name="acx" class="form-input" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <!-- Availability -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Availability & Rates</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="availability">Weekly Availability <span class="required">*</span></label>
+                                <select id="availability" name="availability" class="form-select" required>
+                                    <option value="">Select...</option>
+                                    <option value="part-time">Part-time (10-20 hrs/week)</option>
+                                    <option value="full-time">Full-time (20-40 hrs/week)</option>
+                                    <option value="flexible">Flexible/Project-based</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="compensation">Preferred Compensation <span class="required">*</span></label>
+                                <select id="compensation" name="compensation" class="form-select" required>
+                                    <option value="">Select...</option>
+                                    <option value="pfh">Per Finished Hour (PFH)</option>
+                                    <option value="royalty">Royalty Share</option>
+                                    <option value="either">Open to Either</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="pfhRate">PFH Rate (if applicable)</label>
+                            <input type="text" id="pfhRate" name="pfhRate" class="form-input" placeholder="e.g., $150-250 PFH">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="additionalInfo">Anything Else?</label>
+                            <textarea id="additionalInfo" name="additionalInfo" class="form-textarea" style="min-height: 100px;" placeholder="Special skills, accents, languages, unique voice qualities..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Agreement -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="equipment" required>
+                                <span>I have a professional home studio setup capable of producing broadcast-quality audio. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="agreement" required>
+                                <span>I understand this is an application and project offers are not guaranteed. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="privacy" required>
+                                <span>I agree to the <a href="privacy.html" style="color: var(--color-primary);">Privacy Policy</a> and <a href="terms.html" style="color: var(--color-primary);">Terms of Service</a>. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; padding-top: var(--space-lg);">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Submit Audition
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <p class="form-hint" style="margin-top: var(--space-md);">We review all applications and respond within 1-2 weeks.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="content-section" style="background: var(--color-bg-elevated);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Requirements</span>
+                <h2 class="section-title">What We Look For</h2>
+            </div>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">🎙️</div>
+                    <h3>Quality Equipment</h3>
+                    <p>Professional-grade microphone, treated recording space, and reliable DAW software.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">🎭</div>
+                    <h3>Versatile Performance</h3>
+                    <p>Ability to bring characters to life, maintain consistency, and take direction well.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">⏰</div>
+                    <h3>Reliable Delivery</h3>
+                    <p>Meet deadlines consistently. Most projects require 1-2 finished hours per week minimum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">⌨</span>
+                        <span class="logo-text">UNTITLED <span class="logo-accent">PUBLISHERS</span></span>
+                    </a>
+                    <p>Precision-engineered stories for a new generation.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="submit.html">Submit Manuscript</a></li>
+                        <li><a href="idea-generator.html">Idea Generator</a></li>
+                        <li><a href="voice-talent.html">Voice Talent</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="authors.html">Authors</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Untitled Publishers. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
