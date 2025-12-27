@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Have expertise but not time to write? Join our Idea Generator program. We pair subject matter experts with professional writers.">
+    <title>Idea Generator Program | Untitled Publishers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⌨</span>
+                    <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="about.html">About</a>
+                    <a href="catalog.html">Catalog</a>
+                    <a href="authors.html">Authors</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <a href="submit.html" class="btn btn-primary">Submit Work</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-tag">Idea Generator</span>
+            <h1>Your Ideas, <span class="text-gradient">Our Writers</span></h1>
+            <p>Have expertise but not the time to write? We pair subject matter experts with professional writers to bring your ideas to life.</p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Process</span>
+                <h2 class="section-title">How It Works</h2>
+            </div>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">1️⃣</div>
+                    <h3>Apply & Match</h3>
+                    <p>Tell us about your expertise and book idea. We'll match you with a professional writer who specializes in your subject area.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">2️⃣</div>
+                    <h3>Interview Process</h3>
+                    <p>Share your knowledge through structured interviews. Our writer captures your voice, insights, and unique perspective.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">3️⃣</div>
+                    <h3>Review & Publish</h3>
+                    <p>Review drafts, provide feedback, and watch your book come to life. You retain author credit and share in royalties.</p>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <div class="submission-form">
+                <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-validate>
+                    <input type="hidden" name="_subject" value="New Idea Generator Application">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Expertise -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Your Expertise</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="profession">Current Profession/Title <span class="required">*</span></label>
+                            <input type="text" id="profession" name="profession" class="form-input" required placeholder="e.g., CEO, Professor, Consultant">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="expertise">Area of Expertise <span class="required">*</span></label>
+                                <select id="expertise" name="expertise" class="form-select" required>
+                                    <option value="">Select area...</option>
+                                    <option value="business">Business & Entrepreneurship</option>
+                                    <option value="finance">Finance & Investing</option>
+                                    <option value="marketing">Marketing & Sales</option>
+                                    <option value="leadership">Leadership & Management</option>
+                                    <option value="tech">Technology & Innovation</option>
+                                    <option value="health">Health & Wellness</option>
+                                    <option value="psychology">Psychology & Mental Health</option>
+                                    <option value="education">Education & Learning</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="experience">Years of Experience <span class="required">*</span></label>
+                                <select id="experience" name="experience" class="form-select" required>
+                                    <option value="">Select...</option>
+                                    <option value="5-10">5-10 years</option>
+                                    <option value="10-15">10-15 years</option>
+                                    <option value="15-20">15-20 years</option>
+                                    <option value="20+">20+ years</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="credentials">Credentials & Achievements</label>
+                            <textarea id="credentials" name="credentials" class="form-textarea" placeholder="Degrees, certifications, awards, notable achievements..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="platform">Existing Platform</label>
+                            <textarea id="platform" name="platform" class="form-textarea" style="min-height: 100px;" placeholder="Social media following, newsletter subscribers, speaking engagements, media appearances..."></textarea>
+                            <p class="form-hint">Having an existing platform helps but is not required.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Book Idea -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Your Book Idea</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="bookTitle">Working Title <span class="required">*</span></label>
+                            <input type="text" id="bookTitle" name="bookTitle" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="bookConcept">Book Concept <span class="required">*</span></label>
+                            <textarea id="bookConcept" name="bookConcept" class="form-textarea" required data-max-length="2000" placeholder="Describe your book idea in detail. What's the main premise? What unique insights will you share? Why are you the right person to write this book?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="targetReader">Target Reader</label>
+                            <textarea id="targetReader" name="targetReader" class="form-textarea" style="min-height: 100px;" placeholder="Who will read this book? What problem does it solve for them?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="whyNow">Why Now?</label>
+                            <textarea id="whyNow" name="whyNow" class="form-textarea" style="min-height: 100px;" placeholder="Why is this the right time for this book? What makes it timely and relevant?"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Availability -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Availability & Commitment</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="availability">Weekly Availability for Interviews <span class="required">*</span></label>
+                            <select id="availability" name="availability" class="form-select" required>
+                                <option value="">Select...</option>
+                                <option value="2-3">2-3 hours per week</option>
+                                <option value="4-5">4-5 hours per week</option>
+                                <option value="6+">6+ hours per week</option>
+                            </select>
+                            <p class="form-hint">Most projects require 2-4 hours weekly for 3-6 months.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="timeline">Desired Timeline</label>
+                            <select id="timeline" name="timeline" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="asap">As soon as possible</option>
+                                <option value="6-months">Within 6 months</option>
+                                <option value="1-year">Within 1 year</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="additionalInfo">Anything Else?</label>
+                            <textarea id="additionalInfo" name="additionalInfo" class="form-textarea" style="min-height: 100px;" placeholder="Any additional information you'd like us to know..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Agreement -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="agreement" required>
+                                <span>I understand this is an application and acceptance is not guaranteed. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="privacy" required>
+                                <span>I agree to the <a href="privacy.html" style="color: var(--color-primary);">Privacy Policy</a> and <a href="terms.html" style="color: var(--color-primary);">Terms of Service</a>. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; padding-top: var(--space-lg);">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Submit Application
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <p class="form-hint" style="margin-top: var(--space-md);">We'll review your application and respond within 2 weeks.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">⌨</span>
+                        <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                    </a>
+                    <p>Precision-engineered stories for a new generation.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="submit.html">Submit Manuscript</a></li>
+                        <li><a href="idea-generator.html">Idea Generator</a></li>
+                        <li><a href="voice-talent.html">Voice Talent</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="authors.html">Authors</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Untitled Publishers. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
