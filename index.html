@@ -1,1234 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mr. Gutter | Huntsville's Premier Gutter Installation</title>
-  <meta name="description" content="25+ years protecting Huntsville homes. Seamless gutters, gutter guards, repairs & copper gutters. Free estimates.">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      /* Mr. Gutter Brand Colors */
-      --brand-blue: #1e3a5f;
-      --brand-blue-dark: #152a45;
-      --brand-blue-light: #2a4d7a;
-      --brand-gold: #c9a227;
-      --brand-gold-light: #dbb84a;
-      --brand-red: #c41e3a;
-      --white: #ffffff;
-      --gray-50: #f9fafb;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-400: #9ca3af;
-      --gray-600: #4b5563;
-      --gray-800: #1f2937;
-      
-      --font-heading: 'Montserrat', sans-serif;
-      --font-body: 'Open Sans', sans-serif;
-      
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-      --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.15);
-      --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
-    }
-    
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: var(--font-body);
-      color: var(--gray-800);
-      line-height: 1.6;
-      background: var(--white);
-      overflow-x: hidden;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-    
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: var(--white);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .header-top {
-      background: var(--brand-blue);
-      padding: 8px 0;
-      font-size: 0.875rem;
-    }
-    
-    .header-top-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--white);
-    }
-    
-    .header-top a {
-      color: var(--white);
-      text-decoration: none;
-    }
-    
-    .header-hours {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .header-main {
-      padding: 12px 0;
-    }
-    
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo img {
-      height: 60px;
-      width: auto;
-    }
-    
-    nav {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-    
-    nav a {
-      color: var(--gray-800);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: color 0.2s ease;
-      font-family: var(--font-heading);
-    }
-    
-    nav a:hover {
-      color: var(--brand-blue);
-    }
-    
-    .phone-cta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--brand-red);
-      color: var(--white);
-      padding: 14px 28px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      font-family: var(--font-heading);
-    }
-    
-    .phone-cta:hover {
-      background: #a31830;
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .mobile-menu {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-    
-    .mobile-menu span {
-      display: block;
-      width: 24px;
-      height: 3px;
-      background: var(--brand-blue);
-      margin: 5px 0;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-    
-    /* Hero Section */
-    .hero {
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-blue-dark) 100%);
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding-top: 120px;
-      overflow: hidden;
-    }
-    
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      pointer-events: none;
-    }
-    
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(201, 162, 39, 0.2);
-      border: 2px solid var(--brand-gold);
-      color: var(--brand-gold);
-      padding: 10px 20px;
-      border-radius: 100px;
-      font-size: 0.875rem;
-      font-weight: 700;
-      margin-bottom: 24px;
-      font-family: var(--font-heading);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      animation: fadeInUp 0.6s ease-out;
-    }
-    
-    .hero h1 {
-      font-family: var(--font-heading);
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      color: var(--white);
-      line-height: 1.1;
-      font-weight: 800;
-      margin-bottom: 24px;
-      animation: fadeInUp 0.6s ease-out 0.1s both;
-    }
-    
-    .hero h1 span {
-      color: var(--brand-gold);
-    }
-    
-    .hero p {
-      font-size: 1.25rem;
-      color: rgba(255,255,255,0.9);
-      max-width: 500px;
-      margin-bottom: 32px;
-      animation: fadeInUp 0.6s ease-out 0.2s both;
-    }
-    
-    .hero-buttons {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      animation: fadeInUp 0.6s ease-out 0.3s both;
-    }
-    
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 16px 32px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      font-family: var(--font-heading);
-    }
-    
-    .btn-primary {
-      background: var(--brand-red);
-      color: var(--white);
-    }
-    
-    .btn-primary:hover {
-      background: #a31830;
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .btn-secondary {
-      background: transparent;
-      color: var(--white);
-      border: 2px solid var(--white);
-    }
-    
-    .btn-secondary:hover {
-      background: var(--white);
-      color: var(--brand-blue);
-    }
-    
-    .hero-image {
-      position: relative;
-      animation: fadeInUp 0.6s ease-out 0.4s both;
-    }
-    
-    .hero-image img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: var(--shadow-xl);
-    }
-    
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 60px;
-      animation: fadeInUp 0.6s ease-out 0.5s both;
-    }
-    
-    .stat {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      padding: 24px;
-      border-radius: 8px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .stat-value {
-      font-family: var(--font-heading);
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--brand-gold);
-    }
-    
-    .stat-label {
-      color: rgba(255,255,255,0.9);
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-    
-    /* Services Section */
-    .services {
-      padding: 100px 0;
-      background: var(--gray-50);
-    }
-    
-    .section-header {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 60px;
-    }
-    
-    .section-tag {
-      display: inline-block;
-      color: var(--brand-blue);
-      font-weight: 700;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      font-family: var(--font-heading);
-    }
-    
-    .section-header h2 {
-      font-family: var(--font-heading);
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--brand-blue);
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-    
-    .section-header p {
-      color: var(--gray-600);
-      font-size: 1.125rem;
-    }
-    
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 24px;
-    }
-    
-    .service-card {
-      background: var(--white);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--gray-200);
-    }
-    
-    .service-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-    
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--brand-blue);
-    }
-    
-    .service-card:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .service-icon {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-    
-    .service-icon svg {
-      width: 32px;
-      height: 32px;
-      stroke: var(--white);
-      fill: none;
-      stroke-width: 2;
-    }
-    
-    .service-card h3 {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--brand-blue);
-      margin-bottom: 12px;
-    }
-    
-    .service-card p {
-      color: var(--gray-600);
-      margin-bottom: 20px;
-      line-height: 1.7;
-    }
-    
-    .service-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--brand-blue);
-      font-weight: 700;
-      text-decoration: none;
-      transition: gap 0.2s ease;
-      font-family: var(--font-heading);
-    }
-    
-    .service-link:hover {
-      gap: 12px;
-    }
-    
-    /* Why Choose Section */
-    .why-choose {
-      padding: 100px 0;
-      background: var(--brand-blue);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .why-choose .section-header h2 {
-      color: var(--white);
-    }
-    
-    .why-choose .section-header p {
-      color: rgba(255,255,255,0.8);
-    }
-    
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
-    }
-    
-    .why-card {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      padding: 32px;
-      border-radius: 12px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: all 0.3s ease;
-    }
-    
-    .why-card:hover {
-      background: rgba(255,255,255,0.15);
-      transform: translateY(-4px);
-    }
-    
-    .why-icon {
-      width: 72px;
-      height: 72px;
-      background: var(--brand-gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-    }
-    
-    .why-icon svg {
-      width: 36px;
-      height: 36px;
-      stroke: var(--brand-blue);
-      fill: none;
-      stroke-width: 2;
-    }
-    
-    .why-card h4 {
-      color: var(--white);
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    
-    .why-card p {
-      color: rgba(255,255,255,0.8);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-    
-    /* Testimonials */
-    .testimonials {
-      padding: 100px 0;
-      background: var(--white);
-    }
-    
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 32px;
-    }
-    
-    .testimonial-card {
-      background: var(--gray-50);
-      padding: 36px;
-      border-radius: 12px;
-      position: relative;
-      border: 1px solid var(--gray-200);
-    }
-    
-    .testimonial-card::before {
-      content: '"';
-      font-family: Georgia, serif;
-      font-size: 6rem;
-      color: var(--brand-blue);
-      opacity: 0.15;
-      position: absolute;
-      top: 10px;
-      left: 24px;
-      line-height: 1;
-    }
-    
-    .testimonial-stars {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 16px;
-    }
-    
-    .testimonial-stars svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--brand-gold);
-    }
-    
-    .testimonial-card p {
-      color: var(--gray-600);
-      font-style: italic;
-      margin-bottom: 24px;
-      position: relative;
-      z-index: 1;
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
-    
-    .testimonial-author {
-      font-weight: 700;
-      color: var(--brand-blue);
-      font-family: var(--font-heading);
-    }
-    
-    .testimonial-location {
-      color: var(--gray-400);
-      font-size: 0.875rem;
-    }
-    
-    /* CTA Section */
-    .cta {
-      padding: 80px 0;
-      background: linear-gradient(135deg, var(--brand-gold) 0%, #a88a1f 100%);
-      text-align: center;
-      position: relative;
-    }
-    
-    .cta h2 {
-      font-family: var(--font-heading);
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--brand-blue);
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-    
-    .cta p {
-      color: var(--brand-blue-dark);
-      font-size: 1.25rem;
-      margin-bottom: 32px;
-      opacity: 0.9;
-    }
-    
-    .cta .btn {
-      background: var(--brand-blue);
-      color: var(--white);
-      font-size: 1.125rem;
-      padding: 18px 40px;
-    }
-    
-    .cta .btn:hover {
-      background: var(--brand-blue-dark);
-      transform: translateY(-2px);
-    }
-    
-    /* Footer */
-    footer {
-      background: var(--brand-blue-dark);
-      padding: 60px 0 30px;
-    }
-    
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-    }
-    
-    .footer-brand img {
-      height: 50px;
-      margin-bottom: 20px;
-    }
-    
-    .footer-brand p {
-      color: rgba(255,255,255,0.7);
-      max-width: 280px;
-      margin-bottom: 20px;
-      line-height: 1.7;
-    }
-    
-    .social-links {
-      display: flex;
-      gap: 12px;
-    }
-    
-    .social-links a {
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    
-    .social-links a:hover {
-      background: var(--brand-gold);
-      transform: translateY(-2px);
-    }
-    
-    .social-links svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--white);
-    }
-    
-    .footer-column h4 {
-      color: var(--white);
-      font-family: var(--font-heading);
-      font-size: 1.125rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    
-    .footer-column ul {
-      list-style: none;
-    }
-    
-    .footer-column li {
-      margin-bottom: 10px;
-    }
-    
-    .footer-column a {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    
-    .footer-column a:hover {
-      color: var(--brand-gold);
-    }
-    
-    .footer-bottom {
-      padding-top: 30px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.875rem;
-    }
-    
-    .footer-bottom a {
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-    }
-    
-    .footer-bottom a:hover {
-      color: var(--brand-gold);
-    }
-    
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-    
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      
-      .hero-content {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      
-      .hero p {
-        margin: 0 auto 32px;
-      }
-      
-      .hero-buttons {
-        justify-content: center;
-      }
-      
-      .hero-image {
-        display: none;
-      }
-      
-      .why-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .header-top {
-        display: none;
-      }
-      
-      nav {
-        display: none;
-      }
-      
-      .mobile-menu {
-        display: block;
-      }
-      
-      .hero {
-        padding-top: 100px;
-      }
-      
-      .hero-stats {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .why-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-      
-      .footer-bottom {
-        flex-direction: column;
-        gap: 16px;
-        text-align: center;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Untitled Publishers - The Future of Publishing. Submit manuscripts, join our Idea Generator program, or audition as voice talent.">
+    <title>Untitled Publishers | The Future of Publishing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Header -->
-  <header id="header">
-    <div class="header-top">
-      <div class="container header-top-inner">
-        <div class="header-hours">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
-          Mon-Sat: 7am-6:30pm
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⌨</span>
+                    <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="about.html">About</a>
+                    <a href="catalog.html">Catalog</a>
+                    <a href="authors.html">Authors</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <a href="submit.html" class="btn btn-primary">Submit Work</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
         </div>
-        <a href="tel:2568811900">Call Now: (256) 881-1900</a>
-      </div>
-    </div>
-    <div class="header-main">
-      <div class="container header-inner">
-        <a href="#" class="logo">
-          <img src="https://mrgutter.com/wp-content/uploads/2024/11/logo1.png" alt="Mr. Gutter - Huntsville AL">
-        </a>
-        <nav>
-          <a href="#services">Services</a>
-          <a href="#why">Why Us</a>
-          <a href="#testimonials">Reviews</a>
-          <a href="#contact">Contact</a>
-          <a href="tel:2568811900" class="phone-cta">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-            Get a Quote!
-          </a>
-        </nav>
-        <button class="mobile-menu" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <div class="hero-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-            25 Years in Huntsville
-          </div>
-          <h1>Gutters Huntsville <span>Alabama</span></h1>
-          <p>Top-rated seamless gutter installation in North Alabama. Protect your home from water damage with our expert team and quality materials.</p>
-          <div class="hero-buttons">
-            <a href="#contact" class="btn btn-primary">
-              Get Free Estimate
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            <a href="tel:2568811900" class="btn btn-secondary">
-              (256) 881-1900
-            </a>
-          </div>
-          <div class="hero-stats">
-            <div class="stat">
-              <div class="stat-value">25+</div>
-              <div class="stat-label">Years Experience</div>
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Now Accepting Submissions
+                </div>
+                <h1 class="hero-title">
+                    The Future of<br>
+                    <span class="text-gradient">Publishing</span>
+                </h1>
+                <p class="hero-subtitle">
+                    We're not just publishing books. We're engineering stories for a new generation. 
+                    Three paths to get published. One revolutionary approach.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#programs" class="btn btn-primary btn-lg">
+                        Explore Programs
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="about.html" class="btn btn-secondary btn-lg">Learn More</a>
+                </div>
             </div>
-            <div class="stat">
-              <div class="stat-value">5,000+</div>
-              <div class="stat-label">Homes Protected</div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <section class="programs" id="programs">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Programs</span>
+                <h2 class="section-title">Three Paths to Publication</h2>
+                <p class="section-subtitle">Choose the path that fits your story</p>
             </div>
-            <div class="stat">
-              <div class="stat-value">5★</div>
-              <div class="stat-label">Google Rating</div>
+
+            <div class="programs-tabs">
+                <button class="tab-btn active" data-tab="manuscripts">
+                    <span class="tab-number">01</span>
+                    <span class="tab-label">Manuscripts</span>
+                </button>
+                <button class="tab-btn" data-tab="idea-generator">
+                    <span class="tab-number">02</span>
+                    <span class="tab-label">Idea Generator</span>
+                </button>
+                <button class="tab-btn" data-tab="voice-talent">
+                    <span class="tab-number">03</span>
+                    <span class="tab-label">Voice Talent</span>
+                </button>
             </div>
-          </div>
-        </div>
-        <div class="hero-image">
-          <img src="https://mrgutter.com/wp-content/uploads/2024/11/Worker-and-Truck.webp" alt="Mr. Gutter Team">
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Services Section -->
-  <section class="services" id="services">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Our Services</span>
-        <h2>Complete Gutter Solutions</h2>
-        <p>From installation to repairs, we handle every aspect of your gutter system with precision and care.</p>
-      </div>
-      
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <h3>Seamless Gutters</h3>
-          <p>Custom-fabricated on-site for a perfect fit. Our 5" and 6" seamless aluminum gutters eliminate leaks and protect your home's foundation.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Gutter Guards</h3>
-          <p>Never clean your gutters again. Our premium leaf protection systems keep debris out while allowing maximum water flow.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          </div>
-          <h3>Gutter Repair</h3>
-          <p>Leaking, sagging, or damaged gutters? No job is too small. We restore your system to perfect working condition.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-          </div>
-          <h3>Copper Gutters</h3>
-          <p>Make a statement with premium copper gutters. Elegant, durable, and designed to develop a beautiful patina over time.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-          </div>
-          <h3>Underground Drains</h3>
-          <p>Move water far from your foundation with professionally installed underground drainage systems.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          </div>
-          <h3>Gutter Cleaning</h3>
-          <p>Professional gutter cleaning to keep your system flowing freely. Safe ladder work by trained technicians.</p>
-          <a href="#" class="service-link">
-            Learn More
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+            <div class="programs-content">
+                <div class="tab-panel active" id="manuscripts">
+                    <div class="program-grid">
+                        <div class="program-info">
+                            <h3>Traditional Manuscript Submission</h3>
+                            <p>Have a completed manuscript? We review every submission with care. Our editorial team looks for bold voices, unique perspectives, and stories that demand to be told.</p>
+                            <ul class="program-features">
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Response within 8-12 weeks
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Full editorial support
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Print, digital, and audio distribution
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Competitive royalty rates
+                                </li>
+                            </ul>
+                            <a href="submit.html" class="btn btn-primary">
+                                Submit Manuscript
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="program-visual">
+                            <div class="visual-card">
+                                <div class="visual-icon">📝</div>
+                                <div class="visual-stats">
+                                    <div class="stat">
+                                        <span class="stat-value">500+</span>
+                                        <span class="stat-label">Submissions Reviewed</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value">12%</span>
+                                        <span class="stat-label">Acceptance Rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Why Choose Section -->
-  <section class="why-choose" id="why">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag" style="color: var(--brand-gold);">Why Mr. Gutter</span>
-        <h2>Huntsville's Trusted Gutter Experts</h2>
-        <p>We've been protecting North Alabama homes for over 25 years. Our reputation is built on quality work and customer satisfaction.</p>
-      </div>
-      
-      <div class="why-grid">
-        <div class="why-card reveal">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <h4>Licensed & Insured</h4>
-          <p>Fully licensed, bonded, and insured for your complete peace of mind.</p>
-        </div>
-        
-        <div class="why-card reveal">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h4>5-Year Warranty</h4>
-          <p>We stand behind our work with a comprehensive warranty on all installations.</p>
-        </div>
-        
-        <div class="why-card reveal">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h4>Expert Crews</h4>
-          <p>Our installers have been with us for years. No subcontractors, ever.</p>
-        </div>
-        
-        <div class="why-card reveal">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h4>Financing Available</h4>
-          <p>Flexible payment options to fit your budget. Apply online in minutes.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+                <div class="tab-panel" id="idea-generator">
+                    <div class="program-grid">
+                        <div class="program-info">
+                            <h3>Idea Generator Program</h3>
+                            <p>Have expertise but not the time to write? We pair subject matter experts with professional writers to bring your ideas to life. Your knowledge, our craft.</p>
+                            <ul class="program-features">
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Professional ghostwriting team
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    You retain author credit
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Interview-based process
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Revenue sharing model
+                                </li>
+                            </ul>
+                            <a href="idea-generator.html" class="btn btn-primary">
+                                Apply Now
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="program-visual">
+                            <div class="visual-card">
+                                <div class="visual-icon">💡</div>
+                                <div class="visual-stats">
+                                    <div class="stat">
+                                        <span class="stat-value">50+</span>
+                                        <span class="stat-label">Expert Partnerships</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value">30+</span>
+                                        <span class="stat-label">Professional Writers</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Testimonials Section -->
-  <section class="testimonials" id="testimonials">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Customer Reviews</span>
-        <h2>What Homeowners Say</h2>
-        <p>Don't just take our word for it. See what our customers have to say about their experience with Mr. Gutter.</p>
-      </div>
-      
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal">
-          <div class="testimonial-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p>Mr. Gutter was competitive on price and delivered exactly according to their estimate. The install was extremely smooth. Clean up was done and gutters look great!</p>
-          <div class="testimonial-author">Mike B.</div>
-          <div class="testimonial-location">Huntsville, AL</div>
+                <div class="tab-panel" id="voice-talent">
+                    <div class="program-grid">
+                        <div class="program-info">
+                            <h3>Voice Talent Recruitment</h3>
+                            <p>Bring stories to life with your voice. We're building a roster of exceptional narrators for our audiobook productions. All genres, all styles.</p>
+                            <ul class="program-features">
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Competitive per-finished-hour rates
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Remote recording accepted
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Ongoing project opportunities
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Professional direction available
+                                </li>
+                            </ul>
+                            <a href="voice-talent.html" class="btn btn-primary">
+                                Audition Now
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="program-visual">
+                            <div class="visual-card">
+                                <div class="visual-icon">🎙️</div>
+                                <div class="visual-stats">
+                                    <div class="stat">
+                                        <span class="stat-value">100+</span>
+                                        <span class="stat-label">Audiobooks Produced</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value">40+</span>
+                                        <span class="stat-label">Voice Artists</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="testimonial-card reveal">
-          <div class="testimonial-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p>Very happy with the installation. My house looks great, and the icing on the cake is Mr. Gutter was half the price of another company I called.</p>
-          <div class="testimonial-author">Nancy C.</div>
-          <div class="testimonial-location">Madison, AL</div>
-        </div>
-        
-        <div class="testimonial-card reveal">
-          <div class="testimonial-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p>Mr. Gutter to the rescue! For the first time since our house was built, we can relax when it rains. They came up with a perfect solution.</p>
-          <div class="testimonial-author">Wayne S.</div>
-          <div class="testimonial-location">Harvest, AL</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA Section -->
-  <section class="cta" id="contact">
-    <div class="container">
-      <h2 class="reveal">Ready to Protect Your Home?</h2>
-      <p class="reveal">Get a free, no-obligation estimate today. Most quotes provided same-day.</p>
-      <a href="tel:2568811900" class="btn reveal">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-        Call (256) 881-1900
-      </a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <img src="https://mrgutter.com/wp-content/uploads/2024/11/logo1.png" alt="Mr. Gutter">
-          <p>Huntsville's trusted gutter experts since 1999. Protecting homes across Madison, Morgan, and Marshall Counties.</p>
-          <div class="social-links">
-            <a href="#" aria-label="Facebook">
-              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-            <a href="#" aria-label="Google">
-              <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-            </a>
-          </div>
+    <section class="why-different">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why We're Different</span>
+                <h2 class="section-title">Publishing, Reimagined</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Global Distribution</h3>
+                    <p>Every format. Every platform. Your book available worldwide from day one.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <h3>Multi-Format First</h3>
+                    <p>Print, ebook, and audiobook planned from the start—not afterthoughts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Author-Centric</h3>
+                    <p>Transparent contracts. Fair royalties. You own your work.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3>Speed to Market</h3>
+                    <p>Streamlined processes mean faster publication without cutting corners.</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="#">Seamless Gutters</a></li>
-            <li><a href="#">Gutter Guards</a></li>
-            <li><a href="#">Gutter Repair</a></li>
-            <li><a href="#">Copper Gutters</a></li>
-            <li><a href="#">Underground Drains</a></li>
-            <li><a href="#">Gutter Cleaning</a></li>
-          </ul>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Tell Your Story?</h2>
+                <p>Join the next generation of published authors. We're waiting to hear from you.</p>
+                <div class="cta-buttons">
+                    <a href="submit.html" class="btn btn-primary btn-lg">Submit Your Work</a>
+                    <a href="contact.html" class="btn btn-secondary btn-lg">Get in Touch</a>
+                </div>
+            </div>
         </div>
-        
-        <div class="footer-column">
-          <h4>Service Area</h4>
-          <ul>
-            <li><a href="#">Huntsville</a></li>
-            <li><a href="#">Madison</a></li>
-            <li><a href="#">Meridianville</a></li>
-            <li><a href="#">Harvest</a></li>
-            <li><a href="#">Guntersville</a></li>
-            <li><a href="#">Owens Cross Roads</a></li>
-          </ul>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">⌨</span>
+                        <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                    </a>
+                    <p>Precision-engineered stories for a new generation.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="submit.html">Submit Manuscript</a></li>
+                        <li><a href="idea-generator.html">Idea Generator</a></li>
+                        <li><a href="voice-talent.html">Voice Talent</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="authors.html">Authors</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Untitled Publishers. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                </div>
+            </div>
         </div>
-        
-        <div class="footer-column">
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="tel:2568811900">(256) 881-1900</a></li>
-            <li><a href="#">Get a Quote</a></li>
-            <li><a href="#">Financing</a></li>
-            <li><a href="#">Careers</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>© 2025 Mr. Gutter of Huntsville. All rights reserved.</p>
-        <p><a href="#">Privacy Policy</a></p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    // Header scroll effect
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
-      } else {
-        header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-      }
-    });
-
-    // Scroll reveal animations
-    const reveals = document.querySelectorAll('.reveal');
-    
-    const revealOnScroll = () => {
-      reveals.forEach(el => {
-        const windowHeight = window.innerHeight;
-        const elementTop = el.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < windowHeight - elementVisible) {
-          el.classList.add('visible');
-        }
-      });
-    };
-
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-  </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
