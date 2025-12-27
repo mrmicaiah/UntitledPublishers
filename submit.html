@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Submit your manuscript to Untitled Publishers. We review every submission with care and respond within 8-12 weeks.">
+    <title>Submit Manuscript | Untitled Publishers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⌨</span>
+                    <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="about.html">About</a>
+                    <a href="catalog.html">Catalog</a>
+                    <a href="authors.html">Authors</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <a href="submit.html" class="btn btn-primary">Submit Work</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-tag">Manuscripts</span>
+            <h1>Submit Your <span class="text-gradient">Manuscript</span></h1>
+            <p>We review every submission with care. Our editorial team looks for bold voices, unique perspectives, and stories that demand to be told.</p>
+        </div>
+    </section>
+
+    <!-- Submission Info -->
+    <section class="content-section">
+        <div class="container">
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">📚</div>
+                    <h3>What We Publish</h3>
+                    <p>Fiction, non-fiction, memoirs, business, self-help, and specialty genres. All formats: print, ebook, and audiobook.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">⏱️</div>
+                    <h3>Response Time</h3>
+                    <p>We respond to all submissions within 8-12 weeks. Please do not send follow-up inquiries before that time.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">✉️</div>
+                    <h3>Submission Guidelines</h3>
+                    <p>Complete manuscripts only. Include a synopsis (1-2 pages) and author bio. Query letters are optional.</p>
+                </div>
+            </div>
+
+            <!-- Submission Form -->
+            <div class="submission-form">
+                <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-validate enctype="multipart/form-data">
+                    <input type="hidden" name="_subject" value="New Manuscript Submission">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <!-- Author Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Author Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="bio">Author Bio <span class="required">*</span></label>
+                            <textarea id="bio" name="bio" class="form-textarea" required data-max-length="1000" placeholder="Tell us about yourself, your background, and any previous publishing experience..."></textarea>
+                            <p class="form-hint">Include relevant experience, credentials, and platform (social media following, newsletter, etc.)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Manuscript Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Manuscript Details</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="title">Manuscript Title <span class="required">*</span></label>
+                            <input type="text" id="title" name="title" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="genre">Genre <span class="required">*</span></label>
+                                <select id="genre" name="genre" class="form-select" required>
+                                    <option value="">Select genre...</option>
+                                    <optgroup label="Fiction">
+                                        <option value="literary-fiction">Literary Fiction</option>
+                                        <option value="thriller">Thriller/Suspense</option>
+                                        <option value="mystery">Mystery</option>
+                                        <option value="romance">Romance</option>
+                                        <option value="sci-fi">Science Fiction</option>
+                                        <option value="fantasy">Fantasy</option>
+                                        <option value="horror">Horror</option>
+                                        <option value="historical">Historical Fiction</option>
+                                        <option value="ya-fiction">Young Adult Fiction</option>
+                                    </optgroup>
+                                    <optgroup label="Non-Fiction">
+                                        <option value="memoir">Memoir</option>
+                                        <option value="biography">Biography</option>
+                                        <option value="business">Business/Entrepreneurship</option>
+                                        <option value="self-help">Self-Help/Personal Development</option>
+                                        <option value="history">History</option>
+                                        <option value="science">Science/Technology</option>
+                                        <option value="health">Health/Wellness</option>
+                                        <option value="true-crime">True Crime</option>
+                                        <option value="religion">Religion/Spirituality</option>
+                                    </optgroup>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="wordCount">Word Count <span class="required">*</span></label>
+                                <input type="number" id="wordCount" name="wordCount" class="form-input" required placeholder="e.g., 75000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="synopsis">Synopsis <span class="required">*</span></label>
+                            <textarea id="synopsis" name="synopsis" class="form-textarea" required data-max-length="3000" placeholder="Provide a 1-2 page synopsis of your manuscript..."></textarea>
+                            <p class="form-hint">Include major plot points, character arcs, and the ending. For non-fiction, outline the main arguments and structure.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="comparableTitles">Comparable Titles</label>
+                            <input type="text" id="comparableTitles" name="comparableTitles" class="form-input" placeholder="e.g., 'For fans of The Great Gatsby meets The Goldfinch'">
+                            <p class="form-hint">2-3 recently published books similar to yours</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="targetAudience">Target Audience</label>
+                            <textarea id="targetAudience" name="targetAudience" class="form-textarea" placeholder="Describe your ideal reader..." style="min-height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Submission Status -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Submission Status</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="status">Manuscript Status <span class="required">*</span></label>
+                            <select id="status" name="status" class="form-select" required>
+                                <option value="">Select status...</option>
+                                <option value="complete">Complete and ready for publication</option>
+                                <option value="needs-editing">Complete but needs editing</option>
+                                <option value="in-progress">Still in progress</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="previousSubmissions">Previous Submissions</label>
+                            <textarea id="previousSubmissions" name="previousSubmissions" class="form-textarea" style="min-height: 80px;" placeholder="Has this manuscript been submitted elsewhere? If so, please describe..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="simultaneous" value="yes">
+                                <span>This is a simultaneous submission (currently submitted to other publishers)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Agreement -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Agreement</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="agreement" required>
+                                <span>I confirm this is my original work and I have the rights to submit it for publication. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="privacy" required>
+                                <span>I agree to the <a href="privacy.html" style="color: var(--color-primary);">Privacy Policy</a> and <a href="terms.html" style="color: var(--color-primary);">Terms of Service</a>. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; padding-top: var(--space-lg);">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Submit Manuscript
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <p class="form-hint" style="margin-top: var(--space-md);">After submitting, please email your full manuscript to <strong>submissions@untitledpublishers.com</strong></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="content-section" style="background: var(--color-bg-elevated);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Submission Questions</h2>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What file formats do you accept?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We accept .doc, .docx, and .pdf files. Please use standard formatting: 12pt font (Times New Roman or similar), double-spaced, with 1-inch margins.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I submit multiple manuscripts?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, but please submit each manuscript separately using a new submission form. This helps us track and review each work individually.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Do you accept previously published work?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We prefer unpublished manuscripts, but we will consider previously self-published works if you retain full rights and the book can be significantly revised or expanded.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What happens after I submit?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You'll receive an automated confirmation email. Our team reviews submissions in the order received. If we're interested, we'll reach out to discuss next steps. All submissions receive a response within 8-12 weeks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">⌨</span>
+                        <span class="logo-text">UNTITLED<span class="logo-accent">.</span></span>
+                    </a>
+                    <p>Precision-engineered stories for a new generation.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="submit.html">Submit Manuscript</a></li>
+                        <li><a href="idea-generator.html">Idea Generator</a></li>
+                        <li><a href="voice-talent.html">Voice Talent</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="authors.html">Authors</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Untitled Publishers. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
