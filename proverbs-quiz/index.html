@@ -78,9 +78,10 @@
         .results-proverb { background: var(--color-bg-card); border-radius: var(--radius-md); padding: var(--space-lg); margin: var(--space-md) 0; }
         .results-proverb blockquote { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--color-text); margin-bottom: var(--space-md); }
         .results-proverb p { font-size: 0.9375rem; }
-        .results-cta { margin-top: var(--space-2xl); text-align: center; }
-        .results-cta-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: var(--space-sm); }
-        .results-cta-text { color: var(--color-text-muted); margin-bottom: var(--space-lg); }
+        .results-cta { margin-top: var(--space-2xl); padding: var(--space-2xl); background: var(--color-bg-card); border-radius: var(--radius-lg); text-align: center; }
+        .results-cta-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: var(--space-md); }
+        .results-cta-text { color: var(--color-text-muted); margin-bottom: var(--space-md); line-height: 1.7; }
+        .results-cta-highlight { color: var(--color-primary); font-weight: 600; }
         
         /* Quiz footer */
         .quiz-footer { background: var(--color-bg-elevated); border-top: 1px solid var(--color-border); padding: var(--space-xl) var(--space-lg); text-align: center; }
@@ -91,6 +92,7 @@
         @media (max-width: 640px) {
             .quiz-container { padding: var(--space-lg) var(--space-md); }
             .results-content { padding: var(--space-lg); }
+            .results-cta { padding: var(--space-lg); }
         }
     </style>
 </head>
@@ -168,8 +170,8 @@
                     </div>
                     <div class="results-content" id="results-content"></div>
                     <div class="results-cta">
-                        <h3 class="results-cta-title">The book is almost ready.</h3>
-                        <p class="results-cta-text">Be first to know when it launches.</p>
+                        <h3 class="results-cta-title">You're on the list.</h3>
+                        <p class="results-cta-text">We're thrilled to have you. <span class="results-cta-highlight">The Proverbs Library</span>—a collection of 7 books written for Leaders, Fathers, Mothers, Husbands, Wives, Sons, and Daughters—launches <span class="results-cta-highlight">June 2025</span>. You'll be the first to know when it's ready.</p>
                         <a href="/" class="btn btn-primary btn-lg">Return to Untitled Publishers <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
                     </div>
                 </div>
