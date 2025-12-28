@@ -37,6 +37,34 @@
         .intro-time { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-dim); margin-bottom: var(--space-lg); }
         .intro-time svg { color: var(--color-primary); }
         
+        /* Sales section below hero */
+        .intro-sales { margin-top: var(--space-4xl); padding-top: var(--space-4xl); border-top: 1px solid var(--color-border); text-align: left; max-width: 640px; }
+        .sales-section { margin-bottom: var(--space-3xl); }
+        .sales-section:last-of-type { margin-bottom: var(--space-2xl); }
+        .sales-label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-primary); margin-bottom: var(--space-md); }
+        .sales-headline { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 400; line-height: 1.2; margin-bottom: var(--space-lg); }
+        .sales-headline em { font-style: italic; color: var(--color-primary); }
+        .sales-text { color: var(--color-text-muted); line-height: 1.8; font-size: 1.0625rem; margin-bottom: var(--space-md); }
+        .sales-text:last-child { margin-bottom: 0; }
+        .sales-highlight { color: var(--color-text); font-weight: 500; }
+        
+        /* Audience grid */
+        .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+        .audience-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-lg); }
+        .audience-card-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; margin-bottom: var(--space-sm); color: var(--color-text); }
+        .audience-card-text { color: var(--color-text-muted); font-size: 0.9375rem; line-height: 1.6; }
+        
+        /* Quote block */
+        .sales-quote { background: var(--color-bg-elevated); border-left: 3px solid var(--color-primary); padding: var(--space-lg) var(--space-xl); margin: var(--space-xl) 0; border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+        .sales-quote p { font-family: var(--font-display); font-size: 1.25rem; font-style: italic; line-height: 1.6; color: var(--color-text); margin: 0; }
+        .sales-quote cite { display: block; margin-top: var(--space-md); font-family: var(--font-mono); font-size: 0.75rem; font-style: normal; color: var(--color-text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        /* Final CTA */
+        .intro-final-cta { text-align: center; padding: var(--space-2xl); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); margin-top: var(--space-xl); }
+        .final-cta-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 400; margin-bottom: var(--space-md); }
+        .final-cta-title em { font-style: italic; color: var(--color-primary); }
+        .final-cta-text { color: var(--color-text-muted); margin-bottom: var(--space-lg); max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        
         /* Questions */
         .question-container { text-align: center; }
         .question-number { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-dim); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: var(--space-lg); }
@@ -99,6 +127,9 @@
             .quiz-container { padding: var(--space-lg) var(--space-md); }
             .results-content { padding: var(--space-lg); }
             .results-cta { padding: var(--space-lg); }
+            .intro-sales { padding-top: var(--space-2xl); margin-top: var(--space-2xl); }
+            .sales-quote { padding: var(--space-md) var(--space-lg); }
+            .intro-final-cta { padding: var(--space-lg); }
         }
     </style>
 </head>
@@ -136,6 +167,79 @@
                         <span>Takes 2 minutes</span>
                     </div>
                     <button class="btn btn-primary btn-lg" onclick="startQuiz()">Find My Book <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    
+                    <!-- Sales content below the fold -->
+                    <div class="intro-sales">
+                        <div class="sales-section">
+                            <p class="sales-label">The Problem</p>
+                            <h2 class="sales-headline">The Book of Proverbs wasn't written for <em>"everyone."</em></h2>
+                            <p class="sales-text">It was written for specific people. Kings learning to lead. Fathers instructing sons. Mothers preparing daughters. Husbands and wives building households. Young men and women standing at the crossroads of life.</p>
+                            <p class="sales-text">But when you open a standard Bible, you get all 31 chapters dumped together—<span class="sales-highlight">with no guidance on which wisdom applies to your life right now.</span></p>
+                            <p class="sales-text">That's the problem. The wisdom is there. It's just buried.</p>
+                        </div>
+                        
+                        <div class="sales-section">
+                            <p class="sales-label">The Solution</p>
+                            <h2 class="sales-headline">Seven books. Seven readers. <em>Your</em> wisdom—extracted.</h2>
+                            <p class="sales-text">The Proverbs Library reorganizes the entire Book of Proverbs into <span class="sales-highlight">7 distinct volumes</span>—each one curated for a specific reader facing specific challenges.</p>
+                            <p class="sales-text">No more sifting through verses that don't apply. No more wondering what Solomon meant "for you." Each book delivers exactly the wisdom you need—organized, contextualized, and ready to use.</p>
+                            
+                            <div class="sales-quote">
+                                <p>"The beginning of wisdom is this: Get wisdom. Though it cost all you have, get understanding."</p>
+                                <cite>Proverbs 4:7</cite>
+                            </div>
+                        </div>
+                        
+                        <div class="sales-section">
+                            <p class="sales-label">The Books</p>
+                            <h2 class="sales-headline">Wisdom for <em>where you actually are.</em></h2>
+                            <p class="sales-text">Each book is compact—designed to be read, carried, and referenced. Not a 400-page commentary. Not an academic study. <span class="sales-highlight">Practical wisdom for real life.</span></p>
+                            
+                            <div class="audience-grid">
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Leader</h3>
+                                    <p class="audience-card-text">For those who carry responsibility for others—in business, ministry, or community. Wisdom on decisions, integrity, and the weight of influence.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Father</h3>
+                                    <p class="audience-card-text">For men raising the next generation. Wisdom on instruction, discipline, legacy, and what your children actually need from you.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Mother</h3>
+                                    <p class="audience-card-text">For women shaping hearts and homes. Wisdom on teaching, strength, and the profound influence of a mother's voice.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Husband</h3>
+                                    <p class="audience-card-text">For men building marriages that last. Wisdom on faithfulness, provision, cherishing your wife, and avoiding the traps that destroy homes.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Wife</h3>
+                                    <p class="audience-card-text">For women partnering in marriage. Wisdom on respect, strength, building your household, and the power of a virtuous woman.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Son</h3>
+                                    <p class="audience-card-text">For young men navigating manhood. Wisdom on character, temptation, choosing friends, and becoming the man you're meant to be.</p>
+                                </div>
+                                <div class="audience-card">
+                                    <h3 class="audience-card-title">The Daughter</h3>
+                                    <p class="audience-card-text">For young women finding their path. Wisdom on discernment, worth, relationships, and walking in strength and grace.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sales-section">
+                            <p class="sales-label">Launching June 2025</p>
+                            <h2 class="sales-headline">Be first in line.</h2>
+                            <p class="sales-text">The Proverbs Library launches <span class="sales-highlight">June 2025</span>. Take the quiz now to discover which book is written for your season—and we'll notify you the moment it's available.</p>
+                            <p class="sales-text">You'll also receive exclusive previews, early chapters, and wisdom from the collection before anyone else.</p>
+                        </div>
+                        
+                        <div class="intro-final-cta">
+                            <h3 class="final-cta-title">Ready to find <em>your</em> book?</h3>
+                            <p class="final-cta-text">Six questions. Two minutes. Discover which volume from The Proverbs Library speaks directly to where you are right now.</p>
+                            <button class="btn btn-primary btn-lg" onclick="startQuiz()">Take the Quiz <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
