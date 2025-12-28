@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover your Proverbs Profile - which ancient voice speaks most directly to your life right now?">
-    <title>Discover Your Proverbs Profile | The Proverbs Library</title>
+    <meta name="description" content="Take the 2-minute Proverbs Profile Quiz to discover which of 7 books from The Proverbs Library speaks directly to your season of life.">
+    <title>Find Your Book | The Proverbs Library Quiz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -27,9 +27,15 @@
         
         /* Intro */
         .intro-content { text-align: center; }
+        .intro-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text-dim); margin-bottom: var(--space-md); }
         .intro-title { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 400; line-height: 1.1; margin-bottom: var(--space-lg); }
         .intro-title em { font-style: italic; color: var(--color-primary); }
-        .intro-description { font-family: var(--font-display); font-size: 1.25rem; font-style: italic; color: var(--color-text-muted); line-height: 1.7; max-width: 560px; margin: 0 auto var(--space-2xl); }
+        .intro-subtitle { font-size: 1.25rem; color: var(--color-text); line-height: 1.6; max-width: 600px; margin: 0 auto var(--space-xl); }
+        .intro-books { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); max-width: 560px; margin: 0 auto var(--space-xl); }
+        .intro-book-tag { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; padding: var(--space-xs) var(--space-sm); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-full); color: var(--color-text-muted); }
+        .intro-description { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--color-text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto var(--space-2xl); }
+        .intro-time { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-dim); margin-bottom: var(--space-lg); }
+        .intro-time svg { color: var(--color-primary); }
         
         /* Questions */
         .question-container { text-align: center; }
@@ -112,10 +118,24 @@
         <main class="quiz-container">
             <div class="screen active" id="intro-screen">
                 <div class="intro-content">
-                    <span class="section-tag">The Proverbs Library</span>
-                    <h1 class="intro-title">Which <em>Ancient Voice</em><br>Speaks to You?</h1>
-                    <p class="intro-description">The wisdom you need depends on where you stand. These six questions will reveal which ancient voice speaks most directly to your life right now—and what you might be missing.</p>
-                    <button class="btn btn-primary btn-lg" onclick="startQuiz()">Begin Discovery <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    <p class="intro-eyebrow">The Proverbs Library • 7 Books • Launching June 2025</p>
+                    <h1 class="intro-title">Which Book Is <em>Written for You?</em></h1>
+                    <p class="intro-subtitle">The Proverbs Library is a collection of 7 books—each written for a specific person navigating a specific season of life.</p>
+                    <div class="intro-books">
+                        <span class="intro-book-tag">The Leader</span>
+                        <span class="intro-book-tag">The Father</span>
+                        <span class="intro-book-tag">The Mother</span>
+                        <span class="intro-book-tag">The Husband</span>
+                        <span class="intro-book-tag">The Wife</span>
+                        <span class="intro-book-tag">The Son</span>
+                        <span class="intro-book-tag">The Daughter</span>
+                    </div>
+                    <p class="intro-description">This quiz matches you to your book—the one that speaks directly to where you are right now. Answer 6 questions. Get your personalized result.</p>
+                    <div class="intro-time">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span>Takes 2 minutes</span>
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="startQuiz()">Find My Book <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
                 </div>
             </div>
 
@@ -142,8 +162,8 @@
             <div class="screen" id="email-screen">
                 <div class="email-container">
                     <span class="email-badge">Profile Complete</span>
-                    <h2 class="email-title">Your profile is ready.</h2>
-                    <p class="email-subtitle">Enter your email to see your full results and receive wisdom crafted for your journey.</p>
+                    <h2 class="email-title">Your book is ready.</h2>
+                    <p class="email-subtitle">Enter your email to see your full results and be first in line when The Proverbs Library launches.</p>
                     <form class="email-form" onsubmit="submitEmail(event)">
                         <div class="form-group">
                             <label class="form-label" for="email">Email Address <span class="required">*</span></label>
@@ -154,9 +174,9 @@
                             <label class="form-label" for="name">Your Name (optional)</label>
                             <input type="text" id="name" class="form-input" placeholder="How should we address you?">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg" style="width:100%" id="submit-btn">Reveal My Profile</button>
+                        <button type="submit" class="btn btn-primary btn-lg" style="width:100%" id="submit-btn">Show Me My Book</button>
                         <div class="loading" id="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></div>
-                        <p class="privacy-note">We'll send your detailed results and follow-up wisdom. No spam, ever.</p>
+                        <p class="privacy-note">We'll send your detailed results and notify you at launch. No spam, ever.</p>
                         <div class="error-message" id="submit-error">Something went wrong. Please try again.</div>
                     </form>
                 </div>
