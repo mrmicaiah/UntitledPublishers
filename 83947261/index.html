@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#111827">
+  <title>Access</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #111827;
+      --bg-secondary: #1f2937;
+      --bg-tertiary: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-blue: #3b82f6;
+      --border-color: #374151;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      text-align: center;
+      padding: 20px;
+    }
+    .pin-display {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      transition: all 0.2s;
+    }
+    .pin-dot.filled {
+      background: var(--accent-green);
+    }
+    .pin-dot.error {
+      background: var(--accent-red);
+      animation: shake 0.3s;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .key {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 28px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .key:active {
+      transform: scale(0.95);
+      background: var(--bg-tertiary);
+    }
+    .key.empty {
+      visibility: hidden;
+    }
+    .key.delete {
+      font-size: 20px;
+    }
+    .status {
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--text-muted);
+      height: 20px;
+    }
+    .status.error {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="pin-display">
+      <div class="pin-dot" id="dot0"></div>
+      <div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div>
+      <div class="pin-dot" id="dot3"></div>
+    </div>
+    <div class="keypad">
+      <button class="key" onclick="addDigit('1')">1</button>
+      <button class="key" onclick="addDigit('2')">2</button>
+      <button class="key" onclick="addDigit('3')">3</button>
+      <button class="key" onclick="addDigit('4')">4</button>
+      <button class="key" onclick="addDigit('5')">5</button>
+      <button class="key" onclick="addDigit('6')">6</button>
+      <button class="key" onclick="addDigit('7')">7</button>
+      <button class="key" onclick="addDigit('8')">8</button>
+      <button class="key" onclick="addDigit('9')">9</button>
+      <button class="key empty"></button>
+      <button class="key" onclick="addDigit('0')">0</button>
+      <button class="key delete" onclick="deleteDigit()">⌫</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const USERS = {
+      '1987': {
+        name: 'micaiah',
+        apiUrl: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api'
+      },
+      '1976': {
+        name: 'irene', 
+        apiUrl: 'https://productivity-irene.micaiah-tasks.workers.dev/api'
+      }
+    };
+
+    let pin = '';
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.classList.toggle('filled', i < pin.length);
+        dot.classList.remove('error');
+      }
+    }
+
+    function showError() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`dot${i}`).classList.add('error');
+      }
+      document.getElementById('status').textContent = 'Invalid code';
+      document.getElementById('status').classList.add('error');
+      setTimeout(() => {
+        pin = '';
+        updateDots();
+        document.getElementById('status').textContent = '';
+        document.getElementById('status').classList.remove('error');
+      }, 1000);
+    }
+
+    function addDigit(digit) {
+      if (pin.length >= 4) return;
+      pin += digit;
+      updateDots();
+
+      if (pin.length === 4) {
+        setTimeout(checkPin, 200);
+      }
+    }
+
+    function deleteDigit() {
+      pin = pin.slice(0, -1);
+      updateDots();
+    }
+
+    function checkPin() {
+      const user = USERS[pin];
+      if (user) {
+        document.getElementById('status').textContent = 'Welcome...';
+        localStorage.setItem('apiUrl', user.apiUrl);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('authenticated', 'true');
+        setTimeout(() => {
+          window.location.href = 'app.html';
+        }, 500);
+      } else {
+        showError();
+      }
+    }
+
+    // Check if already authenticated
+    if (localStorage.getItem('authenticated') === 'true' && localStorage.getItem('apiUrl')) {
+      window.location.href = 'app.html';
+    }
+  </script>
+</body>
+</html>
