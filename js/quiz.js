@@ -186,8 +186,8 @@ const resultsData = {
     }
 };
 
-// Beehiiv configuration
-const BEEHIIV_PUBLICATION_ID = 'a109a626-e547-45cb-aced-623e8bd821fc';
+// Beehiiv configuration - NOTE: pub_ prefix required by API
+const BEEHIIV_PUBLICATION_ID = 'pub_a109a626-e547-45cb-aced-623e8bd821fc';
 const BEEHIIV_API_KEY = 'pwno59BtJMBIlPrLyG3NPwq10eOJXd8TuAanmm3YWX0R5nED1uo3DWB7af9jkw0f';
 
 // State
@@ -296,17 +296,6 @@ function calculateResult() {
 
 async function submitToBeehiiv(email, firstName, segment, quizResult) {
     try {
-        // Build custom fields array - only include fields that have values
-        const customFields = [
-            { name: 'segment', value: segment },
-            { name: 'quiz_profile', value: quizResult }
-        ];
-        
-        // Only add first_name if provided (uses Beehiiv's preset field)
-        if (firstName) {
-            customFields.push({ name: 'first_name', value: firstName });
-        }
-        
         const response = await fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`, {
             method: 'POST',
             headers: {
@@ -320,14 +309,15 @@ async function submitToBeehiiv(email, firstName, segment, quizResult) {
                 utm_source: 'proverbs-quiz',
                 utm_medium: 'quiz',
                 utm_campaign: 'proverbs-library-launch',
-                referring_site: 'https://untitledpublishers.com/proverbs-quiz/',
-                custom_fields: customFields
+                referring_site: 'https://untitledpublishers.com/proverbs-quiz/'
             })
         });
         
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             console.error('Beehiiv API error:', response.status, errorData);
+        } else {
+            console.log('Beehiiv subscription created successfully');
         }
         
         return response.ok;
