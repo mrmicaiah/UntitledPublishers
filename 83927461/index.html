@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#111827">
+  <title>Access</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #111827;
+      --bg-secondary: #1f2937;
+      --bg-tertiary: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-blue: #3b82f6;
+      --border-color: #374151;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ============================================ */
+    /* PIN LOGIN SCREEN */
+    /* ============================================ */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-title {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .pin-display {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      transition: all 0.2s;
+    }
+
+    .pin-dot.filled {
+      background: var(--accent-blue);
+    }
+
+    .pin-dot.error {
+      background: var(--accent-red);
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    .pin-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+    }
+
+    .pin-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 28px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin-btn:active {
+      transform: scale(0.95);
+      background: var(--bg-tertiary);
+    }
+
+    .pin-btn.empty {
+      background: transparent;
+      cursor: default;
+    }
+
+    .pin-btn.delete {
+      font-size: 20px;
+    }
+
+    .login-hidden {
+      display: none !important;
+    }
+
+    /* ============================================ */
+    /* DASHBOARD STYLES */
+    /* ============================================ */
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.visible {
+      display: block;
+    }
+
+    .header {
+      padding: 20px 16px 16px;
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .greeting {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .date-info {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .logout-btn {
+      background: var(--bg-tertiary);
+      border: none;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-tertiary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .plan-badge .days {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 16px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-tab {
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-count {
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .task-item:active {
+      transform: scale(0.98);
+      background: var(--bg-tertiary);
+    }
+
+    .task-checkbox {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .task-checkbox:hover {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .task-checkbox.completing {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: white;
+    }
+
+    .task-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-text {
+      font-size: 15px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .task-due {
+      font-size: 12px;
+      color: var(--accent-yellow);
+      margin-top: 4px;
+    }
+
+    .task-due.overdue {
+      color: var(--accent-red);
+    }
+
+    .task-category {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+      display: inline-block;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent-green);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-fill.warning {
+      background: var(--accent-yellow);
+    }
+
+    .progress-fill.danger {
+      background: var(--accent-red);
+    }
+
+    .goal-item {
+      margin-bottom: 16px;
+    }
+
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .goal-name {
+      color: var(--text-primary);
+    }
+
+    .goal-progress {
+      color: var(--text-secondary);
+    }
+
+    .launch-card {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .launch-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .launch-title {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .launch-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg-tertiary);
+    }
+
+    .launch-badge.stalled {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-yellow);
+    }
+
+    .launch-phase {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .incoming-section {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 0 16px 24px;
+    }
+
+    .incoming-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .incoming-from {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .incoming-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent-green);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .quick-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px 12px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: none;
+      color: var(--text-primary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-action:active {
+      transform: scale(0.95);
+      background: var(--bg-tertiary);
+    }
+
+    .quick-action-icon {
+      font-size: 24px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 12px 16px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+
+    .command-input {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--text-primary);
+      font-size: 16px;
+    }
+
+    .command-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--bg-tertiary);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-color: var(--accent-green);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-primary);
+      font-size: 15px;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-title">Enter PIN</div>
+    <div class="pin-display">
+      <div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div>
+      <div class="pin-dot" id="dot3"></div>
+      <div class="pin-dot" id="dot4"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-btn" onclick="enterPin('1')">1</button>
+      <button class="pin-btn" onclick="enterPin('2')">2</button>
+      <button class="pin-btn" onclick="enterPin('3')">3</button>
+      <button class="pin-btn" onclick="enterPin('4')">4</button>
+      <button class="pin-btn" onclick="enterPin('5')">5</button>
+      <button class="pin-btn" onclick="enterPin('6')">6</button>
+      <button class="pin-btn" onclick="enterPin('7')">7</button>
+      <button class="pin-btn" onclick="enterPin('8')">8</button>
+      <button class="pin-btn" onclick="enterPin('9')">9</button>
+      <button class="pin-btn empty"></button>
+      <button class="pin-btn" onclick="enterPin('0')">0</button>
+      <button class="pin-btn delete" onclick="deletePin()">⌫</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard">
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <div class="greeting" id="greeting">☀️ Good Morning</div>
+          <div class="date-info" id="dateInfo">Loading...</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Lock</button>
+      </div>
+      <div class="plan-badge" id="planBadge" style="display: none;">
+        📋 <span id="planTitle">Plan</span> • <span class="days" id="planDays">0</span> work days left
+      </div>
+    </header>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="today">Today</button>
+      <button class="nav-tab" data-tab="tasks">All Tasks</button>
+      <button class="nav-tab" data-tab="launches">Launches</button>
+      <button class="nav-tab" data-tab="actions">Quick</button>
+    </nav>
+
+    <div class="tab-content active" id="tab-today">
+      <div class="incoming-section" id="incomingSection" style="display: none;">
+        <div class="section-title">📥 Incoming from Team</div>
+        <div id="incomingList"></div>
+      </div>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🎯 Active <span class="section-count" id="activeCount">0</span></div>
+        </div>
+        <div id="activeTasks">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </section>
+
+      <section class="section" id="planSection" style="display: none;">
+        <div class="section-header">
+          <div class="section-title">📋 Plan Progress</div>
+        </div>
+        <div class="card">
+          <div id="planGoals"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🚀 Launches</div>
+        </div>
+        <div id="launchesPreview"></div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-tasks">
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">📋 All Tasks <span class="section-count" id="allTasksCount">0</span></div>
+        </div>
+        <div id="allTasks">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-launches">
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🚀 All Launches</div>
+        </div>
+        <div id="allLaunches">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-actions">
+      <section class="section">
+        <div class="quick-actions">
+          <button class="quick-action" onclick="openAddTaskModal()">
+            <span class="quick-action-icon">➕</span>
+            Add Task
+          </button>
+          <button class="quick-action" onclick="openJournalModal()">
+            <span class="quick-action-icon">📝</span>
+            Journal
+          </button>
+          <button class="quick-action" onclick="openIdeaModal()">
+            <span class="quick-action-icon">💡</span>
+            Capture Idea
+          </button>
+          <button class="quick-action" onclick="refreshData()">
+            <span class="quick-action-icon">🔄</span>
+            Refresh
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="bottom-bar">
+      <input type="text" class="command-input" id="commandInput" placeholder="Type command... (e.g., '1 done')">
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="addTaskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add Task</div>
+        <button class="modal-close" onclick="closeModal('addTaskModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Task</label>
+          <input type="text" class="form-input" id="newTaskText" placeholder="What needs to be done?">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <input type="text" class="form-input" id="newTaskCategory" placeholder="General">
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <input type="checkbox" id="newTaskActive"> Add to Active list
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addTaskModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitNewTask()">Add Task</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="journalModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">📝 Journal Entry</div>
+        <button class="modal-close" onclick="closeModal('journalModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">What's on your mind?</label>
+          <textarea class="form-textarea" id="journalContent" placeholder="Write freely..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mood</label>
+          <select class="form-input" id="journalMood">
+            <option value="">Select...</option>
+            <option value="focused">Focused</option>
+            <option value="calm">Calm</option>
+            <option value="excited">Excited</option>
+            <option value="frustrated">Frustrated</option>
+            <option value="anxious">Anxious</option>
+            <option value="grateful">Grateful</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('journalModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitJournal()">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="ideaModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">💡 Capture Idea</div>
+        <button class="modal-close" onclick="closeModal('ideaModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Title</label>
+          <input type="text" class="form-input" id="ideaTitle" placeholder="Quick title...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Details (optional)</label>
+          <textarea class="form-textarea" id="ideaContent" placeholder="Expand on the idea..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('ideaModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitIdea()">Save Idea</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // PIN CONFIGURATION
+    // ============================================
+    const PIN_CONFIG = {
+      '1987': {
+        apiUrl: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api',
+        name: 'Micaiah'
+      },
+      '1976': {
+        apiUrl: 'https://productivity-irene.micaiah-tasks.workers.dev/api',
+        name: 'Irene'
+      }
+    };
+
+    let currentPin = '';
+    let API_URL = '';
+    let API_KEY = '';
+    let currentUser = '';
+    let currentData = null;
+
+    // ============================================
+    // PIN LOGIN
+    // ============================================
+    function enterPin(digit) {
+      if (currentPin.length >= 4) return;
+      
+      currentPin += digit;
+      updatePinDisplay();
+
+      if (currentPin.length === 4) {
+        validatePin();
+      }
+    }
+
+    function deletePin() {
+      currentPin = currentPin.slice(0, -1);
+      updatePinDisplay();
+    }
+
+    function updatePinDisplay() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.classList.remove('filled', 'error');
+        if (i <= currentPin.length) {
+          dot.classList.add('filled');
+        }
+      }
+    }
+
+    function validatePin() {
+      const config = PIN_CONFIG[currentPin];
+      
+      if (config) {
+        // Valid PIN
+        API_URL = config.apiUrl;
+        API_KEY = localStorage.getItem(`apiKey_${currentPin}`) || '';
+        currentUser = config.name;
+        
+        // Save session
+        sessionStorage.setItem('currentPin', currentPin);
+        
+        showDashboard();
+      } else {
+        // Invalid PIN - shake and reset
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach(dot => dot.classList.add('error'));
+        
+        setTimeout(() => {
+          currentPin = '';
+          updatePinDisplay();
+        }, 500);
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('loginScreen').classList.add('login-hidden');
+      document.getElementById('dashboard').classList.add('visible');
+      loadMorningData();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('currentPin');
+      currentPin = '';
+      API_URL = '';
+      currentUser = '';
+      
+      document.getElementById('dashboard').classList.remove('visible');
+      document.getElementById('loginScreen').classList.remove('login-hidden');
+      updatePinDisplay();
+    }
+
+    // Check for existing session
+    const savedPin = sessionStorage.getItem('currentPin');
+    if (savedPin && PIN_CONFIG[savedPin]) {
+      currentPin = savedPin;
+      API_URL = PIN_CONFIG[savedPin].apiUrl;
+      API_KEY = localStorage.getItem(`apiKey_${savedPin}`) || '';
+      currentUser = PIN_CONFIG[savedPin].name;
+      showDashboard();
+    }
+
+    // ============================================
+    // API HELPERS
+    // ============================================
+    async function api(endpoint, options = {}) {
+      if (!API_URL) {
+        showToast('Not connected', 'error');
+        return null;
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      if (API_KEY) {
+        headers['Authorization'] = `Bearer ${API_KEY}`;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+          ...options,
+          headers: { ...headers, ...options.headers },
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error('API Error:', error);
+        showToast('Connection failed', 'error');
+        return null;
+      }
+    }
+
+    // ============================================
+    // DATA LOADING
+    // ============================================
+    async function loadMorningData() {
+      const data = await api('/morning');
+      if (!data) return;
+
+      currentData = data;
+
+      document.getElementById('greeting').textContent = `☀️ Good ${getTimeOfDay()}, ${currentUser}`;
+      document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek}, ${data.greeting.date}`;
+
+      if (data.plan) {
+        document.getElementById('planBadge').style.display = 'inline-flex';
+        document.getElementById('planTitle').textContent = data.plan.title;
+        document.getElementById('planDays').textContent = data.plan.workDaysRemaining;
+
+        document.getElementById('planSection').style.display = 'block';
+        renderPlanGoals(data.plan.goals);
+      }
+
+      if (data.incoming && data.incoming.length > 0) {
+        document.getElementById('incomingSection').style.display = 'block';
+        renderIncoming(data.incoming);
+      }
+
+      renderActiveTasks(data.activeTasks);
+      renderLaunchesPreview(data.launches);
+    }
+
+    async function loadAllTasks() {
+      const data = await api('/tasks');
+      if (!data) return;
+      renderAllTasks(data.tasks);
+    }
+
+    async function loadAllLaunches() {
+      const data = await api('/launches');
+      if (!data) return;
+      renderAllLaunches(data.launches);
+    }
+
+    // ============================================
+    // RENDERING
+    // ============================================
+    function renderActiveTasks(tasks) {
+      const container = document.getElementById('activeTasks');
+      document.getElementById('activeCount').textContent = tasks.length;
+
+      if (tasks.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">✨</div>
+            <div>No active tasks</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tasks.map((task, index) => `
+        <div class="task-item" data-id="${task.id}">
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${index + 1}</div>
+          <div class="task-content">
+            <div class="task-text">${escapeHtml(task.text)}</div>
+            ${task.due_date ? `<div class="task-due ${isOverdue(task.due_date) ? 'overdue' : ''}">${formatDate(task.due_date)}</div>` : ''}
+            ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAllTasks(tasks) {
+      const container = document.getElementById('allTasks');
+      document.getElementById('allTasksCount').textContent = tasks.length;
+
+      if (tasks.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <div>No tasks</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tasks.map((task, index) => `
+        <div class="task-item" data-id="${task.id}">
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${task.is_active ? '🎯' : ''}</div>
+          <div class="task-content">
+            <div class="task-text">${escapeHtml(task.text)}</div>
+            ${task.due_date ? `<div class="task-due ${isOverdue(task.due_date) ? 'overdue' : ''}">${formatDate(task.due_date)}</div>` : ''}
+            ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderPlanGoals(goals) {
+      const container = document.getElementById('planGoals');
+
+      container.innerHTML = goals.map(goal => `
+        <div class="goal-item">
+          <div class="goal-header">
+            <span class="goal-name">${escapeHtml(goal.description)}</span>
+            <span class="goal-progress">${goal.completedCount}/${goal.targetCount}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill ${goal.progress < 30 ? 'danger' : goal.progress < 70 ? 'warning' : ''}" style="width: ${goal.progress}%"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderLaunchesPreview(launches) {
+      const container = document.getElementById('launchesPreview');
+
+      if (launches.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🚀</div>
+            <div>No active launches</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = launches.slice(0, 3).map(launch => `
+        <div class="launch-card">
+          <div class="launch-header">
+            <span class="launch-title">${escapeHtml(launch.title)}</span>
+            ${launch.progress === 0 ? '<span class="launch-badge stalled">⚠️ stalled</span>' : `<span class="launch-badge">${launch.progress}%</span>`}
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${launch.progress}%"></div>
+          </div>
+          <div class="launch-phase">${escapeHtml(launch.phase || '')}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderAllLaunches(launches) {
+      const container = document.getElementById('allLaunches');
+
+      if (launches.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🚀</div>
+            <div>No launches</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = launches.map(launch => `
+        <div class="launch-card">
+          <div class="launch-header">
+            <span class="launch-title">${escapeHtml(launch.title)}</span>
+            <span class="launch-badge">${launch.progress}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${launch.progress}%"></div>
+          </div>
+          <div class="launch-phase">${escapeHtml(launch.phase || '')} • ${launch.completed}/${launch.total} items</div>
+        </div>
+      `).join('');
+    }
+
+    function renderIncoming(items) {
+      const container = document.getElementById('incomingList');
+
+      container.innerHTML = items.map(item => `
+        <div class="incoming-item">
+          <div>
+            <div>${escapeHtml(item.text)}</div>
+            <div class="incoming-from">from ${escapeHtml(item.from_user)}</div>
+          </div>
+          <div class="incoming-actions">
+            <button class="btn btn-primary" onclick="claimTask('${item.id}')">Claim</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ============================================
+    // ACTIONS
+    // ============================================
+    async function completeTask(id, element) {
+      element.classList.add('completing');
+      element.textContent = '✓';
+
+      const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
+
+      if (result && result.success) {
+        showToast('Task completed! ✅');
+        setTimeout(() => {
+          element.closest('.task-item').style.opacity = '0';
+          setTimeout(() => refreshData(), 300);
+        }, 500);
+      } else {
+        element.classList.remove('completing');
+      }
+    }
+
+    async function claimTask(id) {
+      const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
+      if (result && result.success) {
+        showToast('Task claimed!');
+        refreshData();
+      }
+    }
+
+    async function submitNewTask() {
+      const text = document.getElementById('newTaskText').value.trim();
+      const category = document.getElementById('newTaskCategory').value.trim() || 'General';
+      const isActive = document.getElementById('newTaskActive').checked;
+
+      if (!text) {
+        showToast('Please enter a task', 'error');
+        return;
+      }
+
+      const result = await api('/tasks', {
+        method: 'POST',
+        body: JSON.stringify({ text, category, isActive })
+      });
+
+      if (result && result.success) {
+        showToast('Task added!');
+        closeModal('addTaskModal');
+        document.getElementById('newTaskText').value = '';
+        document.getElementById('newTaskCategory').value = '';
+        document.getElementById('newTaskActive').checked = false;
+        refreshData();
+      }
+    }
+
+    async function submitJournal() {
+      const content = document.getElementById('journalContent').value.trim();
+      const mood = document.getElementById('journalMood').value;
+
+      if (!content) {
+        showToast('Please write something', 'error');
+        return;
+      }
+
+      const result = await api('/journal', {
+        method: 'POST',
+        body: JSON.stringify({ content, mood })
+      });
+
+      if (result && result.success) {
+        showToast('Journal saved!');
+        closeModal('journalModal');
+        document.getElementById('journalContent').value = '';
+        document.getElementById('journalMood').value = '';
+      }
+    }
+
+    async function submitIdea() {
+      const title = document.getElementById('ideaTitle').value.trim();
+      const content = document.getElementById('ideaContent').value.trim();
+
+      if (!title) {
+        showToast('Please enter a title', 'error');
+        return;
+      }
+
+      const result = await api('/ideas', {
+        method: 'POST',
+        body: JSON.stringify({ title, content })
+      });
+
+      if (result && result.success) {
+        showToast('Idea captured! 💡');
+        closeModal('ideaModal');
+        document.getElementById('ideaTitle').value = '';
+        document.getElementById('ideaContent').value = '';
+      }
+    }
+
+    // ============================================
+    // COMMAND BAR
+    // ============================================
+    document.getElementById('commandInput').addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        const command = e.target.value.trim().toLowerCase();
+        e.target.value = '';
+
+        const doneMatch = command.match(/^(\d+)\s*done$/);
+        if (doneMatch && currentData && currentData.activeTasks) {
+          const index = parseInt(doneMatch[1]) - 1;
+          if (index >= 0 && index < currentData.activeTasks.length) {
+            const task = currentData.activeTasks[index];
+            const checkbox = document.querySelector(`[data-id="${task.id}"] .task-checkbox`);
+            if (checkbox) {
+              completeTask(task.id, checkbox);
+            }
+          }
+        }
+      }
+    });
+
+    // ============================================
+    // TABS
+    // ============================================
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+
+        if (tabName === 'tasks') loadAllTasks();
+        if (tabName === 'launches') loadAllLaunches();
+      });
+    });
+
+    // ============================================
+    // MODALS
+    // ============================================
+    function openAddTaskModal() {
+      document.getElementById('addTaskModal').classList.add('show');
+    }
+
+    function openJournalModal() {
+      document.getElementById('journalModal').classList.add('show');
+    }
+
+    function openIdeaModal() {
+      document.getElementById('ideaModal').classList.add('show');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('show');
+        }
+      });
+    });
+
+    // ============================================
+    // HELPERS
+    // ============================================
+    function getTimeOfDay() {
+      const hour = new Date().getHours();
+      if (hour < 12) return 'Morning';
+      if (hour < 17) return 'Afternoon';
+      return 'Evening';
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function isOverdue(dateStr) {
+      return new Date(dateStr) < new Date(new Date().toDateString());
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function refreshData() {
+      loadMorningData();
+    }
+  </script>
+
+</body>
+</html>

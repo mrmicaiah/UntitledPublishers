@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /83927461/
+Disallow: /dashboard/
+
+# Block all crawlers from private areas
+User-agent: Googlebot
+Disallow: /83927461/
+
+User-agent: Bingbot
+Disallow: /83927461/
+
+User-agent: Slurp
+Disallow: /83927461/
