@@ -10,11 +10,7 @@
   <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg: #0a0a0a;
@@ -45,7 +41,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Header */
     .header {
       padding: 24px 20px 20px;
       border-bottom: 1px solid var(--border);
@@ -87,7 +82,6 @@
       cursor: pointer;
     }
 
-    /* Plan Strip */
     .plan-strip {
       display: flex;
       gap: 16px;
@@ -98,9 +92,7 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .plan-strip::-webkit-scrollbar {
-      display: none;
-    }
+    .plan-strip::-webkit-scrollbar { display: none; }
 
     .stat-pill {
       display: flex;
@@ -113,26 +105,11 @@
       white-space: nowrap;
     }
 
-    .stat-pill .value {
-      font-weight: 600;
-      font-size: 14px;
-    }
+    .stat-pill .value { font-weight: 600; font-size: 14px; }
+    .stat-pill .label { font-size: 12px; color: var(--text-tertiary); }
+    .stat-pill.accent { background: var(--accent-soft); border-color: transparent; }
+    .stat-pill.accent .value { color: var(--accent); }
 
-    .stat-pill .label {
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-
-    .stat-pill.accent {
-      background: var(--accent-soft);
-      border-color: transparent;
-    }
-
-    .stat-pill.accent .value {
-      color: var(--accent);
-    }
-
-    /* Navigation */
     .nav {
       display: flex;
       padding: 12px 20px;
@@ -156,25 +133,15 @@
       transition: all 0.15s ease;
     }
 
-    .nav-item:hover {
-      color: var(--text-secondary);
-      background: var(--bg-hover);
-    }
+    .nav-item:hover { color: var(--text-secondary); background: var(--bg-hover); }
+    .nav-item.active { color: var(--text); background: var(--bg-elevated); }
 
-    .nav-item.active {
-      color: var(--text);
-      background: var(--bg-elevated);
-    }
-
-    /* Content */
     .content {
       padding: 20px;
       padding-bottom: 100px;
     }
 
-    .section {
-      margin-bottom: 32px;
-    }
+    .section { margin-bottom: 32px; }
 
     .section-header {
       display: flex;
@@ -199,7 +166,6 @@
       border-radius: 100px;
     }
 
-    /* Task List */
     .task-list {
       display: flex;
       flex-direction: column;
@@ -219,17 +185,9 @@
       transition: background 0.15s ease;
     }
 
-    .task:hover {
-      background: var(--bg-hover);
-    }
-
-    .task:active {
-      background: var(--bg-active);
-    }
-
-    .task + .task {
-      border-top: 1px solid var(--border-light);
-    }
+    .task:hover { background: var(--bg-hover); }
+    .task:active { background: var(--bg-active); }
+    .task + .task { border-top: 1px solid var(--border-light); }
 
     .task-check {
       width: 22px;
@@ -247,21 +205,10 @@
       color: var(--text-tertiary);
     }
 
-    .task:hover .task-check {
-      border-color: var(--success);
-      color: var(--success);
-    }
+    .task:hover .task-check { border-color: var(--success); color: var(--success); }
+    .task-check.done { background: var(--success); border-color: var(--success); color: white; }
 
-    .task-check.done {
-      background: var(--success);
-      border-color: var(--success);
-      color: white;
-    }
-
-    .task-body {
-      flex: 1;
-      min-width: 0;
-    }
+    .task-body { flex: 1; min-width: 0; }
 
     .task-text {
       font-size: 14px;
@@ -285,21 +232,10 @@
       border-radius: 4px;
     }
 
-    .task-tag.due {
-      color: var(--warning);
-      background: var(--warning-soft);
-    }
+    .task-tag.due { color: var(--warning); background: var(--warning-soft); }
+    .task-tag.overdue { color: var(--danger); background: rgba(239,68,68,0.15); }
 
-    .task-tag.overdue {
-      color: var(--danger);
-      background: rgba(239,68,68,0.15);
-    }
-
-    /* Goals */
-    .goals-grid {
-      display: grid;
-      gap: 12px;
-    }
+    .goals-grid { display: grid; gap: 12px; }
 
     .goal-card {
       background: var(--bg-elevated);
@@ -314,15 +250,8 @@
       margin-bottom: 10px;
     }
 
-    .goal-title {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .goal-count {
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
+    .goal-title { font-size: 14px; font-weight: 500; }
+    .goal-count { font-size: 13px; color: var(--text-tertiary); }
 
     .goal-bar {
       height: 4px;
@@ -338,20 +267,10 @@
       transition: width 0.3s ease;
     }
 
-    .goal-fill.low {
-      background: var(--danger);
-    }
+    .goal-fill.low { background: var(--danger); }
+    .goal-fill.mid { background: var(--warning); }
 
-    .goal-fill.mid {
-      background: var(--warning);
-    }
-
-    /* Launch Cards */
-    .launch-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .launch-list { display: flex; flex-direction: column; gap: 10px; }
 
     .launch {
       background: var(--bg-elevated);
@@ -366,20 +285,9 @@
       margin-bottom: 10px;
     }
 
-    .launch-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .launch-percent {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--success);
-    }
-
-    .launch-percent.stalled {
-      color: var(--warning);
-    }
+    .launch-title { font-size: 14px; font-weight: 600; }
+    .launch-percent { font-size: 13px; font-weight: 600; color: var(--success); }
+    .launch-percent.stalled { color: var(--warning); }
 
     .launch-bar {
       height: 4px;
@@ -388,19 +296,9 @@
       overflow: hidden;
     }
 
-    .launch-fill {
-      height: 100%;
-      background: var(--success);
-      border-radius: 2px;
-    }
+    .launch-fill { height: 100%; background: var(--success); border-radius: 2px; }
+    .launch-meta { margin-top: 8px; font-size: 12px; color: var(--text-tertiary); }
 
-    .launch-meta {
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-
-    /* Quick Actions */
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -424,20 +322,10 @@
       transition: all 0.15s ease;
     }
 
-    .action-btn:hover {
-      background: var(--bg-hover);
-      border-color: var(--border);
-    }
+    .action-btn:hover { background: var(--bg-hover); }
+    .action-btn:active { transform: scale(0.98); }
+    .action-icon { font-size: 24px; }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .action-icon {
-      font-size: 24px;
-    }
-
-    /* Incoming */
     .incoming-banner {
       background: var(--warning-soft);
       border: 1px solid rgba(245,158,11,0.2);
@@ -464,20 +352,9 @@
       border-radius: var(--radius-sm);
     }
 
-    .incoming-item + .incoming-item {
-      margin-top: 8px;
-    }
-
-    .incoming-text {
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .incoming-from {
-      font-size: 11px;
-      color: var(--text-tertiary);
-      margin-top: 2px;
-    }
+    .incoming-item + .incoming-item { margin-top: 8px; }
+    .incoming-text { font-size: 13px; font-weight: 500; }
+    .incoming-from { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
 
     .claim-btn {
       padding: 6px 12px;
@@ -490,7 +367,6 @@
       cursor: pointer;
     }
 
-    /* Command Bar */
     .command-bar {
       position: fixed;
       bottom: 0;
@@ -519,28 +395,17 @@
       box-shadow: 0 0 0 3px var(--accent-soft);
     }
 
-    .command-input::placeholder {
-      color: var(--text-tertiary);
-    }
+    .command-input::placeholder { color: var(--text-tertiary); }
 
-    /* Empty State */
     .empty {
       text-align: center;
       padding: 40px 20px;
       color: var(--text-tertiary);
     }
 
-    .empty-icon {
-      font-size: 32px;
-      margin-bottom: 8px;
-      opacity: 0.5;
-    }
+    .empty-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.5; }
+    .empty-text { font-size: 13px; }
 
-    .empty-text {
-      font-size: 13px;
-    }
-
-    /* Loading */
     .loading {
       display: flex;
       align-items: center;
@@ -560,11 +425,8 @@
       margin-right: 10px;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 90px;
@@ -589,7 +451,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -604,10 +465,7 @@
       transition: all 0.2s ease;
     }
 
-    .modal-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
 
     .modal {
       width: 100%;
@@ -620,9 +478,7 @@
       transition: transform 0.3s ease;
     }
 
-    .modal-overlay.show .modal {
-      transform: translateY(0);
-    }
+    .modal-overlay.show .modal { transform: translateY(0); }
 
     .modal-header {
       display: flex;
@@ -632,10 +488,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .modal-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
+    .modal-title { font-size: 16px; font-weight: 600; }
 
     .modal-close {
       width: 28px;
@@ -651,14 +504,8 @@
       cursor: pointer;
     }
 
-    .modal-body {
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .modal-body { padding: 20px; overflow-y: auto; }
+    .form-group { margin-bottom: 16px; }
 
     .form-label {
       display: block;
@@ -668,9 +515,7 @@
       margin-bottom: 6px;
     }
 
-    .form-input,
-    .form-textarea,
-    .form-select {
+    .form-input, .form-textarea, .form-select {
       width: 100%;
       padding: 12px 14px;
       font-size: 14px;
@@ -681,17 +526,12 @@
       color: var(--text);
     }
 
-    .form-input:focus,
-    .form-textarea:focus,
-    .form-select:focus {
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
       outline: none;
       border-color: var(--accent);
     }
 
-    .form-textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+    .form-textarea { min-height: 100px; resize: vertical; }
 
     .form-check {
       display: flex;
@@ -720,24 +560,11 @@
       transition: all 0.15s ease;
     }
 
-    .btn-secondary {
-      background: var(--bg);
-      color: var(--text-secondary);
-    }
+    .btn-secondary { background: var(--bg); color: var(--text-secondary); }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn:active { transform: scale(0.98); }
 
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    /* Dropdown menu */
-    .dropdown {
-      position: relative;
-    }
+    .dropdown { position: relative; }
 
     .dropdown-menu {
       position: absolute;
@@ -756,11 +583,7 @@
       z-index: 100;
     }
 
-    .dropdown-menu.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
     .dropdown-item {
       display: block;
@@ -775,17 +598,16 @@
       cursor: pointer;
     }
 
-    .dropdown-item:hover {
-      background: var(--bg-hover);
-      color: var(--text);
-    }
+    .dropdown-item:hover { background: var(--bg-hover); color: var(--text); }
 
-    .tab-content {
-      display: none;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .tab-content.active {
-      display: block;
+    .command-hint {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -909,7 +731,8 @@
   </main>
 
   <div class="command-bar">
-    <input type="text" class="command-input" id="commandInput" placeholder="Type a command... (1 done)">
+    <input type="text" class="command-input" id="commandInput" placeholder="Add task or type '1 done' to complete">
+    <div class="command-hint">Press Enter to add task · "1 done" completes task #1</div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1001,7 +824,6 @@
   </div>
 
   <script>
-    // Auth check
     if (localStorage.getItem('authenticated') !== 'true' || !localStorage.getItem('apiUrl')) {
       window.location.href = 'index.html';
     }
@@ -1009,10 +831,8 @@
     const API_URL = localStorage.getItem('apiUrl');
     const USER_NAME = localStorage.getItem('userName') || 'User';
 
-    // Set avatar initial
     document.getElementById('avatarBtn').textContent = USER_NAME.charAt(0).toUpperCase();
 
-    // Avatar dropdown
     document.getElementById('avatarBtn').addEventListener('click', () => {
       document.getElementById('userMenu').classList.toggle('show');
     });
@@ -1050,13 +870,11 @@
       if (!data) return;
       currentData = data;
 
-      // Header
       const hour = new Date().getHours();
       const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
       document.getElementById('greeting').textContent = greeting;
       document.getElementById('dateDisplay').textContent = data.greeting.date;
 
-      // Stats
       if (data.plan || data.stats) {
         document.getElementById('planStrip').style.display = 'flex';
         document.getElementById('daysLeft').textContent = data.plan?.workDaysRemaining || 0;
@@ -1064,22 +882,18 @@
         document.getElementById('overdueCount').textContent = data.stats?.overdue || 0;
       }
 
-      // Incoming
       if (data.incoming?.length > 0) {
         document.getElementById('incomingBanner').style.display = 'block';
         renderIncoming(data.incoming);
       }
 
-      // Active tasks
       renderTasks(data.activeTasks, 'activeTasks', 'activeCount');
 
-      // Goals
       if (data.plan?.goals?.length > 0) {
         document.getElementById('goalsSection').style.display = 'block';
         renderGoals(data.plan.goals);
       }
 
-      // Launches preview
       renderLaunches(data.launches.slice(0, 3), 'launchesPreview');
     }
 
@@ -1182,6 +996,17 @@
       }
     }
 
+    async function quickAddTask(text) {
+      const result = await api('/tasks', { 
+        method: 'POST', 
+        body: JSON.stringify({ text, category: 'General', priority: 4 }) 
+      });
+      if (result?.success) {
+        showToast('Added ✓');
+        refreshData();
+      }
+    }
+
     async function submitNewTask() {
       const text = document.getElementById('newTaskText').value.trim();
       if (!text) return showToast('Enter a task');
@@ -1221,20 +1046,27 @@
       }
     }
 
-    // Command input
-    document.getElementById('commandInput').addEventListener('keypress', e => {
+    // Command input - handles both completing tasks AND adding new ones
+    document.getElementById('commandInput').addEventListener('keypress', async (e) => {
       if (e.key === 'Enter') {
-        const cmd = e.target.value.trim().toLowerCase();
+        const input = e.target.value.trim();
+        if (!input) return;
         e.target.value = '';
-        const match = cmd.match(/^(\d+)\s*done$/);
-        if (match && currentData?.activeTasks) {
-          const idx = parseInt(match[1]) - 1;
+
+        // Check for "N done" pattern first
+        const doneMatch = input.match(/^(\d+)\s*done$/i);
+        if (doneMatch && currentData?.activeTasks) {
+          const idx = parseInt(doneMatch[1]) - 1;
           const task = currentData.activeTasks[idx];
           if (task) {
             const el = document.querySelector(`[data-id="${task.id}"] .task-check`);
             if (el) completeTask(task.id, el);
+            return;
           }
         }
+
+        // Otherwise, add as a new task
+        await quickAddTask(input);
       }
     });
 
@@ -1250,14 +1082,12 @@
       });
     });
 
-    // Modals
     function openModal(id) { document.getElementById(id).classList.add('show'); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); }
     document.querySelectorAll('.modal-overlay').forEach(m => {
       m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
     });
 
-    // Utils
     function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
     function isOverdue(d) { return new Date(d) < new Date(new Date().toDateString()); }
     function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
@@ -1269,7 +1099,6 @@
     }
     function refreshData() { loadMorningData(); }
 
-    // Init
     loadMorningData();
   </script>
 </body>
