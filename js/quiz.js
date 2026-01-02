@@ -186,6 +186,10 @@ const resultsData = {
     }
 };
 
+// Beehiiv configuration
+const BEEHIIV_PUBLICATION_ID = 'a109a626-e547-45cb-aced-623e8bd821fc';
+const BEEHIIV_API_KEY = 'pwno59BtJMBIlPrLyG3NPwq10eOJXd8TuAanmm3YWX0R5nED1uo3DWB7af9jkw0f';
+
 // State
 let currentQuestion = 0;
 let answers = [];
@@ -290,6 +294,42 @@ function calculateResult() {
     return segmentMap[maxCategory];
 }
 
+async function submitToBeehiiv(email, name, segment, quizResult) {
+    try {
+        const response = await fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${BEEHIIV_API_KEY}`
+            },
+            body: JSON.stringify({
+                email: email,
+                reactivate_existing: true,
+                send_welcome_email: true,
+                utm_source: 'proverbs-quiz',
+                utm_medium: 'quiz',
+                utm_campaign: 'proverbs-library-launch',
+                referring_site: 'untitledpublishers.com/proverbs-quiz',
+                custom_fields: [
+                    { name: 'segment', value: segment },
+                    { name: 'quiz_profile', value: quizResult },
+                    { name: 'name', value: name || '' }
+                ]
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Beehiiv API error:', errorData);
+        }
+        
+        return response.ok;
+    } catch (error) {
+        console.error('Beehiiv submission error:', error);
+        return false;
+    }
+}
+
 async function submitEmail(event) {
     event.preventDefault();
     
@@ -311,31 +351,42 @@ async function submitEmail(event) {
     
     finalSegment = calculateResult();
     const result = resultsData[finalSegment];
+    const name = nameInput.value.trim() || null;
     
     submitBtn.style.display = 'none';
     loading.classList.add('show');
     
     try {
-        const response = await fetch('https://email-bot-server.micaiah-tasks.workers.dev/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                name: nameInput.value.trim() || null,
-                source: 'proverbs-library',
-                funnel: 'proverbs-quiz',
-                segment: finalSegment,
-                quiz_result: {
-                    answers: answers,
-                    profile: result.title
-                },
-                tags: ['quiz-taker', finalSegment]
-            })
-        });
+        // Submit to BOTH services in parallel
+        const [emailBotResponse, beehiivSuccess] = await Promise.all([
+            // 1. Email Bot Server (backup/internal tracking)
+            fetch('https://email-bot-server.micaiah-tasks.workers.dev/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    name: name,
+                    source: 'proverbs-library',
+                    funnel: 'proverbs-quiz',
+                    segment: finalSegment,
+                    quiz_result: {
+                        answers: answers,
+                        profile: result.title
+                    },
+                    tags: ['quiz-taker', finalSegment]
+                })
+            }),
+            
+            // 2. Beehiiv (email platform)
+            submitToBeehiiv(email, name, finalSegment, result.title)
+        ]);
         
-        if (!response.ok) throw new Error('Failed to submit');
-        
-        showResults(result);
+        // Show results if at least one succeeded
+        if (emailBotResponse.ok || beehiivSuccess) {
+            showResults(result);
+        } else {
+            throw new Error('Both services failed');
+        }
         
     } catch (error) {
         console.error('Submit error:', error);
