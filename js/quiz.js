@@ -294,8 +294,19 @@ function calculateResult() {
     return segmentMap[maxCategory];
 }
 
-async function submitToBeehiiv(email, name, segment, quizResult) {
+async function submitToBeehiiv(email, firstName, segment, quizResult) {
     try {
+        // Build custom fields array - only include fields that have values
+        const customFields = [
+            { name: 'segment', value: segment },
+            { name: 'quiz_profile', value: quizResult }
+        ];
+        
+        // Only add first_name if provided (uses Beehiiv's preset field)
+        if (firstName) {
+            customFields.push({ name: 'first_name', value: firstName });
+        }
+        
         const response = await fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`, {
             method: 'POST',
             headers: {
@@ -309,18 +320,14 @@ async function submitToBeehiiv(email, name, segment, quizResult) {
                 utm_source: 'proverbs-quiz',
                 utm_medium: 'quiz',
                 utm_campaign: 'proverbs-library-launch',
-                referring_site: 'untitledpublishers.com/proverbs-quiz',
-                custom_fields: [
-                    { name: 'segment', value: segment },
-                    { name: 'quiz_profile', value: quizResult },
-                    { name: 'name', value: name || '' }
-                ]
+                referring_site: 'https://untitledpublishers.com/proverbs-quiz/',
+                custom_fields: customFields
             })
         });
         
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            console.error('Beehiiv API error:', errorData);
+            console.error('Beehiiv API error:', response.status, errorData);
         }
         
         return response.ok;
