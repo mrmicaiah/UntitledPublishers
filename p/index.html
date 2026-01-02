@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#111827">
+  <title>Access</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #111827;
+      color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .lock-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+      opacity: 0.6;
+    }
+    
+    .pin-display {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #374151;
+      transition: all 0.2s;
+    }
+    
+    .pin-dot.filled {
+      background: #10b981;
+    }
+    
+    .pin-dot.error {
+      background: #ef4444;
+    }
+    
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+    }
+    
+    .key {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      background: #1f2937;
+      color: #f9fafb;
+      font-size: 28px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .key:active {
+      transform: scale(0.95);
+      background: #374151;
+    }
+    
+    .key.empty {
+      background: transparent;
+      cursor: default;
+    }
+    
+    .key.delete {
+      font-size: 20px;
+    }
+    
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div id="loginScreen">
+    <div class="lock-icon">🔒</div>
+    <div class="pin-display" id="pinDisplay">
+      <div class="pin-dot" id="dot0"></div>
+      <div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div>
+      <div class="pin-dot" id="dot3"></div>
+    </div>
+    <div class="keypad">
+      <button class="key" onclick="addDigit('1')">1</button>
+      <button class="key" onclick="addDigit('2')">2</button>
+      <button class="key" onclick="addDigit('3')">3</button>
+      <button class="key" onclick="addDigit('4')">4</button>
+      <button class="key" onclick="addDigit('5')">5</button>
+      <button class="key" onclick="addDigit('6')">6</button>
+      <button class="key" onclick="addDigit('7')">7</button>
+      <button class="key" onclick="addDigit('8')">8</button>
+      <button class="key" onclick="addDigit('9')">9</button>
+      <button class="key empty"></button>
+      <button class="key" onclick="addDigit('0')">0</button>
+      <button class="key delete" onclick="deleteDigit()">⌫</button>
+    </div>
+  </div>
+
+  <script>
+    let pin = '';
+    
+    const USERS = {
+      '1987': {
+        name: 'micaiah',
+        apiUrl: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api'
+      },
+      '1976': {
+        name: 'irene',
+        apiUrl: 'https://productivity-irene.micaiah-tasks.workers.dev/api'
+      }
+    };
+    
+    function addDigit(digit) {
+      if (pin.length >= 4) return;
+      
+      pin += digit;
+      updateDots();
+      
+      if (pin.length === 4) {
+        setTimeout(checkPin, 200);
+      }
+    }
+    
+    function deleteDigit() {
+      pin = pin.slice(0, -1);
+      updateDots();
+    }
+    
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.classList.remove('filled', 'error');
+        if (i < pin.length) {
+          dot.classList.add('filled');
+        }
+      }
+    }
+    
+    function checkPin() {
+      const user = USERS[pin];
+      
+      if (user) {
+        // Store user config
+        localStorage.setItem('apiUrl', user.apiUrl);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('authenticated', 'true');
+        
+        // Redirect to dashboard
+        window.location.href = 'd.html';
+      } else {
+        // Wrong PIN - shake and reset
+        const display = document.getElementById('pinDisplay');
+        display.classList.add('shake');
+        
+        for (let i = 0; i < 4; i++) {
+          document.getElementById(`dot${i}`).classList.add('error');
+        }
+        
+        setTimeout(() => {
+          display.classList.remove('shake');
+          pin = '';
+          updateDots();
+        }, 500);
+      }
+    }
+    
+    // Check if already authenticated
+    if (localStorage.getItem('authenticated') === 'true' && localStorage.getItem('apiUrl')) {
+      window.location.href = 'd.html';
+    }
+  </script>
+
+</body>
+</html>
