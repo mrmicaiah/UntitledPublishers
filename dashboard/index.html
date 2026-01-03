@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#111827">
-  <title>Productivity Dashboard</title>
+  <meta name="theme-color" content="#1a1512">
+  <title>Productivity Engine</title>
   <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,61 +17,142 @@
     }
 
     :root {
-      --bg-primary: #111827;
-      --bg-secondary: #1f2937;
-      --bg-tertiary: #374151;
-      --text-primary: #f9fafb;
-      --text-secondary: #9ca3af;
-      --text-muted: #6b7280;
-      --accent-green: #10b981;
-      --accent-yellow: #f59e0b;
-      --accent-red: #ef4444;
-      --accent-blue: #3b82f6;
-      --accent-purple: #8b5cf6;
-      --border-color: #374151;
+      --bg-dark: #1a1512;
+      --bg-rust: #2a1f1a;
+      --bg-metal: #252019;
+      --bg-panel: #1f1915;
+      --rust-dark: #8b4513;
+      --rust-medium: #a0522d;
+      --rust-light: #cd853f;
+      --rust-highlight: #daa520;
+      --brass: #b8860b;
+      --brass-light: #d4a537;
+      --copper: #b87333;
+      --copper-glow: #da8a47;
+      --steel: #71797E;
+      --steel-light: #a8a9ad;
+      --text-primary: #e8dcc8;
+      --text-secondary: #a89880;
+      --text-muted: #6d5d4d;
+      --accent-green: #4a7c59;
+      --accent-green-glow: #5d9e6e;
+      --accent-red: #8b3a3a;
+      --accent-red-glow: #a94442;
+      --accent-yellow: #b8860b;
+      --rivet: #3d3429;
+      --shadow-rust: rgba(139, 69, 19, 0.3);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(184, 134, 11, 0.08) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
       color: var(--text-primary);
       min-height: 100vh;
-      padding-bottom: 80px;
+      padding-bottom: 90px;
     }
 
+    /* Gear decorations */
+    .gear-bg {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.03;
+      z-index: 0;
+    }
+
+    .gear-bg.top-right {
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      animation: rotate-slow 60s linear infinite;
+    }
+
+    .gear-bg.bottom-left {
+      bottom: 50px;
+      left: -80px;
+      width: 250px;
+      height: 250px;
+      animation: rotate-slow 80s linear infinite reverse;
+    }
+
+    @keyframes rotate-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Header */
     .header {
       padding: 20px 16px 16px;
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-rust) 0%, var(--bg-dark) 100%);
+      border-bottom: 2px solid var(--rust-dark);
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(218, 165, 32, 0.1);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brass), transparent);
     }
 
     .greeting {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       margin-bottom: 4px;
+      color: var(--text-primary);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .greeting-icon {
+      font-size: 20px;
+      filter: drop-shadow(0 0 8px var(--copper-glow));
     }
 
     .date-info {
       color: var(--text-secondary);
-      font-size: 14px;
+      font-size: 13px;
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 1px;
     }
 
     .sprint-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: var(--bg-tertiary);
-      padding: 6px 12px;
-      border-radius: 20px;
+      gap: 8px;
+      background: var(--bg-metal);
+      padding: 8px 14px;
+      border-radius: 4px;
       font-size: 13px;
       margin-top: 12px;
+      border: 1px solid var(--rust-dark);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .sprint-badge::before {
+      content: '⚙';
+      font-size: 14px;
+      color: var(--brass);
+      animation: rotate-slow 10s linear infinite;
+      display: inline-block;
     }
 
     .sprint-badge .days {
-      color: var(--accent-green);
+      color: var(--accent-green-glow);
       font-weight: 600;
+      font-family: 'Courier Prime', monospace;
     }
 
     .sprint-badge .days.warning {
@@ -78,9 +160,62 @@
     }
 
     .sprint-badge .days.urgent {
-      color: var(--accent-red);
+      color: var(--accent-red-glow);
     }
 
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      margin: 16px 16px;
+      background: var(--bg-panel);
+      border-radius: 6px;
+      border: 1px solid var(--rust-dark);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      background: var(--bg-metal);
+      border-radius: 4px;
+      border: 1px solid var(--rivet);
+      position: relative;
+    }
+
+    .stat-item::before,
+    .stat-item::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, var(--steel) 30%, var(--rivet) 70%);
+      border-radius: 50%;
+      top: 4px;
+    }
+
+    .stat-item::before { left: 4px; }
+    .stat-item::after { right: 4px; }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brass-light);
+      font-family: 'Courier Prime', monospace;
+      text-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Navigation */
     .nav-tabs {
       display: flex;
       gap: 4px;
@@ -92,22 +227,42 @@
 
     .nav-tab {
       padding: 10px 16px;
-      border-radius: 8px;
-      background: transparent;
-      border: none;
+      border-radius: 4px 4px 0 0;
+      background: var(--bg-metal);
+      border: 1px solid var(--rust-dark);
+      border-bottom: none;
       color: var(--text-secondary);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
+      position: relative;
     }
 
-    .nav-tab.active {
-      background: var(--bg-secondary);
+    .nav-tab:hover {
+      background: var(--bg-rust);
       color: var(--text-primary);
     }
 
+    .nav-tab.active {
+      background: var(--bg-panel);
+      color: var(--brass-light);
+      border-color: var(--brass);
+      box-shadow: 0 -2px 10px rgba(218, 165, 32, 0.2);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--bg-panel);
+    }
+
+    /* Sections */
     .section {
       padding: 0 16px;
       margin-bottom: 24px;
@@ -121,73 +276,117 @@
     }
 
     .section-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .section-count {
-      background: var(--bg-tertiary);
-      padding: 2px 8px;
-      border-radius: 12px;
+      background: var(--bg-metal);
+      padding: 2px 10px;
+      border-radius: 10px;
       font-size: 12px;
-      color: var(--text-secondary);
+      color: var(--brass);
+      font-family: 'Courier Prime', monospace;
+      border: 1px solid var(--rust-dark);
     }
 
+    /* Cards and Panels */
     .card {
-      background: var(--bg-secondary);
-      border-radius: 12px;
+      background: var(--bg-panel);
+      border-radius: 6px;
       padding: 16px;
       margin-bottom: 12px;
+      border: 1px solid var(--rust-dark);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.3);
+      position: relative;
     }
 
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, var(--steel) 20%, var(--rivet) 60%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, var(--steel) 20%, var(--rivet) 60%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* Task Items */
     .task-item {
       display: flex;
       align-items: flex-start;
       gap: 12px;
       padding: 14px;
-      background: var(--bg-secondary);
-      border-radius: 10px;
+      background: var(--bg-metal);
+      border-radius: 4px;
       margin-bottom: 8px;
+      border: 1px solid var(--rivet);
       transition: all 0.2s;
+      position: relative;
+    }
+
+    .task-item:hover {
+      border-color: var(--rust-medium);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
     .task-item:active {
-      transform: scale(0.98);
-      background: var(--bg-tertiary);
+      transform: scale(0.99);
     }
 
     .task-item.in-sprint {
-      border-left: 3px solid var(--accent-purple);
+      border-left: 3px solid var(--copper);
+      background: linear-gradient(90deg, rgba(184, 115, 51, 0.1) 0%, var(--bg-metal) 30%);
     }
 
     .task-checkbox {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      border: 2px solid var(--border-color);
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: 2px solid var(--rust-medium);
+      background: var(--bg-dark);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
+      font-weight: 700;
+      color: var(--rust-light);
       cursor: pointer;
       flex-shrink: 0;
       transition: all 0.2s;
+      font-family: 'Courier Prime', monospace;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .task-checkbox:hover {
       border-color: var(--accent-green);
-      color: var(--accent-green);
+      color: var(--accent-green-glow);
+      box-shadow: 0 0 10px rgba(74, 124, 89, 0.3), inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .task-checkbox.completing {
       background: var(--accent-green);
       border-color: var(--accent-green);
-      color: white;
+      color: var(--text-primary);
+      box-shadow: 0 0 15px rgba(74, 124, 89, 0.5);
     }
 
     .task-content {
@@ -196,80 +395,96 @@
     }
 
     .task-text {
-      font-size: 15px;
-      line-height: 1.4;
+      font-size: 14px;
+      line-height: 1.5;
       word-wrap: break-word;
+      color: var(--text-primary);
     }
 
     .task-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .task-due {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent-yellow);
+      font-family: 'Courier Prime', monospace;
     }
 
     .task-due.overdue {
-      color: var(--accent-red);
+      color: var(--accent-red-glow);
     }
 
     .task-category {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
-      background: var(--bg-tertiary);
+      background: var(--bg-dark);
       padding: 2px 8px;
-      border-radius: 4px;
+      border-radius: 2px;
+      border: 1px solid var(--rivet);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .task-objective {
-      font-size: 11px;
-      color: var(--accent-purple);
-      background: rgba(139, 92, 246, 0.15);
+      font-size: 10px;
+      color: var(--copper-glow);
+      background: rgba(184, 115, 51, 0.15);
       padding: 2px 8px;
-      border-radius: 4px;
+      border-radius: 2px;
+      border: 1px solid rgba(184, 115, 51, 0.3);
     }
 
+    /* Progress bars */
     .progress-bar {
-      height: 6px;
-      background: var(--bg-tertiary);
-      border-radius: 3px;
+      height: 8px;
+      background: var(--bg-dark);
+      border-radius: 2px;
       overflow: hidden;
+      border: 1px solid var(--rivet);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .progress-fill {
       height: 100%;
-      background: var(--accent-green);
-      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-green) 0%, var(--accent-green-glow) 100%);
+      border-radius: 2px;
       transition: width 0.3s ease;
+      box-shadow: 0 0 10px rgba(74, 124, 89, 0.4);
     }
 
     .progress-fill.warning {
-      background: var(--accent-yellow);
+      background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--brass-light) 100%);
+      box-shadow: 0 0 10px rgba(184, 134, 11, 0.4);
     }
 
     .progress-fill.danger {
-      background: var(--accent-red);
+      background: linear-gradient(90deg, var(--accent-red) 0%, var(--accent-red-glow) 100%);
+      box-shadow: 0 0 10px rgba(139, 58, 58, 0.4);
     }
 
-    /* Sprint Objectives */
+    /* Objectives */
     .objective-item {
       margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg-metal);
+      border-radius: 4px;
+      border: 1px solid var(--rivet);
     }
 
     .objective-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
     }
 
     .objective-status {
       font-size: 16px;
-      margin-right: 8px;
+      margin-right: 10px;
+      filter: drop-shadow(0 0 4px var(--copper-glow));
     }
 
     .objective-statement {
@@ -280,72 +495,65 @@
 
     .objective-progress {
       font-size: 13px;
-      color: var(--text-secondary);
-      font-weight: 500;
+      color: var(--brass);
+      font-weight: 600;
+      font-family: 'Courier Prime', monospace;
     }
 
-    .objective-tasks {
-      margin-left: 24px;
-      margin-top: 8px;
-    }
-
-    .objective-task {
-      font-size: 13px;
-      color: var(--text-secondary);
-      padding: 4px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .objective-task.done {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-
+    /* Launch cards */
     .launch-card {
-      background: var(--bg-secondary);
-      border-radius: 10px;
+      background: var(--bg-panel);
+      border-radius: 4px;
       padding: 14px;
       margin-bottom: 10px;
+      border: 1px solid var(--rust-dark);
+      position: relative;
     }
 
     .launch-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .launch-title {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 14px;
+      color: var(--text-primary);
     }
 
     .launch-badge {
       font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: var(--bg-tertiary);
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: var(--bg-metal);
+      color: var(--brass);
+      font-family: 'Courier Prime', monospace;
+      border: 1px solid var(--rust-dark);
     }
 
     .launch-badge.stalled {
-      background: rgba(245, 158, 11, 0.2);
-      color: var(--accent-yellow);
+      background: rgba(139, 58, 58, 0.2);
+      color: var(--accent-red-glow);
+      border-color: var(--accent-red);
     }
 
     .launch-phase {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 8px;
+      font-family: 'Courier Prime', monospace;
     }
 
+    /* Incoming section */
     .incoming-section {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 12px;
+      background: rgba(184, 134, 11, 0.08);
+      border: 1px solid var(--brass);
+      border-radius: 4px;
       padding: 16px;
       margin: 0 16px 24px;
+      box-shadow: 0 0 20px rgba(184, 134, 11, 0.1);
     }
 
     .incoming-item {
@@ -353,45 +561,58 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px;
-      background: var(--bg-secondary);
-      border-radius: 8px;
+      background: var(--bg-metal);
+      border-radius: 4px;
       margin-top: 12px;
+      border: 1px solid var(--rivet);
     }
 
     .incoming-from {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
+      font-family: 'Courier Prime', monospace;
     }
 
-    .incoming-actions {
-      display: flex;
-      gap: 8px;
-    }
-
+    /* Buttons */
     .btn {
-      padding: 8px 16px;
-      border-radius: 6px;
-      border: none;
+      padding: 10px 18px;
+      border-radius: 4px;
+      border: 1px solid var(--rust-dark);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .btn-primary {
-      background: var(--accent-green);
-      color: white;
+      background: linear-gradient(180deg, var(--accent-green-glow) 0%, var(--accent-green) 100%);
+      color: var(--text-primary);
+      border-color: var(--accent-green);
+      box-shadow: 0 2px 8px rgba(74, 124, 89, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 4px 15px rgba(74, 124, 89, 0.5);
+      transform: translateY(-1px);
     }
 
     .btn-secondary {
-      background: var(--bg-tertiary);
+      background: var(--bg-metal);
       color: var(--text-secondary);
     }
 
+    .btn-secondary:hover {
+      background: var(--bg-rust);
+      color: var(--text-primary);
+    }
+
+    /* Quick actions */
     .quick-actions {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
 
     .quick-action {
@@ -399,51 +620,80 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 20px 12px;
-      background: var(--bg-secondary);
-      border-radius: 12px;
-      border: none;
+      gap: 10px;
+      padding: 24px 12px;
+      background: var(--bg-panel);
+      border-radius: 6px;
+      border: 1px solid var(--rust-dark);
       color: var(--text-primary);
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .quick-action:hover {
+      border-color: var(--brass);
+      box-shadow: 0 0 15px rgba(184, 134, 11, 0.2);
     }
 
     .quick-action:active {
-      transform: scale(0.95);
-      background: var(--bg-tertiary);
+      transform: scale(0.97);
     }
 
     .quick-action-icon {
-      font-size: 24px;
+      font-size: 28px;
+      filter: drop-shadow(0 0 8px var(--copper-glow));
     }
 
+    /* Bottom bar */
     .bottom-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border-color);
+      background: var(--bg-rust);
+      border-top: 2px solid var(--rust-dark);
       padding: 12px 16px;
       padding-bottom: max(12px, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+    }
+
+    .bottom-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brass), transparent);
     }
 
     .command-input {
       width: 100%;
-      background: var(--bg-tertiary);
-      border: none;
-      border-radius: 10px;
+      background: var(--bg-dark);
+      border: 1px solid var(--rust-medium);
+      border-radius: 4px;
       padding: 14px 16px;
       color: var(--text-primary);
-      font-size: 16px;
+      font-size: 14px;
+      font-family: 'Courier Prime', monospace;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .command-input::placeholder {
       color: var(--text-muted);
     }
 
+    .command-input:focus {
+      outline: none;
+      border-color: var(--brass);
+      box-shadow: 0 0 10px rgba(184, 134, 11, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    /* Loading and states */
     .loading {
       display: flex;
       align-items: center;
@@ -455,8 +705,8 @@
     .spinner {
       width: 24px;
       height: 24px;
-      border: 2px solid var(--bg-tertiary);
-      border-top-color: var(--accent-blue);
+      border: 2px solid var(--rivet);
+      border-top-color: var(--brass);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-right: 12px;
@@ -475,19 +725,21 @@
     .empty-state-icon {
       font-size: 48px;
       margin-bottom: 12px;
+      filter: grayscale(0.5);
     }
 
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
+      background: var(--bg-panel);
+      border: 1px solid var(--brass);
       padding: 12px 24px;
-      border-radius: 8px;
+      border-radius: 4px;
       font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(184, 134, 11, 0.2);
       z-index: 1000;
       opacity: 0;
       transition: opacity 0.3s;
@@ -499,8 +751,10 @@
 
     .toast.success {
       border-color: var(--accent-green);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(74, 124, 89, 0.3);
     }
 
+    /* Tab content */
     .tab-content {
       display: none;
     }
@@ -509,6 +763,7 @@
       display: block;
     }
 
+    /* Settings */
     .settings-panel {
       padding: 16px;
     }
@@ -518,32 +773,43 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px;
-      background: var(--bg-secondary);
-      border-radius: 10px;
+      background: var(--bg-panel);
+      border-radius: 4px;
       margin-bottom: 10px;
+      border: 1px solid var(--rust-dark);
     }
 
     .setting-label {
-      font-size: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .setting-input {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 8px 12px;
+      background: var(--bg-dark);
+      border: 1px solid var(--rust-medium);
+      border-radius: 4px;
+      padding: 10px 12px;
       color: var(--text-primary);
       font-size: 14px;
       width: 200px;
+      font-family: 'Courier Prime', monospace;
     }
 
+    .setting-input:focus {
+      outline: none;
+      border-color: var(--brass);
+    }
+
+    /* Modals */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.85);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -559,33 +825,44 @@
     }
 
     .modal {
-      background: var(--bg-secondary);
-      border-radius: 16px;
+      background: var(--bg-panel);
+      border-radius: 6px;
       width: 90%;
       max-width: 400px;
       max-height: 80vh;
       overflow-y: auto;
+      border: 1px solid var(--rust-dark);
+      box-shadow: 0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(184, 134, 11, 0.1);
     }
 
     .modal-header {
       padding: 20px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--rust-dark);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: var(--bg-rust);
     }
 
     .modal-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
+      color: var(--brass-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .modal-close {
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       font-size: 24px;
       cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
     }
 
     .modal-body {
@@ -598,91 +875,108 @@
 
     .form-label {
       display: block;
-      font-size: 13px;
-      color: var(--text-secondary);
+      font-size: 11px;
+      color: var(--text-muted);
       margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .form-input, .form-textarea {
       width: 100%;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: var(--bg-dark);
+      border: 1px solid var(--rust-medium);
+      border-radius: 4px;
       padding: 12px;
       color: var(--text-primary);
-      font-size: 15px;
+      font-size: 14px;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--brass);
     }
 
     .form-textarea {
       min-height: 100px;
       resize: vertical;
+      font-family: inherit;
     }
 
     .modal-footer {
       padding: 16px 20px;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--rust-dark);
       display: flex;
       gap: 10px;
       justify-content: flex-end;
+      background: var(--bg-metal);
     }
 
-    /* Backlog categories */
+    /* Backlog */
     .backlog-category {
       margin-bottom: 20px;
     }
 
     .backlog-category-header {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
+      color: var(--rust-light);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .backlog-category-count {
+      background: var(--bg-metal);
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-size: 11px;
+      color: var(--brass);
+      font-family: 'Courier Prime', monospace;
+      border: 1px solid var(--rivet);
+    }
+
+    /* Checkbox label */
+    .form-group label {
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .backlog-category-count {
-      background: var(--bg-tertiary);
-      padding: 1px 6px;
-      border-radius: 8px;
-      font-size: 11px;
+    .form-group input[type="checkbox"] {
+      accent-color: var(--brass);
     }
 
-    /* Stats bar */
-    .stats-bar {
-      display: flex;
-      gap: 16px;
-      padding: 12px 16px;
-      background: var(--bg-secondary);
-      border-radius: 10px;
-      margin: 0 16px 16px;
-    }
-
-    .stat-item {
-      text-align: center;
-      flex: 1;
-    }
-
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
+    /* Gear SVG */
+    .gear-svg {
+      fill: var(--rust-medium);
     }
   </style>
 </head>
 <body>
 
+  <!-- Decorative gears -->
+  <svg class="gear-bg top-right" viewBox="0 0 100 100">
+    <path class="gear-svg" d="M50 10 L54 10 L56 20 L60 22 L68 14 L72 18 L64 26 L66 30 L76 32 L76 36 L66 38 L64 42 L72 50 L68 54 L60 46 L56 48 L54 58 L50 58 L48 48 L44 46 L36 54 L32 50 L40 42 L38 38 L28 36 L28 32 L38 30 L40 26 L32 18 L36 14 L44 22 L48 20 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35"/>
+  </svg>
+  
+  <svg class="gear-bg bottom-left" viewBox="0 0 100 100">
+    <path class="gear-svg" d="M50 5 L55 5 L57 18 L63 21 L74 11 L79 16 L69 27 L72 33 L85 35 L85 40 L72 42 L69 48 L79 59 L74 64 L63 54 L57 57 L55 70 L50 70 L48 57 L42 54 L31 64 L26 59 L36 48 L33 42 L20 40 L20 35 L33 33 L36 27 L26 16 L31 11 L42 21 L48 18 Z M50 32 A18 18 0 1 0 50 68 A18 18 0 1 0 50 32"/>
+  </svg>
+
   <header class="header">
-    <div class="greeting" id="greeting">☀️ Good Morning</div>
-    <div class="date-info" id="dateInfo">Loading...</div>
+    <div class="greeting" id="greeting">
+      <span class="greeting-icon">⚙️</span>
+      <span>Good Morning</span>
+    </div>
+    <div class="date-info" id="dateInfo">LOADING SYSTEMS...</div>
     <div class="sprint-badge" id="sprintBadge" style="display: none;">
-      📋 <span id="sprintName">Sprint</span> • <span class="days" id="sprintDays">0</span> days left
+      <span id="sprintName">Sprint</span> • <span class="days" id="sprintDays">0</span> cycles remaining
     </div>
   </header>
 
@@ -710,35 +1004,35 @@
     <button class="nav-tab" data-tab="sprint">Sprint</button>
     <button class="nav-tab" data-tab="backlog">Backlog</button>
     <button class="nav-tab" data-tab="launches">Launches</button>
-    <button class="nav-tab" data-tab="actions">Quick</button>
+    <button class="nav-tab" data-tab="actions">Tools</button>
     <button class="nav-tab" data-tab="settings">⚙️</button>
   </nav>
 
   <div class="tab-content active" id="tab-today">
     <div class="incoming-section" id="incomingSection" style="display: none;">
-      <div class="section-title">📥 Incoming from Team</div>
+      <div class="section-title">📥 Incoming Transmission</div>
       <div id="incomingList"></div>
     </div>
 
     <section class="section">
       <div class="section-header">
-        <div class="section-title">🎯 Active <span class="section-count" id="activeCount">0</span></div>
+        <div class="section-title">🎯 Active Operations <span class="section-count" id="activeCount">0</span></div>
       </div>
       <div id="activeTasks">
-        <div class="loading"><div class="spinner"></div> Loading...</div>
+        <div class="loading"><div class="spinner"></div> Initializing...</div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <div class="section-title">🚨 Overdue <span class="section-count" id="overdueCount">0</span></div>
+        <div class="section-title">⚠️ Overdue <span class="section-count" id="overdueCount">0</span></div>
       </div>
       <div id="overdueTasks"></div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <div class="section-title">🚀 Launches</div>
+        <div class="section-title">🚀 Launch Status</div>
       </div>
       <div id="launchesPreview"></div>
     </section>
@@ -748,9 +1042,9 @@
     <section class="section" id="sprintSection">
       <div id="sprintContent">
         <div class="empty-state">
-          <div class="empty-state-icon">📋</div>
-          <div>No active sprint</div>
-          <div style="font-size: 13px; margin-top: 8px; color: var(--text-muted);">Say "let's build a sprint" to Claude</div>
+          <div class="empty-state-icon">⚙️</div>
+          <div>No active sprint cycle</div>
+          <div style="font-size: 12px; margin-top: 8px; color: var(--text-muted);">Initialize with "let's build a sprint"</div>
         </div>
       </div>
     </section>
@@ -759,10 +1053,10 @@
   <div class="tab-content" id="tab-backlog">
     <section class="section">
       <div class="section-header">
-        <div class="section-title">📋 Backlog</div>
+        <div class="section-title">📋 Task Queue</div>
       </div>
       <div id="backlogContent">
-        <div class="loading"><div class="spinner"></div> Loading...</div>
+        <div class="loading"><div class="spinner"></div> Loading queue...</div>
       </div>
     </section>
   </div>
@@ -783,15 +1077,15 @@
       <div class="quick-actions">
         <button class="quick-action" onclick="openAddTaskModal()">
           <span class="quick-action-icon">➕</span>
-          Add Task
+          New Task
         </button>
         <button class="quick-action" onclick="openJournalModal()">
           <span class="quick-action-icon">📝</span>
-          Journal
+          Log Entry
         </button>
         <button class="quick-action" onclick="openIdeaModal()">
           <span class="quick-action-icon">💡</span>
-          Capture Idea
+          Capture
         </button>
         <button class="quick-action" onclick="refreshData()">
           <span class="quick-action-icon">🔄</span>
@@ -804,24 +1098,24 @@
   <div class="tab-content" id="tab-settings">
     <div class="settings-panel">
       <div class="setting-item">
-        <span class="setting-label">API URL</span>
+        <span class="setting-label">API Endpoint</span>
         <input type="text" class="setting-input" id="apiUrl" placeholder="https://...">
       </div>
       <div class="setting-item">
-        <span class="setting-label">PIN</span>
-        <input type="password" class="setting-input" id="apiKey" placeholder="Enter PIN">
+        <span class="setting-label">Access Code</span>
+        <input type="password" class="setting-input" id="apiKey" placeholder="Enter code">
       </div>
       <div class="setting-item">
-        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Config</button>
       </div>
       <div class="setting-item">
-        <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+        <button class="btn btn-secondary" onclick="testConnection()">Test Link</button>
       </div>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <input type="text" class="command-input" id="commandInput" placeholder="Type command... (e.g., '1 done')">
+    <input type="text" class="command-input" id="commandInput" placeholder="> Enter command (e.g., '1 done')">
   </div>
 
   <div class="toast" id="toast"></div>
@@ -830,12 +1124,12 @@
   <div class="modal-overlay" id="addTaskModal">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title">Add Task</div>
+        <div class="modal-title">New Task</div>
         <button class="modal-close" onclick="closeModal('addTaskModal')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">Task</label>
+          <label class="form-label">Task Description</label>
           <input type="text" class="form-input" id="newTaskText" placeholder="What needs to be done?">
         </div>
         <div class="form-group">
@@ -843,14 +1137,14 @@
           <input type="text" class="form-input" id="newTaskCategory" placeholder="General">
         </div>
         <div class="form-group">
-          <label class="form-label">
-            <input type="checkbox" id="newTaskActive"> Add to Active list
+          <label>
+            <input type="checkbox" id="newTaskActive"> Add to active queue
           </label>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeModal('addTaskModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitNewTask()">Add Task</button>
+        <button class="btn btn-primary" onclick="submitNewTask()">Create</button>
       </div>
     </div>
   </div>
@@ -858,16 +1152,16 @@
   <div class="modal-overlay" id="journalModal">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title">📝 Journal Entry</div>
+        <div class="modal-title">📝 Log Entry</div>
         <button class="modal-close" onclick="closeModal('journalModal')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">What's on your mind?</label>
-          <textarea class="form-textarea" id="journalContent" placeholder="Write freely..."></textarea>
+          <label class="form-label">Entry</label>
+          <textarea class="form-textarea" id="journalContent" placeholder="Record your thoughts..."></textarea>
         </div>
         <div class="form-group">
-          <label class="form-label">Mood</label>
+          <label class="form-label">Status</label>
           <select class="form-input" id="journalMood">
             <option value="">Select...</option>
             <option value="focused">Focused</option>
@@ -881,7 +1175,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeModal('journalModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitJournal()">Save Entry</button>
+        <button class="btn btn-primary" onclick="submitJournal()">Save</button>
       </div>
     </div>
   </div>
@@ -898,13 +1192,13 @@
           <input type="text" class="form-input" id="ideaTitle" placeholder="Quick title...">
         </div>
         <div class="form-group">
-          <label class="form-label">Details (optional)</label>
+          <label class="form-label">Details</label>
           <textarea class="form-textarea" id="ideaContent" placeholder="Expand on the idea..."></textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeModal('ideaModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitIdea()">Save Idea</button>
+        <button class="btn btn-primary" onclick="submitIdea()">Capture</button>
       </div>
     </div>
   </div>
@@ -918,7 +1212,7 @@
 
     async function api(endpoint, options = {}) {
       if (!API_URL) {
-        showToast('Please configure API URL in settings', 'error');
+        showToast('Configure API in settings', 'error');
         return null;
       }
 
@@ -931,7 +1225,7 @@
         return await response.json();
       } catch (error) {
         console.error('API Error:', error);
-        showToast('API request failed', 'error');
+        showToast('Connection failed', 'error');
         return null;
       }
     }
@@ -944,11 +1238,9 @@
 
       currentData = data;
 
-      // Header
-      document.getElementById('greeting').textContent = `☀️ Good ${getTimeOfDay()}`;
-      document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek}, ${data.greeting.date}`;
+      document.getElementById('greeting').innerHTML = `<span class="greeting-icon">⚙️</span><span>Good ${getTimeOfDay()}</span>`;
+      document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek.toUpperCase()} // ${data.greeting.date}`;
 
-      // Sprint badge
       if (data.sprint) {
         document.getElementById('sprintBadge').style.display = 'inline-flex';
         document.getElementById('sprintName').textContent = data.sprint.name;
@@ -959,7 +1251,6 @@
         document.getElementById('sprintBadge').style.display = 'none';
       }
 
-      // Stats bar
       if (data.stats) {
         document.getElementById('statsBar').style.display = 'flex';
         document.getElementById('statActive').textContent = data.stats.activeTasks || 0;
@@ -968,7 +1259,6 @@
         document.getElementById('statTotal').textContent = data.stats.totalTasks || 0;
       }
 
-      // Incoming
       if (data.incoming && data.incoming.length > 0) {
         document.getElementById('incomingSection').style.display = 'block';
         renderIncoming(data.incoming);
@@ -976,19 +1266,10 @@
         document.getElementById('incomingSection').style.display = 'none';
       }
 
-      // Active tasks
       renderActiveTasks(data.activeTasks || []);
-
-      // Overdue tasks
       renderOverdueTasks(data.overdueTasks || []);
-
-      // Sprint content
       renderSprintContent(data.sprint);
-
-      // Backlog
       renderBacklog(data.backlogByCategory || {});
-
-      // Launches
       renderLaunchesPreview(data.launches || []);
     }
 
@@ -997,13 +1278,13 @@
       document.getElementById('activeCount').textContent = tasks.length;
 
       if (tasks.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✨</div><div>No active tasks</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✨</div><div>No active operations</div></div>`;
         return;
       }
 
       container.innerHTML = tasks.map((task, index) => `
         <div class="task-item ${task.objective_id ? 'in-sprint' : ''}" data-id="${task.id}">
-          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${index + 1}</div>
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${String(index + 1).padStart(2, '0')}</div>
           <div class="task-content">
             <div class="task-text">${escapeHtml(task.text)}</div>
             <div class="task-meta">
@@ -1021,13 +1302,13 @@
       document.getElementById('overdueCount').textContent = tasks.length;
 
       if (tasks.length === 0) {
-        container.innerHTML = `<div style="color: var(--text-muted); font-size: 14px; padding: 12px;">None 🎉</div>`;
+        container.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; padding: 12px; font-family: 'Courier Prime', monospace;">ALL CLEAR ✓</div>`;
         return;
       }
 
       container.innerHTML = tasks.map(task => `
         <div class="task-item" data-id="${task.id}">
-          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">!</div>
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)" style="border-color: var(--accent-red); color: var(--accent-red-glow);">!</div>
           <div class="task-content">
             <div class="task-text">${escapeHtml(task.text)}</div>
             <div class="task-meta">
@@ -1043,31 +1324,25 @@
       const container = document.getElementById('sprintContent');
 
       if (!sprint) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>No active sprint</div><div style="font-size: 13px; margin-top: 8px; color: var(--text-muted);">Say "let's build a sprint" to Claude</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">⚙️</div><div>No active sprint cycle</div><div style="font-size: 12px; margin-top: 8px; color: var(--text-muted);">Initialize with "let's build a sprint"</div></div>`;
         return;
       }
 
       const objectives = sprint.objectives || [];
-      let totalTasks = 0;
-      let completedTasks = 0;
-
-      objectives.forEach(obj => {
-        totalTasks += obj.totalTasks || 0;
-        completedTasks += obj.doneTasks || 0;
-      });
-
+      let totalTasks = 0, completedTasks = 0;
+      objectives.forEach(obj => { totalTasks += obj.totalTasks || 0; completedTasks += obj.doneTasks || 0; });
       const progressPct = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
       let html = `
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <div style="font-weight: 600;">${escapeHtml(sprint.name)}</div>
-            <div style="font-size: 13px; color: var(--text-secondary);">${sprint.daysRemaining} days left</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-left: 20px;">
+            <div style="font-weight: 600; color: var(--brass-light); font-size: 15px;">${escapeHtml(sprint.name)}</div>
+            <div style="font-size: 12px; color: var(--text-muted); font-family: 'Courier Prime', monospace;">${sprint.daysRemaining} DAYS</div>
           </div>
-          <div class="progress-bar" style="margin-bottom: 8px;">
+          <div class="progress-bar" style="margin-bottom: 10px;">
             <div class="progress-fill ${progressPct < 30 ? 'danger' : progressPct < 70 ? 'warning' : ''}" style="width: ${progressPct}%"></div>
           </div>
-          <div style="font-size: 12px; color: var(--text-muted);">${completedTasks}/${totalTasks} tasks (${progressPct}%)</div>
+          <div style="font-size: 12px; color: var(--text-muted); font-family: 'Courier Prime', monospace;">${completedTasks}/${totalTasks} TASKS // ${progressPct}%</div>
         </div>
       `;
 
@@ -1076,7 +1351,6 @@
           const objTotal = obj.totalTasks || 0;
           const objDone = obj.doneTasks || 0;
           const icon = objDone === objTotal && objTotal > 0 ? '✅' : objDone > 0 ? '◐' : '○';
-
           return `
             <div class="objective-item">
               <div class="objective-header">
@@ -1097,7 +1371,7 @@
       const categories = Object.keys(backlogByCategory);
 
       if (categories.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>Backlog is empty</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>Queue empty</div></div>`;
         return;
       }
 
@@ -1110,14 +1384,14 @@
             </div>
             ${tasks.slice(0, 5).map(task => `
               <div class="task-item" data-id="${task.id}">
-                <div class="task-checkbox" onclick="activateTask('${task.id}', this)">+</div>
+                <div class="task-checkbox" onclick="activateTask('${task.id}', this)" style="font-size: 16px;">+</div>
                 <div class="task-content">
                   <div class="task-text">${escapeHtml(task.text)}</div>
                   ${task.due_date ? `<div class="task-meta"><span class="task-due">${formatDate(task.due_date)}</span></div>` : ''}
                 </div>
               </div>
             `).join('')}
-            ${tasks.length > 5 ? `<div style="font-size: 12px; color: var(--text-muted); padding: 8px;">+${tasks.length - 5} more</div>` : ''}
+            ${tasks.length > 5 ? `<div style="font-size: 11px; color: var(--text-muted); padding: 8px; font-family: 'Courier Prime', monospace;">+${tasks.length - 5} MORE</div>` : ''}
           </div>
         `;
       }).join('');
@@ -1135,12 +1409,12 @@
         <div class="launch-card">
           <div class="launch-header">
             <span class="launch-title">${escapeHtml(launch.title)}</span>
-            ${launch.progress === 0 ? '<span class="launch-badge stalled">⚠️ stalled</span>' : `<span class="launch-badge">${launch.progress}%</span>`}
+            ${launch.progress === 0 ? '<span class="launch-badge stalled">⚠️ STALLED</span>' : `<span class="launch-badge">${launch.progress}%</span>`}
           </div>
           <div class="progress-bar">
             <div class="progress-fill" style="width: ${launch.progress}%"></div>
           </div>
-          <div class="launch-phase">${escapeHtml(launch.phase || '')}</div>
+          <div class="launch-phase">${escapeHtml(launch.phase || 'NO PHASE')}</div>
         </div>
       `).join('');
     }
@@ -1166,7 +1440,7 @@
           <div class="progress-bar">
             <div class="progress-fill" style="width: ${launch.progress}%"></div>
           </div>
-          <div class="launch-phase">${escapeHtml(launch.phase || '')} • ${launch.completed}/${launch.total} items</div>
+          <div class="launch-phase">${escapeHtml(launch.phase || '')} // ${launch.completed}/${launch.total} ITEMS</div>
         </div>
       `).join('');
     }
@@ -1176,12 +1450,10 @@
       container.innerHTML = items.map(item => `
         <div class="incoming-item">
           <div>
-            <div>${escapeHtml(item.text || item.task_text)}</div>
-            <div class="incoming-from">from ${escapeHtml(item.from_user)}</div>
+            <div style="color: var(--text-primary);">${escapeHtml(item.text || item.task_text)}</div>
+            <div class="incoming-from">FROM: ${escapeHtml(item.from_user).toUpperCase()}</div>
           </div>
-          <div class="incoming-actions">
-            <button class="btn btn-primary" onclick="claimTask('${item.id}')">Claim</button>
-          </div>
+          <div><button class="btn btn-primary" onclick="claimTask('${item.id}')">Claim</button></div>
         </div>
       `).join('');
     }
@@ -1193,7 +1465,7 @@
       const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
 
       if (result && result.success) {
-        showToast('Task completed! ✅');
+        showToast('Task completed ✓');
         setTimeout(() => {
           element.closest('.task-item').style.opacity = '0';
           setTimeout(() => refreshData(), 300);
@@ -1206,7 +1478,7 @@
     async function activateTask(id, element) {
       const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
       if (result && result.success) {
-        showToast('Task activated! 🎯');
+        showToast('Task activated');
         refreshData();
       }
     }
@@ -1214,7 +1486,7 @@
     async function claimTask(id) {
       const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
       if (result && result.success) {
-        showToast('Task claimed!');
+        showToast('Task claimed');
         refreshData();
       }
     }
@@ -1224,12 +1496,12 @@
       const category = document.getElementById('newTaskCategory').value.trim() || 'General';
       const isActive = document.getElementById('newTaskActive').checked;
 
-      if (!text) { showToast('Please enter a task', 'error'); return; }
+      if (!text) { showToast('Enter task description', 'error'); return; }
 
       const result = await api('/tasks', { method: 'POST', body: JSON.stringify({ text, category, isActive }) });
 
       if (result && result.success) {
-        showToast('Task added!');
+        showToast('Task created');
         closeModal('addTaskModal');
         document.getElementById('newTaskText').value = '';
         document.getElementById('newTaskCategory').value = '';
@@ -1242,12 +1514,12 @@
       const content = document.getElementById('journalContent').value.trim();
       const mood = document.getElementById('journalMood').value;
 
-      if (!content) { showToast('Please write something', 'error'); return; }
+      if (!content) { showToast('Enter content', 'error'); return; }
 
       const result = await api('/journal', { method: 'POST', body: JSON.stringify({ content, mood }) });
 
       if (result && result.success) {
-        showToast('Journal saved!');
+        showToast('Entry logged');
         closeModal('journalModal');
         document.getElementById('journalContent').value = '';
         document.getElementById('journalMood').value = '';
@@ -1258,19 +1530,18 @@
       const title = document.getElementById('ideaTitle').value.trim();
       const content = document.getElementById('ideaContent').value.trim();
 
-      if (!title) { showToast('Please enter a title', 'error'); return; }
+      if (!title) { showToast('Enter title', 'error'); return; }
 
       const result = await api('/ideas', { method: 'POST', body: JSON.stringify({ title, content }) });
 
       if (result && result.success) {
-        showToast('Idea captured! 💡');
+        showToast('Idea captured');
         closeModal('ideaModal');
         document.getElementById('ideaTitle').value = '';
         document.getElementById('ideaContent').value = '';
       }
     }
 
-    // Command input
     document.getElementById('commandInput').addEventListener('keypress', async (e) => {
       if (e.key === 'Enter') {
         const command = e.target.value.trim().toLowerCase();
@@ -1288,7 +1559,6 @@
       }
     });
 
-    // Tab navigation
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
@@ -1300,7 +1570,6 @@
       });
     });
 
-    // Modal helpers
     function openAddTaskModal() { document.getElementById('addTaskModal').classList.add('show'); }
     function openJournalModal() { document.getElementById('journalModal').classList.add('show'); }
     function openIdeaModal() { document.getElementById('ideaModal').classList.add('show'); }
@@ -1310,25 +1579,23 @@
       overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('show'); });
     });
 
-    // Settings
     function saveSettings() {
       API_URL = document.getElementById('apiUrl').value.trim();
       API_KEY = document.getElementById('apiKey').value.trim();
       localStorage.setItem('apiUrl', API_URL);
       localStorage.setItem('apiKey', API_KEY);
-      showToast('Settings saved!');
+      showToast('Configuration saved');
     }
 
     async function testConnection() {
       saveSettings();
       const data = await api('/morning');
       if (data) {
-        showToast('Connected successfully! ✅');
+        showToast('Connection established ✓');
         refreshData();
       }
     }
 
-    // Helpers
     function getTimeOfDay() {
       const hour = new Date().getHours();
       if (hour < 12) return 'Morning';
@@ -1338,7 +1605,7 @@
 
     function formatDate(dateStr) {
       const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
     }
 
     function isOverdue(dateStr) {
@@ -1359,7 +1626,6 @@
 
     function refreshData() { loadMorningData(); }
 
-    // Init
     if (API_URL) {
       loadMorningData();
     } else {
