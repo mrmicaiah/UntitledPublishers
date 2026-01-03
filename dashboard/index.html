@@ -55,11 +55,12 @@
     .header-logo { font-size: 24px; }
     .header-title { font-size: 16px; font-weight: 600; color: var(--brass-light); }
     .header-date { font-size: 11px; color: var(--text-muted); font-family: 'Courier Prime', monospace; }
-    .header-actions { display: flex; gap: 8px; }
-    .header-btn { padding: 6px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 11px; cursor: pointer; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .header-btn { padding: 6px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 11px; cursor: pointer; position: relative; }
     .header-btn:hover { border-color: var(--brass); color: var(--text-primary); }
     .header-btn.notify-on { border-color: var(--accent-green); color: var(--accent-green-glow); }
     .header-btn.notify-off { border-color: var(--rust-medium); color: var(--text-muted); }
+    .msg-badge { position: absolute; top: -6px; right: -6px; background: var(--accent-red); color: white; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 10px; min-width: 16px; text-align: center; }
 
     /* Add Task Box */
     .add-task-box { display: inline-flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; }
@@ -73,6 +74,18 @@
     .add-task-btn { padding: 8px 14px; background: var(--brass); border: 1px solid var(--brass-light); border-radius: 4px; color: var(--bg-dark); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .add-task-btn:hover { background: var(--brass-light); }
     .add-task-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Message Banner */
+    .message-banner { display: none; background: linear-gradient(135deg, rgba(184, 115, 51, 0.2) 0%, var(--bg-panel) 100%); border: 1px solid var(--copper); border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; }
+    .message-banner.show { display: block; }
+    .message-banner-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .message-banner-title { font-size: 13px; font-weight: 600; color: var(--copper-glow); }
+    .message-banner-dismiss { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
+    .message-item { padding: 8px 0; border-bottom: 1px solid var(--rivet); }
+    .message-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .message-from { font-size: 11px; color: var(--copper); font-weight: 600; margin-bottom: 2px; }
+    .message-content { font-size: 13px; color: var(--text-primary); }
+    .message-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
     /* Sprint Banner */
     .sprint-banner { background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-metal) 100%); border: 1px solid var(--brass); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
@@ -187,10 +200,22 @@
         </div>
       </div>
       <div class="header-actions">
+        <button class="header-btn" id="msgBtn" onclick="showMessages()" style="display:none;">
+          💬 <span id="msgBadge" class="msg-badge">0</span>
+        </button>
         <button class="header-btn" id="notifyBtn" onclick="toggleNotifications()">🔔 Off</button>
-        <button class="header-btn" onclick="loadData()">🔄 Refresh</button>
+        <button class="header-btn" onclick="loadData()">🔄</button>
         <button class="header-btn" onclick="logout()">Logout</button>
       </div>
+    </div>
+
+    <!-- Message Banner -->
+    <div class="message-banner" id="messageBanner">
+      <div class="message-banner-header">
+        <span class="message-banner-title">💬 New Messages</span>
+        <button class="message-banner-dismiss" onclick="dismissMessages()">✕</button>
+      </div>
+      <div id="messageList"></div>
     </div>
 
     <!-- Add Task -->
@@ -265,6 +290,8 @@
     let checkInterval = null;
     let lastIncomingCount = 0;
     let lastOverdueIds = new Set();
+    let lastMessageCount = 0;
+    let currentMessages = [];
 
     // Notification system
     async function requestNotificationPermission() {
@@ -319,8 +346,8 @@
 
     function startBackgroundCheck() {
       if (checkInterval) return;
-      checkInterval = setInterval(checkForNotifications, 60000); // Check every minute
-      checkForNotifications(); // Check immediately
+      checkInterval = setInterval(checkForNotifications, 60000);
+      checkForNotifications();
     }
 
     function stopBackgroundCheck() {
@@ -335,6 +362,17 @@
       try {
         const data = await api('/morning');
         if (!data) return;
+
+        // Check for new messages
+        const msgCount = data.unreadMessages || 0;
+        if (msgCount > lastMessageCount && lastMessageCount !== -1) {
+          sendNotification(
+            '💬 New Message',
+            `You have a new message from your teammate!`,
+            'message'
+          );
+        }
+        lastMessageCount = msgCount;
 
         // Check for new incoming handoffs
         const incomingCount = (data.incoming || []).length;
@@ -362,7 +400,7 @@
         }
         lastOverdueIds = currentOverdueIds;
 
-        // Check for tasks due today (notify once per day per task)
+        // Check for tasks due today
         const today = new Date().toISOString().split('T')[0];
         const notifiedToday = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
         if (notifiedToday.date !== today) {
@@ -396,6 +434,66 @@
       } else {
         btn.classList.add('notify-off');
       }
+    }
+
+    // Messages
+    async function fetchMessages() {
+      const data = await api('/messages');
+      if (!data) return;
+      currentMessages = data.messages || [];
+      updateMessageUI();
+    }
+
+    function updateMessageUI() {
+      const count = currentMessages.length;
+      const msgBtn = document.getElementById('msgBtn');
+      const msgBadge = document.getElementById('msgBadge');
+      
+      if (count > 0) {
+        msgBtn.style.display = 'block';
+        msgBadge.textContent = count;
+      } else {
+        msgBtn.style.display = 'none';
+      }
+    }
+
+    function showMessages() {
+      if (currentMessages.length === 0) return;
+      
+      const banner = document.getElementById('messageBanner');
+      const list = document.getElementById('messageList');
+      
+      list.innerHTML = currentMessages.map(m => `
+        <div class="message-item">
+          <div class="message-from">${esc(m.from_user)}</div>
+          <div class="message-content">${esc(m.content)}</div>
+          <div class="message-time">${formatRelativeTime(m.created_at)}</div>
+        </div>
+      `).join('');
+      
+      banner.classList.add('show');
+    }
+
+    async function dismissMessages() {
+      document.getElementById('messageBanner').classList.remove('show');
+      await api('/messages/read', { method: 'POST' });
+      currentMessages = [];
+      updateMessageUI();
+    }
+
+    function formatRelativeTime(isoString) {
+      const date = new Date(isoString);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMins / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffMins < 1) return 'just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffDays < 7) return `${diffDays}d ago`;
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
     function checkSession() {
@@ -448,6 +546,7 @@
       document.getElementById('mainApp').classList.add('visible');
       initNotifications();
       loadData();
+      fetchMessages();
     }
 
     function logout() { 
@@ -462,7 +561,7 @@
         const r = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
         if (!r.ok) throw new Error(r.status);
         return await r.json();
-      } catch (e) { console.error(e); showToast('Connection failed', 'error'); return null; }
+      } catch (e) { console.error(e); return null; }
     }
 
     function updateCategoryDropdown() {
@@ -507,6 +606,13 @@
       // Update notification tracking
       lastIncomingCount = (data.incoming || []).length;
       lastOverdueIds = new Set((data.overdueTasks || []).map(t => t.id));
+      lastMessageCount = data.unreadMessages || 0;
+
+      // Update message badge
+      if (data.unreadMessages > 0) {
+        document.getElementById('msgBtn').style.display = 'block';
+        document.getElementById('msgBadge').textContent = data.unreadMessages;
+      }
 
       // Extract categories from backlog
       const backlog = data.backlogByCategory || {};
