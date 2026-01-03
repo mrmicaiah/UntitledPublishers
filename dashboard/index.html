@@ -55,6 +55,178 @@
       padding-bottom: 90px;
     }
 
+    /* Login Screen */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(ellipse at 30% 30%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(184, 134, 11, 0.1) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .login-screen.hidden {
+      display: none;
+    }
+
+    .login-logo {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: rotate-slow 20s linear infinite;
+      filter: drop-shadow(0 0 20px var(--copper-glow));
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brass-light);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .login-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 2px;
+    }
+
+    .login-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--rust-dark);
+      border-radius: 8px;
+      padding: 32px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+      position: relative;
+    }
+
+    .login-box::before,
+    .login-box::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, var(--steel) 30%, var(--rivet) 70%);
+      border-radius: 50%;
+      top: 12px;
+    }
+
+    .login-box::before { left: 12px; }
+    .login-box::after { right: 12px; }
+
+    .login-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      display: block;
+      text-align: center;
+    }
+
+    .pin-input-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .pin-digit {
+      width: 50px;
+      height: 60px;
+      background: var(--bg-dark);
+      border: 2px solid var(--rust-medium);
+      border-radius: 6px;
+      font-size: 24px;
+      font-family: 'Courier Prime', monospace;
+      color: var(--brass-light);
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+
+    .pin-digit:focus {
+      outline: none;
+      border-color: var(--brass);
+      box-shadow: 0 0 15px rgba(184, 134, 11, 0.3), inset 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .pin-digit.filled {
+      border-color: var(--accent-green);
+    }
+
+    .pin-digit.error {
+      border-color: var(--accent-red);
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(180deg, var(--rust-medium) 0%, var(--rust-dark) 100%);
+      border: 1px solid var(--rust-dark);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(180deg, var(--rust-light) 0%, var(--rust-medium) 100%);
+      box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-error {
+      color: var(--accent-red-glow);
+      font-size: 12px;
+      text-align: center;
+      margin-top: 16px;
+      font-family: 'Courier Prime', monospace;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .login-error.show {
+      opacity: 1;
+    }
+
+    /* Main App - Hidden by default */
+    .main-app {
+      display: none;
+    }
+
+    .main-app.visible {
+      display: block;
+    }
+
     /* Gear decorations */
     .gear-bg {
       position: fixed;
@@ -960,162 +1132,180 @@
 </head>
 <body>
 
-  <!-- Decorative gears -->
-  <svg class="gear-bg top-right" viewBox="0 0 100 100">
-    <path class="gear-svg" d="M50 10 L54 10 L56 20 L60 22 L68 14 L72 18 L64 26 L66 30 L76 32 L76 36 L66 38 L64 42 L72 50 L68 54 L60 46 L56 48 L54 58 L50 58 L48 48 L44 46 L36 54 L32 50 L40 42 L38 38 L28 36 L28 32 L38 30 L40 26 L32 18 L36 14 L44 22 L48 20 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35"/>
-  </svg>
-  
-  <svg class="gear-bg bottom-left" viewBox="0 0 100 100">
-    <path class="gear-svg" d="M50 5 L55 5 L57 18 L63 21 L74 11 L79 16 L69 27 L72 33 L85 35 L85 40 L72 42 L69 48 L79 59 L74 64 L63 54 L57 57 L55 70 L50 70 L48 57 L42 54 L31 64 L26 59 L36 48 L33 42 L20 40 L20 35 L33 33 L36 27 L26 16 L31 11 L42 21 L48 18 Z M50 32 A18 18 0 1 0 50 68 A18 18 0 1 0 50 32"/>
-  </svg>
-
-  <header class="header">
-    <div class="greeting" id="greeting">
-      <span class="greeting-icon">⚙️</span>
-      <span>Good Morning</span>
-    </div>
-    <div class="date-info" id="dateInfo">LOADING SYSTEMS...</div>
-    <div class="sprint-badge" id="sprintBadge" style="display: none;">
-      <span id="sprintName">Sprint</span> • <span class="days" id="sprintDays">0</span> cycles remaining
-    </div>
-  </header>
-
-  <div class="stats-bar" id="statsBar" style="display: none;">
-    <div class="stat-item">
-      <div class="stat-value" id="statActive">0</div>
-      <div class="stat-label">Active</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="statSprint">0</div>
-      <div class="stat-label">Sprint</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="statOverdue">0</div>
-      <div class="stat-label">Overdue</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="statTotal">0</div>
-      <div class="stat-label">Total</div>
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-logo">⚙️</div>
+    <div class="login-title">Productivity Engine</div>
+    <div class="login-subtitle">AUTHENTICATION REQUIRED</div>
+    
+    <div class="login-box">
+      <label class="login-label">Enter Access Code</label>
+      <div class="pin-input-container">
+        <input type="password" class="pin-digit" maxlength="1" data-index="0" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" data-index="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" data-index="2" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" data-index="3" inputmode="numeric">
+      </div>
+      <button class="login-btn" onclick="attemptLogin()">Initialize</button>
+      <div class="login-error" id="loginError">ACCESS DENIED - INVALID CODE</div>
     </div>
   </div>
 
-  <nav class="nav-tabs">
-    <button class="nav-tab active" data-tab="today">Today</button>
-    <button class="nav-tab" data-tab="sprint">Sprint</button>
-    <button class="nav-tab" data-tab="backlog">Backlog</button>
-    <button class="nav-tab" data-tab="launches">Launches</button>
-    <button class="nav-tab" data-tab="actions">Tools</button>
-    <button class="nav-tab" data-tab="settings">⚙️</button>
-  </nav>
+  <!-- MAIN APP (hidden until login) -->
+  <div class="main-app" id="mainApp">
+    <!-- Decorative gears -->
+    <svg class="gear-bg top-right" viewBox="0 0 100 100">
+      <path class="gear-svg" d="M50 10 L54 10 L56 20 L60 22 L68 14 L72 18 L64 26 L66 30 L76 32 L76 36 L66 38 L64 42 L72 50 L68 54 L60 46 L56 48 L54 58 L50 58 L48 48 L44 46 L36 54 L32 50 L40 42 L38 38 L28 36 L28 32 L38 30 L40 26 L32 18 L36 14 L44 22 L48 20 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35"/>
+    </svg>
+    
+    <svg class="gear-bg bottom-left" viewBox="0 0 100 100">
+      <path class="gear-svg" d="M50 5 L55 5 L57 18 L63 21 L74 11 L79 16 L69 27 L72 33 L85 35 L85 40 L72 42 L69 48 L79 59 L74 64 L63 54 L57 57 L55 70 L50 70 L48 57 L42 54 L31 64 L26 59 L36 48 L33 42 L20 40 L20 35 L33 33 L36 27 L26 16 L31 11 L42 21 L48 18 Z M50 32 A18 18 0 1 0 50 68 A18 18 0 1 0 50 32"/>
+    </svg>
 
-  <div class="tab-content active" id="tab-today">
-    <div class="incoming-section" id="incomingSection" style="display: none;">
-      <div class="section-title">📥 Incoming Transmission</div>
-      <div id="incomingList"></div>
+    <header class="header">
+      <div class="greeting" id="greeting">
+        <span class="greeting-icon">⚙️</span>
+        <span>Good Morning</span>
+      </div>
+      <div class="date-info" id="dateInfo">LOADING SYSTEMS...</div>
+      <div class="sprint-badge" id="sprintBadge" style="display: none;">
+        <span id="sprintName">Sprint</span> • <span class="days" id="sprintDays">0</span> cycles remaining
+      </div>
+    </header>
+
+    <div class="stats-bar" id="statsBar" style="display: none;">
+      <div class="stat-item">
+        <div class="stat-value" id="statActive">0</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statSprint">0</div>
+        <div class="stat-label">Sprint</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statOverdue">0</div>
+        <div class="stat-label">Overdue</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Total</div>
+      </div>
     </div>
 
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">🎯 Active Operations <span class="section-count" id="activeCount">0</span></div>
-      </div>
-      <div id="activeTasks">
-        <div class="loading"><div class="spinner"></div> Initializing...</div>
-      </div>
-    </section>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="today">Today</button>
+      <button class="nav-tab" data-tab="sprint">Sprint</button>
+      <button class="nav-tab" data-tab="backlog">Backlog</button>
+      <button class="nav-tab" data-tab="launches">Launches</button>
+      <button class="nav-tab" data-tab="actions">Tools</button>
+      <button class="nav-tab" data-tab="settings">⚙️</button>
+    </nav>
 
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">⚠️ Overdue <span class="section-count" id="overdueCount">0</span></div>
+    <div class="tab-content active" id="tab-today">
+      <div class="incoming-section" id="incomingSection" style="display: none;">
+        <div class="section-title">📥 Incoming Transmission</div>
+        <div id="incomingList"></div>
       </div>
-      <div id="overdueTasks"></div>
-    </section>
 
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">🚀 Launch Status</div>
-      </div>
-      <div id="launchesPreview"></div>
-    </section>
-  </div>
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🎯 Active Operations <span class="section-count" id="activeCount">0</span></div>
+        </div>
+        <div id="activeTasks">
+          <div class="loading"><div class="spinner"></div> Initializing...</div>
+        </div>
+      </section>
 
-  <div class="tab-content" id="tab-sprint">
-    <section class="section" id="sprintSection">
-      <div id="sprintContent">
-        <div class="empty-state">
-          <div class="empty-state-icon">⚙️</div>
-          <div>No active sprint cycle</div>
-          <div style="font-size: 12px; margin-top: 8px; color: var(--text-muted);">Initialize with "let's build a sprint"</div>
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">⚠️ Overdue <span class="section-count" id="overdueCount">0</span></div>
+        </div>
+        <div id="overdueTasks"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🚀 Launch Status</div>
+        </div>
+        <div id="launchesPreview"></div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-sprint">
+      <section class="section" id="sprintSection">
+        <div id="sprintContent">
+          <div class="empty-state">
+            <div class="empty-state-icon">⚙️</div>
+            <div>No active sprint cycle</div>
+            <div style="font-size: 12px; margin-top: 8px; color: var(--text-muted);">Initialize with "let's build a sprint"</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-backlog">
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">📋 Task Queue</div>
+        </div>
+        <div id="backlogContent">
+          <div class="loading"><div class="spinner"></div> Loading queue...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-launches">
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title">🚀 All Launches</div>
+        </div>
+        <div id="allLaunches">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-actions">
+      <section class="section">
+        <div class="quick-actions">
+          <button class="quick-action" onclick="openAddTaskModal()">
+            <span class="quick-action-icon">➕</span>
+            New Task
+          </button>
+          <button class="quick-action" onclick="openJournalModal()">
+            <span class="quick-action-icon">📝</span>
+            Log Entry
+          </button>
+          <button class="quick-action" onclick="openIdeaModal()">
+            <span class="quick-action-icon">💡</span>
+            Capture
+          </button>
+          <button class="quick-action" onclick="refreshData()">
+            <span class="quick-action-icon">🔄</span>
+            Refresh
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-content" id="tab-settings">
+      <div class="settings-panel">
+        <div class="setting-item">
+          <span class="setting-label">API Endpoint</span>
+          <input type="text" class="setting-input" id="apiUrl" placeholder="https://...">
+        </div>
+        <div class="setting-item">
+          <button class="btn btn-primary" onclick="saveSettings()">Save Config</button>
+        </div>
+        <div class="setting-item">
+          <button class="btn btn-secondary" onclick="logout()">Logout</button>
         </div>
       </div>
-    </section>
-  </div>
-
-  <div class="tab-content" id="tab-backlog">
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">📋 Task Queue</div>
-      </div>
-      <div id="backlogContent">
-        <div class="loading"><div class="spinner"></div> Loading queue...</div>
-      </div>
-    </section>
-  </div>
-
-  <div class="tab-content" id="tab-launches">
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">🚀 All Launches</div>
-      </div>
-      <div id="allLaunches">
-        <div class="loading"><div class="spinner"></div> Loading...</div>
-      </div>
-    </section>
-  </div>
-
-  <div class="tab-content" id="tab-actions">
-    <section class="section">
-      <div class="quick-actions">
-        <button class="quick-action" onclick="openAddTaskModal()">
-          <span class="quick-action-icon">➕</span>
-          New Task
-        </button>
-        <button class="quick-action" onclick="openJournalModal()">
-          <span class="quick-action-icon">📝</span>
-          Log Entry
-        </button>
-        <button class="quick-action" onclick="openIdeaModal()">
-          <span class="quick-action-icon">💡</span>
-          Capture
-        </button>
-        <button class="quick-action" onclick="refreshData()">
-          <span class="quick-action-icon">🔄</span>
-          Refresh
-        </button>
-      </div>
-    </section>
-  </div>
-
-  <div class="tab-content" id="tab-settings">
-    <div class="settings-panel">
-      <div class="setting-item">
-        <span class="setting-label">API Endpoint</span>
-        <input type="text" class="setting-input" id="apiUrl" placeholder="https://...">
-      </div>
-      <div class="setting-item">
-        <span class="setting-label">Access Code</span>
-        <input type="password" class="setting-input" id="apiKey" placeholder="Enter code">
-      </div>
-      <div class="setting-item">
-        <button class="btn btn-primary" onclick="saveSettings()">Save Config</button>
-      </div>
-      <div class="setting-item">
-        <button class="btn btn-secondary" onclick="testConnection()">Test Link</button>
-      </div>
     </div>
-  </div>
 
-  <div class="bottom-bar">
-    <input type="text" class="command-input" id="commandInput" placeholder="> Enter command (e.g., '1 done')">
+    <div class="bottom-bar">
+      <input type="text" class="command-input" id="commandInput" placeholder="> Enter command (e.g., '1 done')">
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1204,15 +1394,105 @@
   </div>
 
   <script>
-    let API_URL = localStorage.getItem('apiUrl') || '';
-    let API_KEY = localStorage.getItem('apiKey') || '';
+    // Configuration
+    const API_BASE = 'https://productivity-mcp-server.micaiah-tasks.workers.dev';
+    const VALID_PINS = {
+      '1987': 'micaiah',
+      '1976': 'irene'
+    };
 
-    document.getElementById('apiUrl').value = API_URL;
-    document.getElementById('apiKey').value = API_KEY;
+    let API_URL = '';
+    let API_KEY = '';
+    let currentUser = '';
+
+    // Check if already logged in
+    function checkSession() {
+      const session = localStorage.getItem('dashboardSession');
+      if (session) {
+        const { pin, timestamp } = JSON.parse(session);
+        // Session valid for 7 days
+        if (Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000 && VALID_PINS[pin]) {
+          currentUser = VALID_PINS[pin];
+          API_KEY = pin;
+          API_URL = API_BASE;
+          showMainApp();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // PIN input handling
+    const pinInputs = document.querySelectorAll('.pin-digit');
+    pinInputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        const value = e.target.value;
+        if (value && index < 3) {
+          pinInputs[index + 1].focus();
+        }
+        if (value) {
+          input.classList.add('filled');
+        } else {
+          input.classList.remove('filled');
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          pinInputs[index - 1].focus();
+        }
+        if (e.key === 'Enter') {
+          attemptLogin();
+        }
+      });
+    });
+
+    function attemptLogin() {
+      const pin = Array.from(pinInputs).map(i => i.value).join('');
+      
+      if (VALID_PINS[pin]) {
+        currentUser = VALID_PINS[pin];
+        API_KEY = pin;
+        API_URL = API_BASE;
+        
+        // Save session
+        localStorage.setItem('dashboardSession', JSON.stringify({
+          pin: pin,
+          timestamp: Date.now()
+        }));
+        
+        showMainApp();
+      } else {
+        // Show error
+        document.getElementById('loginError').classList.add('show');
+        pinInputs.forEach(input => {
+          input.classList.add('error');
+          input.value = '';
+        });
+        pinInputs[0].focus();
+        
+        setTimeout(() => {
+          document.getElementById('loginError').classList.remove('show');
+          pinInputs.forEach(input => input.classList.remove('error'));
+        }, 2000);
+      }
+    }
+
+    function showMainApp() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.add('visible');
+      document.getElementById('apiUrl').value = API_URL;
+      loadMorningData();
+    }
+
+    function logout() {
+      localStorage.removeItem('dashboardSession');
+      location.reload();
+    }
 
     async function api(endpoint, options = {}) {
       if (!API_URL) {
-        showToast('Configure API in settings', 'error');
+        showToast('Not configured', 'error');
         return null;
       }
 
@@ -1581,19 +1861,8 @@
 
     function saveSettings() {
       API_URL = document.getElementById('apiUrl').value.trim();
-      API_KEY = document.getElementById('apiKey').value.trim();
       localStorage.setItem('apiUrl', API_URL);
-      localStorage.setItem('apiKey', API_KEY);
       showToast('Configuration saved');
-    }
-
-    async function testConnection() {
-      saveSettings();
-      const data = await api('/morning');
-      if (data) {
-        showToast('Connection established ✓');
-        refreshData();
-      }
     }
 
     function getTimeOfDay() {
@@ -1626,10 +1895,10 @@
 
     function refreshData() { loadMorningData(); }
 
-    if (API_URL) {
-      loadMorningData();
-    } else {
-      document.getElementById('activeTasks').innerHTML = `<div class="empty-state"><div class="empty-state-icon">⚙️</div><div>Configure API in settings</div></div>`;
+    // Initialize
+    if (!checkSession()) {
+      // Focus first PIN input
+      pinInputs[0].focus();
     }
   </script>
 
