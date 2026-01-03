@@ -2,1111 +2,445 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0c0c0c">
   <title>Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --bg: #09090b;
-      --bg-card: #18181b;
-      --bg-hover: #27272a;
-      --bg-active: #3f3f46;
-      --border: rgba(255,255,255,0.06);
-      --border-light: rgba(255,255,255,0.03);
-      --text: #fafafa;
-      --text-secondary: rgba(255,255,255,0.65);
-      --text-muted: rgba(255,255,255,0.4);
-      
-      /* Category colors */
-      --leadlink: #3b82f6;
-      --leadlink-soft: rgba(59,130,246,0.12);
-      --medivault: #22c55e;
-      --medivault-soft: rgba(34,197,94,0.12);
-      --writing: #a855f7;
-      --writing-soft: rgba(168,85,247,0.12);
-      --errands: #f59e0b;
-      --errands-soft: rgba(245,158,11,0.12);
-      --general: #71717a;
-      --general-soft: rgba(113,113,122,0.12);
-      
-      /* Status colors */
-      --success: #22c55e;
-      --warning: #eab308;
-      --danger: #ef4444;
-      
-      --radius: 16px;
-      --radius-sm: 10px;
+      --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --bg-base: #0c0c0c;
+      --bg-surface: #161616;
+      --bg-elevated: #1e1e1e;
+      --bg-hover: #262626;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-default: rgba(255, 255, 255, 0.1);
+      --text-primary: #f5f5f5;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.4);
+      --color-leadlink: #3b82f6;
+      --color-medivault: #10b981;
+      --color-writing: #a855f7;
+      --color-errands: #f59e0b;
+      --color-general: #6b7280;
+      --color-eveready: #ec4899;
+      --color-proverbs: #8b5cf6;
+      --color-frame: #f472b6;
+      --color-success: #22c55e;
+      --color-warning: #eab308;
+      --color-danger: #ef4444;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      min-height: 100dvh;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
-    }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-sans); background: var(--bg-base); color: var(--text-primary); min-height: 100vh; line-height: 1.5; }
 
-    /* Sprint Header */
-    .header {
-      padding: 20px 20px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
+    .app { display: flex; flex-direction: column; min-height: 100vh; }
 
-    .header-left { flex: 1; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); }
+    .header-left { display: flex; align-items: center; gap: 32px; }
+    .sprint-info h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2px; }
+    .sprint-info .dates { font-size: 0.875rem; color: var(--text-muted); }
+    .days-remaining { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 50px; }
+    .days-remaining .number { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 600; color: var(--color-leadlink); line-height: 1; }
+    .days-remaining .label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .btn-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); color: var(--text-secondary); font-size: 1.125rem; cursor: pointer; transition: all 0.15s ease; }
+    .btn-icon:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .btn-icon.active { background: var(--color-leadlink); border-color: var(--color-leadlink); color: white; }
 
-    .sprint-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
+    .main { flex: 1; padding: 32px; display: flex; flex-direction: column; gap: 32px; max-width: 1600px; margin: 0 auto; width: 100%; }
 
-    .sprint-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 2px;
-    }
+    .goals-section { display: flex; flex-direction: column; gap: 16px; }
+    .section-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+    .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .goal-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: all 0.15s ease; }
+    .goal-card:hover { background: var(--bg-elevated); border-color: var(--border-default); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .goal-ring { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+    .goal-ring svg { transform: rotate(-90deg); width: 64px; height: 64px; }
+    .goal-ring .ring-bg { fill: none; stroke: var(--bg-base); stroke-width: 5; }
+    .goal-ring .ring-progress { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+    .goal-ring .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .goal-ring .count { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; line-height: 1; }
+    .goal-ring .total { font-size: 0.625rem; color: var(--text-muted); margin-top: 2px; }
+    .goal-info { flex: 1; min-width: 0; }
+    .goal-info .title { font-size: 0.9375rem; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+    .goal-info .unit { font-size: 0.75rem; color: var(--text-muted); }
 
-    .sprint-dates {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
+    .workspace { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; flex: 1; }
+    @media (max-width: 1200px) { .workspace { grid-template-columns: 1fr; } }
 
-    .days-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 16px;
-      background: linear-gradient(135deg, var(--leadlink-soft), transparent);
-      border: 1px solid rgba(59,130,246,0.2);
-      border-radius: 100px;
-    }
-
-    .days-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--leadlink);
-    }
-
-    .days-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .icon-btn:active { transform: scale(0.95); background: var(--bg-hover); }
-    .icon-btn.edit-active { background: var(--leadlink); color: white; border-color: var(--leadlink); }
-
-    /* Main content scroll area */
-    .main {
-      padding: 0 16px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* Section styling */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding: 0 4px;
-    }
-
-    .section-title {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* Goal Rings */
-    .goals-scroll {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin: 0 -16px;
-      padding-left: 16px;
-      padding-right: 16px;
-      scrollbar-width: none;
-    }
-    .goals-scroll::-webkit-scrollbar { display: none; }
-
-    .goal-ring {
-      flex-shrink: 0;
-      width: 110px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 12px;
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .goal-ring:active { transform: scale(0.97); background: var(--bg-hover); }
-
-    .ring-container {
-      position: relative;
-      width: 64px;
-      height: 64px;
-      margin-bottom: 10px;
-    }
-
-    .ring-svg {
-      transform: rotate(-90deg);
-      width: 64px;
-      height: 64px;
-    }
-
-    .ring-bg {
-      fill: none;
-      stroke: var(--bg);
-      stroke-width: 6;
-    }
-
-    .ring-progress {
-      fill: none;
-      stroke-width: 6;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.4s ease, stroke 0.3s ease;
-    }
-
-    .ring-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .ring-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .ring-total {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .goal-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-align: center;
-      line-height: 1.3;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-
-    /* Active Now Section */
-    .active-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .task-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      background: var(--bg-card);
-      transition: background 0.15s ease;
-    }
-
-    .task-item:not(:last-child) { border-bottom: 1px solid var(--border-light); }
-    .task-item:active { background: var(--bg-hover); }
-
-    .task-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .task-dot.leadlink { background: var(--leadlink); }
-    .task-dot.medivault { background: var(--medivault); }
-    .task-dot.writing { background: var(--writing); }
-    .task-dot.errands { background: var(--errands); }
-    .task-dot.general { background: var(--general); }
-
+    .active-section { display: flex; flex-direction: column; gap: 16px; }
+    .active-header { display: flex; justify-content: space-between; align-items: center; }
+    .active-header .count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); background: var(--bg-elevated); padding: 4px 10px; border-radius: 20px; }
+    .active-list { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
+    .task-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
+    .task-item:last-child { border-bottom: none; }
+    .task-item:hover { background: var(--bg-elevated); }
+    .task-checkbox { width: 24px; height: 24px; border-radius: var(--radius-sm); border: 2px solid var(--border-default); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0; margin-top: 1px; color: transparent; font-size: 0.75rem; }
+    .task-checkbox:hover { border-color: var(--color-success); color: var(--color-success); }
+    .task-checkbox.checked { background: var(--color-success); border-color: var(--color-success); color: white; }
+    .task-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
     .task-content { flex: 1; min-width: 0; }
+    .task-text { font-size: 0.9375rem; font-weight: 500; line-height: 1.4; color: var(--text-primary); }
+    .task-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .task-meta .due { color: var(--color-warning); }
+    .task-meta .overdue { color: var(--color-danger); }
+    .empty-state { padding: 48px 24px; text-align: center; color: var(--text-muted); }
+    .empty-state .icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
+    .empty-state .message { font-size: 0.875rem; }
 
-    .task-text {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 1.4;
-      color: var(--text);
-    }
+    .backlog-section { display: flex; flex-direction: column; gap: 16px; }
+    .backlog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .backlog-category { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
+    .backlog-category-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-elevated); }
+    .category-color { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+    .category-name { flex: 1; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+    .category-count { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: var(--bg-base); padding: 4px 10px; border-radius: 20px; }
+    .backlog-tasks { max-height: 400px; overflow-y: auto; }
+    .backlog-task { display: flex; align-items: flex-start; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
+    .backlog-task:last-child { border-bottom: none; }
+    .backlog-task:hover { background: var(--bg-elevated); }
+    .backlog-task-text { flex: 1; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.4; }
+    .backlog-task-due { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .backlog-task-due.warning { color: var(--color-warning); }
+    .activate-btn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px dashed var(--border-default); background: transparent; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; }
+    .activate-btn:hover { border-style: solid; border-color: var(--color-leadlink); color: var(--color-leadlink); background: rgba(59, 130, 246, 0.1); }
 
-    .task-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .task-checkbox {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-      border: 2px solid var(--border);
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-      color: transparent;
-    }
-
-    .task-checkbox:hover { border-color: var(--success); }
-    .task-checkbox.checked { 
-      background: var(--success); 
-      border-color: var(--success); 
-      color: white;
-    }
-
-    /* Edit mode checkbox */
-    .edit-checkbox {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 2px solid var(--border);
-      background: transparent;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
+    .edit-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-default); background: transparent; display: none; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; color: transparent; font-size: 0.625rem; transition: all 0.15s ease; }
     .edit-mode .edit-checkbox { display: flex; }
-    .edit-mode .task-checkbox { display: none; }
+    .edit-mode .task-checkbox, .edit-mode .activate-btn { display: none; }
+    .edit-checkbox.selected { background: var(--color-leadlink); border-color: var(--color-leadlink); color: white; }
+    .edit-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-surface); border-top: 1px solid var(--border-default); padding: 16px 32px; display: none; justify-content: center; gap: 16px; z-index: 100; }
+    .edit-mode .edit-bar { display: flex; }
+    .edit-bar-btn { padding: 12px 32px; border-radius: var(--radius-md); border: none; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.15s ease; }
+    .edit-bar-btn.cancel { background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border-default); }
+    .edit-bar-btn.done { background: var(--color-success); color: white; }
+    .edit-bar-btn.activate { background: var(--color-leadlink); color: white; }
+    .edit-bar-btn:hover { transform: translateY(-1px); }
+    .edit-bar-btn:active { transform: scale(0.98); }
 
-    .edit-checkbox.selected {
-      background: var(--leadlink);
-      border-color: var(--leadlink);
-      color: white;
-    }
+    .dropdown { position: relative; }
+    .dropdown-menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 160px; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.15s ease; z-index: 200; box-shadow: var(--shadow-card); }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-item { display: block; width: 100%; padding: 10px 14px; font-size: 0.875rem; font-family: var(--font-sans); color: var(--text-secondary); background: none; border: none; border-radius: var(--radius-sm); text-align: left; cursor: pointer; transition: all 0.1s ease; }
+    .dropdown-item:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-    /* Backlog Boxes */
-    .backlog-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .backlog-box {
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .backlog-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    .backlog-header:active { background: var(--bg-hover); }
-
-    .backlog-color {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .backlog-color.leadlink { background: var(--leadlink); }
-    .backlog-color.medivault { background: var(--medivault); }
-    .backlog-color.writing { background: var(--writing); }
-    .backlog-color.errands { background: var(--errands); }
-    .backlog-color.general { background: var(--general); }
-
-    .backlog-name {
-      flex: 1;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .backlog-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 100px;
-      background: var(--bg);
-      color: var(--text-secondary);
-    }
-
-    .backlog-tasks {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.25s ease;
-    }
-
-    .backlog-box.expanded .backlog-tasks {
-      max-height: 400px;
-    }
-
-    .backlog-task {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-top: 1px solid var(--border-light);
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    .backlog-task:active { background: var(--bg-hover); }
-
-    .backlog-task-text {
-      flex: 1;
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.3;
-    }
-
-    .activate-btn {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 1px dashed var(--border);
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    .activate-btn:hover {
-      border-color: var(--leadlink);
-      color: var(--leadlink);
-      border-style: solid;
-    }
-
-    /* Edit Mode Action Bar */
-    .edit-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 16px 20px;
-      padding-bottom: max(16px, env(safe-area-inset-bottom));
-      background: var(--bg-card);
-      border-top: 1px solid var(--border);
-      display: none;
-      gap: 12px;
-      transform: translateY(100%);
-      transition: transform 0.2s ease;
-    }
-
-    .edit-mode .edit-bar {
-      display: flex;
-      transform: translateY(0);
-    }
-
-    .edit-btn {
-      flex: 1;
-      padding: 14px 20px;
-      border-radius: var(--radius-sm);
-      border: none;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .edit-btn:active { transform: scale(0.98); }
-
-    .edit-btn.done-btn {
-      background: var(--success);
-      color: white;
-    }
-
-    .edit-btn.activate-btn-bar {
-      background: var(--leadlink);
-      color: white;
-    }
-
-    .edit-btn.cancel-btn {
-      background: var(--bg);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
-
-    .selected-count {
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-      z-index: 1000;
-    }
-
-    .toast.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
-
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-elevated); border: 1px solid var(--border-default); padding: 14px 28px; border-radius: var(--radius-md); font-size: 0.9375rem; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 1000; }
+    .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .edit-mode .toast { bottom: 100px; }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 32px 20px;
-      color: var(--text-muted);
-    }
-
-    .empty-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-      opacity: 0.5;
-    }
-
-    .empty-text {
-      font-size: 13px;
-    }
-
-    /* Loading */
-    .loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      gap: 12px;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-
-    .spinner {
-      width: 18px;
-      height: 18px;
-      border: 2px solid var(--border);
-      border-top-color: var(--leadlink);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-
+    .loading { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 48px; color: var(--text-muted); font-size: 0.875rem; }
+    .spinner { width: 20px; height: 20px; border: 2px solid var(--border-default); border-top-color: var(--color-leadlink); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Guide link */
-    .guide-link {
-      display: block;
-      text-align: center;
-      padding: 16px;
-      font-size: 12px;
-      color: var(--text-muted);
-      text-decoration: none;
+    .color-leadlink { background: var(--color-leadlink); }
+    .color-medivault { background: var(--color-medivault); }
+    .color-writing { background: var(--color-writing); }
+    .color-errands { background: var(--color-errands); }
+    .color-general { background: var(--color-general); }
+    .color-eveready { background: var(--color-eveready); }
+    .color-proverbs { background: var(--color-proverbs); }
+    .color-frame { background: var(--color-frame); }
+    .dot-leadlink { background: var(--color-leadlink); }
+    .dot-medivault { background: var(--color-medivault); }
+    .dot-writing { background: var(--color-writing); }
+    .dot-errands { background: var(--color-errands); }
+    .dot-general { background: var(--color-general); }
+    .dot-eveready { background: var(--color-eveready); }
+    .dot-proverbs { background: var(--color-proverbs); }
+    .dot-frame { background: var(--color-frame); }
+
+    @media (max-width: 768px) {
+      .header { padding: 16px 20px; flex-wrap: wrap; gap: 16px; }
+      .header-left { flex-wrap: wrap; gap: 16px; }
+      .main { padding: 20px; }
+      .workspace { grid-template-columns: 1fr; }
+      .backlog-grid { grid-template-columns: 1fr; }
+      .goals-grid { grid-template-columns: 1fr; }
     }
-
-    .guide-link:hover { color: var(--text-secondary); }
-
-    /* Dropdown menu */
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin-top: 8px;
-      min-width: 140px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 6px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-8px) scale(0.95);
-      transition: all 0.15s ease;
-      z-index: 100;
-    }
-
-    .dropdown-menu.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-
-    .dropdown-item {
-      display: block;
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 13px;
-      color: var(--text-secondary);
-      background: none;
-      border: none;
-      border-radius: 6px;
-      text-align: left;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .dropdown-item:hover {
-      background: var(--bg-hover);
-      color: var(--text);
-    }
-
-    /* Animations */
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-in {
-      animation: fadeSlideUp 0.3s ease forwards;
-    }
-
-    .delay-1 { animation-delay: 0.05s; opacity: 0; }
-    .delay-2 { animation-delay: 0.1s; opacity: 0; }
-    .delay-3 { animation-delay: 0.15s; opacity: 0; }
   </style>
 </head>
 <body>
+  <div class="app" id="app">
+    <header class="header">
+      <div class="header-left">
+        <div class="sprint-info">
+          <h1 id="sprintTitle">Loading...</h1>
+          <div class="dates" id="sprintDates"></div>
+        </div>
+        <div class="days-remaining">
+          <span class="number" id="daysLeft">–</span>
+          <span class="label">work days<br>remaining</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="btn-icon" id="editBtn" title="Edit Mode">✏️</button>
+        <button class="btn-icon" id="refreshBtn" title="Refresh">↻</button>
+        <div class="dropdown">
+          <button class="btn-icon" id="menuBtn" title="Menu">☰</button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <button class="dropdown-item" onclick="window.location.href='guide.html'">📖 Help Guide</button>
+            <button class="dropdown-item" onclick="logout()">🚪 Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <header class="header">
-    <div class="header-left">
-      <div class="sprint-label">Current Sprint</div>
-      <div class="sprint-title" id="sprintTitle">Loading...</div>
-      <div class="sprint-dates" id="sprintDates"></div>
+    <main class="main">
+      <section class="goals-section" id="goalsSection">
+        <div class="section-title">Sprint Goals</div>
+        <div class="goals-grid" id="goalsGrid">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="active-section">
+          <div class="active-header">
+            <div class="section-title">Active Now</div>
+            <div class="count" id="activeCount">0</div>
+          </div>
+          <div class="active-list" id="activeList">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+
+        <section class="backlog-section">
+          <div class="section-title">Backlog</div>
+          <div class="backlog-grid" id="backlogGrid">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="edit-bar">
+      <button class="edit-bar-btn cancel" onclick="exitEditMode()">Cancel</button>
+      <button class="edit-bar-btn done" onclick="markSelectedDone()">✓ Complete (<span id="activeSelectedCount">0</span>)</button>
+      <button class="edit-bar-btn activate" onclick="activateSelected()">+ Activate (<span id="backlogSelectedCount">0</span>)</button>
     </div>
-    <div class="days-badge">
-      <span class="days-number" id="daysLeft">–</span>
-      <span class="days-label">days<br>left</span>
-    </div>
-  </header>
-
-  <div class="header-actions" style="position: absolute; top: 20px; right: 20px; display: flex; gap: 8px;">
-    <button class="icon-btn" id="editBtn" title="Edit Mode">✏️</button>
-    <div class="dropdown">
-      <button class="icon-btn" id="menuBtn">☰</button>
-      <div class="dropdown-menu" id="dropdownMenu">
-        <button class="dropdown-item" onclick="refreshData()">↻ Refresh</button>
-        <button class="dropdown-item" onclick="window.location.href='guide.html'">? Help</button>
-        <button class="dropdown-item" onclick="logout()">Sign out</button>
-      </div>
-    </div>
-  </div>
-
-  <main class="main">
-    <!-- Goal Rings -->
-    <section class="section animate-in delay-1" id="goalsSection">
-      <div class="section-header">
-        <span class="section-title">Goals</span>
-      </div>
-      <div class="goals-scroll" id="goalRings">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
-    </section>
-
-    <!-- Active Now -->
-    <section class="section animate-in delay-2">
-      <div class="section-header">
-        <span class="section-title">Active Now</span>
-        <span class="section-count" id="activeCount" style="font-size: 11px; color: var(--text-muted);">0</span>
-      </div>
-      <div class="active-list" id="activeTasks">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
-    </section>
-
-    <!-- Backlog -->
-    <section class="section animate-in delay-3">
-      <div class="section-header">
-        <span class="section-title">Backlog</span>
-      </div>
-      <div class="backlog-grid" id="backlogGrid"></div>
-    </section>
-
-    <a href="guide.html" class="guide-link">Dashboard Guide →</a>
-  </main>
-
-  <!-- Edit Mode Action Bar -->
-  <div class="edit-bar">
-    <button class="edit-btn cancel-btn" onclick="exitEditMode()">Cancel</button>
-    <button class="edit-btn done-btn" onclick="markSelectedDone()">
-      Done (<span class="selected-count" id="activeSelectedCount">0</span>)
-    </button>
-    <button class="edit-btn activate-btn-bar" onclick="activateSelected()">
-      Activate (<span class="selected-count" id="backlogSelectedCount">0</span>)
-    </button>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    // Auth check
-    if (localStorage.getItem('authenticated') !== 'true' || !localStorage.getItem('apiUrl')) {
-      window.location.href = 'index.html';
-    }
+    (function() {
+      if (localStorage.getItem('authenticated') !== 'true' || !localStorage.getItem('apiUrl')) {
+        window.location.href = 'index.html';
+      }
+    })();
 
     const API_URL = localStorage.getItem('apiUrl');
-    const USER_NAME = localStorage.getItem('userName') || 'User';
+    const state = { data: null, editMode: false, selectedActive: new Set(), selectedBacklog: new Set() };
 
-    // State
-    let currentData = null;
-    let editMode = false;
-    let selectedActive = new Set();
-    let selectedBacklog = new Set();
-    let expandedCategories = new Set();
-
-    // Category mapping
-    const CATEGORY_MAP = {
-      'leadlink': 'leadlink',
-      'lead link': 'leadlink',
-      'medivault': 'medivault',
-      'medi vault': 'medivault',
-      'writing': 'writing',
-      'the frame': 'writing',
-      'proverbs': 'writing',
-      'sean': 'writing',
-      'errands': 'errands',
-      'errand': 'errands',
-      'general': 'general'
+    const CATEGORY_COLORS = {
+      'leadlink': 'leadlink', 'lead link': 'leadlink', 'medivault': 'medivault', 'medi vault': 'medivault',
+      'tech': 'medivault', 'writing': 'writing', 'the frame': 'frame', 'proverbs': 'proverbs',
+      'proverbs library': 'proverbs', 'errands': 'errands', 'errand': 'errands', 'eveready': 'eveready', 'general': 'general'
     };
 
-    function getCategoryClass(category) {
+    function getCategoryColor(category) {
       if (!category) return 'general';
       const lower = category.toLowerCase();
-      for (const [key, value] of Object.entries(CATEGORY_MAP)) {
+      for (const [key, value] of Object.entries(CATEGORY_COLORS)) {
         if (lower.includes(key)) return value;
       }
       return 'general';
     }
 
-    // API
     async function api(endpoint, options = {}) {
       try {
-        const res = await fetch(`${API_URL}${endpoint}`, {
-          ...options,
-          headers: { 'Content-Type': 'application/json', ...options.headers }
-        });
-        if (!res.ok) throw new Error(res.status);
-        return await res.json();
-      } catch (e) {
-        console.error('API Error:', e);
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        console.error('API Error:', error);
         showToast('Request failed');
         return null;
       }
     }
 
-    // Load data
     async function loadData() {
       const data = await api('/morning');
       if (!data) return;
-      currentData = data;
+      state.data = data;
+      renderHeader(data);
+      renderGoals(data.plan?.goals || []);
+      renderActiveTasks(data.activeTasks || []);
+      renderBacklog(data.backlogByCategory || {});
+    }
 
-      // Sprint header
-      if (data.plan) {
-        document.getElementById('sprintTitle').textContent = data.plan.title || 'Sprint';
-        document.getElementById('sprintDates').textContent = 
-          `${formatDateShort(data.plan.startDate)} – ${formatDateShort(data.plan.endDate)}`;
-        document.getElementById('daysLeft').textContent = data.plan.workDaysRemaining || 0;
+    function renderHeader(data) {
+      const plan = data.plan;
+      if (plan) {
+        document.getElementById('sprintTitle').textContent = plan.title || 'Sprint';
+        document.getElementById('sprintDates').textContent = `${formatDate(plan.startDate)} → ${formatDate(plan.endDate)}`;
+        document.getElementById('daysLeft').textContent = plan.workDaysRemaining ?? '–';
       } else {
-        document.getElementById('sprintTitle').textContent = 'No active plan';
+        document.getElementById('sprintTitle').textContent = 'No Active Plan';
         document.getElementById('sprintDates').textContent = '';
         document.getElementById('daysLeft').textContent = '–';
       }
-
-      // Goals
-      renderGoals(data.plan?.goals || []);
-
-      // Active tasks
-      renderActiveTasks(data.activeTasks || []);
-
-      // Backlog - group by category
-      renderBacklog(data.backlog || []);
     }
 
     function renderGoals(goals) {
-      const container = document.getElementById('goalRings');
-      
-      if (!goals.length) {
-        document.getElementById('goalsSection').style.display = 'none';
-        return;
-      }
-
-      document.getElementById('goalsSection').style.display = 'block';
+      const container = document.getElementById('goalsGrid');
+      const section = document.getElementById('goalsSection');
+      if (!goals.length) { section.style.display = 'none'; return; }
+      section.style.display = 'flex';
       const circumference = 2 * Math.PI * 26;
-
-      container.innerHTML = goals.map(g => {
-        const progress = g.targetCount > 0 ? (g.completedCount / g.targetCount) : 0;
+      container.innerHTML = goals.map(goal => {
+        const progress = goal.targetCount > 0 ? goal.completedCount / goal.targetCount : 0;
         const dashOffset = circumference * (1 - Math.min(progress, 1));
-        const color = progress >= 1 ? 'var(--success)' : 
-                      progress >= 0.5 ? 'var(--warning)' : 'var(--danger)';
-
-        return `
-          <div class="goal-ring" data-goal-id="${g.id}" onclick="incrementGoal('${g.id}')">
-            <div class="ring-container">
-              <svg class="ring-svg" viewBox="0 0 64 64">
-                <circle class="ring-bg" cx="32" cy="32" r="26"/>
-                <circle class="ring-progress" cx="32" cy="32" r="26"
-                  stroke="${color}"
-                  stroke-dasharray="${circumference}"
-                  stroke-dashoffset="${dashOffset}"/>
-              </svg>
-              <div class="ring-center">
-                <span class="ring-count">${g.completedCount}</span>
-                <span class="ring-total">/ ${g.targetCount}</span>
-              </div>
-            </div>
-            <span class="goal-label">${esc(g.description)}</span>
+        const color = progress >= 1 ? 'var(--color-success)' : progress >= 0.5 ? 'var(--color-warning)' : 'var(--color-danger)';
+        return `<div class="goal-card" onclick="incrementGoal('${goal.id}')">
+          <div class="goal-ring">
+            <svg viewBox="0 0 64 64"><circle class="ring-bg" cx="32" cy="32" r="26"></circle><circle class="ring-progress" cx="32" cy="32" r="26" stroke="${color}" stroke-dasharray="${circumference}" stroke-dashoffset="${dashOffset}"></circle></svg>
+            <div class="ring-center"><span class="count">${goal.completedCount}</span><span class="total">/ ${goal.targetCount}</span></div>
           </div>
-        `;
+          <div class="goal-info"><div class="title">${escapeHtml(goal.description)}</div><div class="unit">${escapeHtml(goal.unit || '')}</div></div>
+        </div>`;
       }).join('');
     }
 
     function renderActiveTasks(tasks) {
-      const container = document.getElementById('activeTasks');
+      const container = document.getElementById('activeList');
       document.getElementById('activeCount').textContent = tasks.length;
-
-      if (!tasks.length) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">✓</div>
-            <div class="empty-text">All clear! Tap backlog to activate tasks.</div>
+      if (!tasks.length) { container.innerHTML = '<div class="empty-state"><div class="icon">✓</div><div class="message">All clear! Activate tasks from backlog.</div></div>'; return; }
+      container.innerHTML = tasks.map(task => {
+        const colorClass = getCategoryColor(task.category || task.project);
+        const isSelected = state.selectedActive.has(task.id);
+        return `<div class="task-item" data-id="${task.id}">
+          <div class="edit-checkbox ${isSelected ? 'selected' : ''}" onclick="toggleActiveSelect('${task.id}', event)">✓</div>
+          <div class="task-dot dot-${colorClass}"></div>
+          <div class="task-content">
+            <div class="task-text">${escapeHtml(task.text)}</div>
+            ${task.category || task.due_date ? `<div class="task-meta">${task.category ? escapeHtml(task.category) : ''}${task.due_date ? `<span class="${isOverdue(task.due_date) ? 'overdue' : 'due'}"> · ${formatDate(task.due_date)}</span>` : ''}</div>` : ''}
           </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = tasks.map(t => {
-        const catClass = getCategoryClass(t.category || t.project);
-        return `
-          <div class="task-item" data-id="${t.id}">
-            <div class="edit-checkbox ${selectedActive.has(t.id) ? 'selected' : ''}" 
-                 onclick="toggleActiveSelect('${t.id}', event)">
-              ${selectedActive.has(t.id) ? '✓' : ''}
-            </div>
-            <span class="task-dot ${catClass}"></span>
-            <div class="task-content">
-              <div class="task-text">${esc(t.text)}</div>
-              ${t.category || t.due_date ? `
-                <div class="task-meta">
-                  ${t.category ? t.category : ''}
-                  ${t.due_date ? ' · ' + formatDateShort(t.due_date) : ''}
-                </div>
-              ` : ''}
-            </div>
-            <div class="task-checkbox" onclick="completeTask('${t.id}', this)">✓</div>
-          </div>
-        `;
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">✓</div>
+        </div>`;
       }).join('');
     }
 
-    function renderBacklog(tasks) {
-      const grid = document.getElementById('backlogGrid');
-      
-      // Group by category
-      const groups = {};
-      tasks.forEach(t => {
-        const cat = getCategoryClass(t.category || t.project);
-        if (!groups[cat]) groups[cat] = [];
-        groups[cat].push(t);
-      });
-
-      // Category display names
-      const catNames = {
-        leadlink: 'LeadLink',
-        medivault: 'MediVault', 
-        writing: 'Writing',
-        errands: 'Errands',
-        general: 'General'
-      };
-
-      // Order: prioritize categories with tasks
-      const order = ['leadlink', 'medivault', 'writing', 'errands', 'general'];
-      const sortedCats = order.filter(c => groups[c]?.length);
-
-      if (!sortedCats.length) {
-        grid.innerHTML = `
-          <div class="empty-state" style="grid-column: span 2;">
-            <div class="empty-icon">📋</div>
-            <div class="empty-text">No backlog tasks</div>
+    function renderBacklog(backlogByCategory) {
+      const container = document.getElementById('backlogGrid');
+      const categories = Object.keys(backlogByCategory);
+      if (!categories.length) { container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><div class="message">No backlog tasks</div></div>'; return; }
+      container.innerHTML = categories.map(category => {
+        const tasks = backlogByCategory[category];
+        const colorClass = getCategoryColor(category);
+        return `<div class="backlog-category">
+          <div class="backlog-category-header">
+            <div class="category-color color-${colorClass}"></div>
+            <div class="category-name">${escapeHtml(category)}</div>
+            <div class="category-count">${tasks.length}</div>
           </div>
-        `;
-        return;
-      }
-
-      grid.innerHTML = sortedCats.map(cat => {
-        const tasks = groups[cat];
-        const expanded = expandedCategories.has(cat);
-        
-        return `
-          <div class="backlog-box ${expanded ? 'expanded' : ''}" data-category="${cat}">
-            <div class="backlog-header" onclick="toggleBacklogBox('${cat}')">
-              <span class="backlog-color ${cat}"></span>
-              <span class="backlog-name">${catNames[cat]}</span>
-              <span class="backlog-count">${tasks.length}</span>
-            </div>
-            <div class="backlog-tasks">
-              ${tasks.map(t => `
-                <div class="backlog-task" data-id="${t.id}">
-                  <div class="edit-checkbox ${selectedBacklog.has(t.id) ? 'selected' : ''}" 
-                       onclick="toggleBacklogSelect('${t.id}', event)">
-                    ${selectedBacklog.has(t.id) ? '✓' : ''}
-                  </div>
-                  <span class="backlog-task-text">${esc(t.text)}</span>
-                  <div class="activate-btn" onclick="activateTask('${t.id}', event)">+</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
+          <div class="backlog-tasks">${tasks.map(task => {
+            const isSelected = state.selectedBacklog.has(task.id);
+            return `<div class="backlog-task" data-id="${task.id}">
+              <div class="edit-checkbox ${isSelected ? 'selected' : ''}" onclick="toggleBacklogSelect('${task.id}', event)">✓</div>
+              <div class="task-content">
+                <div class="backlog-task-text">${escapeHtml(task.text)}</div>
+                ${task.due_date ? `<div class="backlog-task-due ${isOverdue(task.due_date) ? 'warning' : ''}">${formatDate(task.due_date)}</div>` : ''}
+              </div>
+              <button class="activate-btn" onclick="activateTask('${task.id}', event)" title="Activate">+</button>
+            </div>`;
+          }).join('')}</div>
+        </div>`;
       }).join('');
     }
 
-    function toggleBacklogBox(cat) {
-      if (expandedCategories.has(cat)) {
-        expandedCategories.delete(cat);
-      } else {
-        expandedCategories.add(cat);
-      }
-      const box = document.querySelector(`.backlog-box[data-category="${cat}"]`);
-      if (box) box.classList.toggle('expanded');
-    }
-
-    // Actions
-    async function completeTask(id, el) {
-      el.classList.add('checked');
+    async function completeTask(id, element) {
+      element.classList.add('checked');
       const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
-      if (result?.success) {
-        showToast('Done ✓');
-        setTimeout(() => {
-          el.closest('.task-item').style.opacity = '0';
-          el.closest('.task-item').style.transform = 'translateX(20px)';
-          setTimeout(loadData, 200);
-        }, 300);
-      }
+      if (result?.success) { showToast('Done ✓'); const item = element.closest('.task-item'); item.style.opacity = '0'; item.style.transform = 'translateX(20px)'; setTimeout(loadData, 300); }
+      else { element.classList.remove('checked'); }
     }
 
     async function activateTask(id, event) {
       event.stopPropagation();
       const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
-      if (result?.success) {
-        showToast('Activated');
-        loadData();
-      }
+      if (result?.success) { showToast('Activated'); loadData(); }
     }
 
     async function incrementGoal(id) {
       const result = await api(`/goals/${id}/increment`, { method: 'POST' });
-      if (result?.success) {
-        showToast('+1');
-        loadData();
-      }
+      if (result?.success) { showToast('+1'); loadData(); }
     }
 
-    // Edit mode
     function toggleEditMode() {
-      editMode = !editMode;
-      document.body.classList.toggle('edit-mode', editMode);
-      document.getElementById('editBtn').classList.toggle('edit-active', editMode);
-      
-      if (!editMode) {
-        selectedActive.clear();
-        selectedBacklog.clear();
-        updateSelectedCounts();
-      }
+      state.editMode = !state.editMode;
+      document.getElementById('app').classList.toggle('edit-mode', state.editMode);
+      document.getElementById('editBtn').classList.toggle('active', state.editMode);
+      if (!state.editMode) { state.selectedActive.clear(); state.selectedBacklog.clear(); updateSelectedCounts(); }
     }
 
     function exitEditMode() {
-      editMode = false;
-      document.body.classList.remove('edit-mode');
-      document.getElementById('editBtn').classList.remove('edit-active');
-      selectedActive.clear();
-      selectedBacklog.clear();
-      loadData(); // Re-render to clear selections
+      state.editMode = false;
+      state.selectedActive.clear();
+      state.selectedBacklog.clear();
+      document.getElementById('app').classList.remove('edit-mode');
+      document.getElementById('editBtn').classList.remove('active');
+      loadData();
     }
 
     function toggleActiveSelect(id, event) {
       event.stopPropagation();
-      if (selectedActive.has(id)) {
-        selectedActive.delete(id);
-      } else {
-        selectedActive.add(id);
-      }
-      const checkbox = event.currentTarget;
-      checkbox.classList.toggle('selected');
-      checkbox.innerHTML = selectedActive.has(id) ? '✓' : '';
+      state.selectedActive.has(id) ? state.selectedActive.delete(id) : state.selectedActive.add(id);
+      event.currentTarget.classList.toggle('selected');
       updateSelectedCounts();
     }
 
     function toggleBacklogSelect(id, event) {
       event.stopPropagation();
-      if (selectedBacklog.has(id)) {
-        selectedBacklog.delete(id);
-      } else {
-        selectedBacklog.add(id);
-      }
-      const checkbox = event.currentTarget;
-      checkbox.classList.toggle('selected');
-      checkbox.innerHTML = selectedBacklog.has(id) ? '✓' : '';
+      state.selectedBacklog.has(id) ? state.selectedBacklog.delete(id) : state.selectedBacklog.add(id);
+      event.currentTarget.classList.toggle('selected');
       updateSelectedCounts();
     }
 
     function updateSelectedCounts() {
-      document.getElementById('activeSelectedCount').textContent = selectedActive.size;
-      document.getElementById('backlogSelectedCount').textContent = selectedBacklog.size;
+      document.getElementById('activeSelectedCount').textContent = state.selectedActive.size;
+      document.getElementById('backlogSelectedCount').textContent = state.selectedBacklog.size;
     }
 
     async function markSelectedDone() {
-      if (!selectedActive.size) return showToast('Select tasks first');
-      
+      if (!state.selectedActive.size) { showToast('Select tasks first'); return; }
       let completed = 0;
-      for (const id of selectedActive) {
-        const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
-        if (result?.success) completed++;
-      }
-      
-      showToast(`${completed} done ✓`);
+      for (const id of state.selectedActive) { const result = await api(`/tasks/${id}/complete`, { method: 'POST' }); if (result?.success) completed++; }
+      showToast(`${completed} completed ✓`);
       exitEditMode();
     }
 
     async function activateSelected() {
-      if (!selectedBacklog.size) return showToast('Select tasks first');
-      
+      if (!state.selectedBacklog.size) { showToast('Select tasks first'); return; }
       let activated = 0;
-      for (const id of selectedBacklog) {
-        const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
-        if (result?.success) activated++;
-      }
-      
+      for (const id of state.selectedBacklog) { const result = await api(`/tasks/${id}/activate`, { method: 'POST' }); if (result?.success) activated++; }
       showToast(`${activated} activated`);
       exitEditMode();
     }
 
-    // Event listeners
+    function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
+    function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+    function formatDate(dateStr) { if (!dateStr) return ''; const date = new Date(dateStr); return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+    function isOverdue(dateStr) { if (!dateStr) return false; const date = new Date(dateStr); const today = new Date(); today.setHours(0,0,0,0); return date < today; }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
     document.getElementById('editBtn').addEventListener('click', toggleEditMode);
-    document.getElementById('menuBtn').addEventListener('click', () => {
-      document.getElementById('dropdownMenu').classList.toggle('show');
-    });
+    document.getElementById('refreshBtn').addEventListener('click', () => { loadData(); showToast('Refreshed'); });
+    document.getElementById('menuBtn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); });
+    document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown')) document.getElementById('dropdownMenu').classList.remove('show'); });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        document.getElementById('dropdownMenu').classList.remove('show');
-      }
-    });
-
-    // Helpers
-    function formatDateShort(d) {
-      if (!d) return '';
-      const date = new Date(d);
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    function esc(s) {
-      if (!s) return '';
-      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = 'index.html';
-    }
-
-    function refreshData() {
-      document.getElementById('dropdownMenu').classList.remove('show');
-      loadData();
-      showToast('Refreshed');
-    }
-
-    // Init
     loadData();
   </script>
 </body>
