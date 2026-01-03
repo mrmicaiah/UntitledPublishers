@@ -59,6 +59,19 @@
     .header-btn { padding: 6px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 11px; cursor: pointer; }
     .header-btn:hover { border-color: var(--brass); color: var(--text-primary); }
 
+    /* Add Task Box */
+    .add-task-box { display: flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .add-task-input { flex: 1; min-width: 200px; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-primary); font-size: 13px; font-family: inherit; }
+    .add-task-input:focus { outline: none; border-color: var(--brass); }
+    .add-task-input::placeholder { color: var(--text-muted); }
+    .add-task-select { padding: 8px 10px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-secondary); font-size: 11px; font-family: inherit; cursor: pointer; min-width: 110px; }
+    .add-task-select:focus { outline: none; border-color: var(--brass); }
+    .add-task-checkbox { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
+    .add-task-checkbox input { accent-color: var(--brass); cursor: pointer; }
+    .add-task-btn { padding: 8px 16px; background: var(--brass); border: 1px solid var(--brass-light); border-radius: 4px; color: var(--bg-dark); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .add-task-btn:hover { background: var(--brass-light); }
+    .add-task-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
     /* Sprint Banner */
     .sprint-banner { background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-metal) 100%); border: 1px solid var(--brass); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
     .sprint-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -136,6 +149,9 @@
     @media (max-width: 600px) {
       .task-grid { grid-template-columns: 1fr; }
       body { padding: 8px; }
+      .add-task-box { flex-direction: column; align-items: stretch; }
+      .add-task-input { min-width: 100%; }
+      .add-task-row { display: flex; gap: 8px; justify-content: space-between; }
     }
   </style>
 </head>
@@ -172,6 +188,18 @@
         <button class="header-btn" onclick="loadData()">🔄 Refresh</button>
         <button class="header-btn" onclick="logout()">Logout</button>
       </div>
+    </div>
+
+    <!-- Add Task -->
+    <div class="add-task-box">
+      <input type="text" class="add-task-input" id="newTaskInput" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()">
+      <select class="add-task-select" id="newTaskCategory">
+        <option value="General">General</option>
+      </select>
+      <label class="add-task-checkbox">
+        <input type="checkbox" id="newTaskActive"> Activate
+      </label>
+      <button class="add-task-btn" onclick="addTask()">+ Add</button>
     </div>
 
     <div class="sprint-banner" id="sprintBanner" style="display: none;">
@@ -229,6 +257,7 @@
       '1976': { name: 'irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '', currentUser = '';
+    let categories = ['General'];
 
     function checkSession() {
       const s = localStorage.getItem('dashboardSession');
@@ -292,6 +321,37 @@
       } catch (e) { console.error(e); showToast('Connection failed', 'error'); return null; }
     }
 
+    function updateCategoryDropdown() {
+      const select = document.getElementById('newTaskCategory');
+      const current = select.value;
+      select.innerHTML = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+      if (categories.includes(current)) select.value = current;
+    }
+
+    async function addTask() {
+      const input = document.getElementById('newTaskInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const category = document.getElementById('newTaskCategory').value;
+      const isActive = document.getElementById('newTaskActive').checked;
+
+      const r = await api('/tasks', {
+        method: 'POST',
+        body: JSON.stringify({ text, category, priority: 3 })
+      });
+
+      if (r?.success) {
+        if (isActive && r.id) {
+          await api(`/tasks/${r.id}/activate`, { method: 'POST' });
+        }
+        input.value = '';
+        document.getElementById('newTaskActive').checked = false;
+        showToast('Task added' + (isActive ? ' & activated' : ''));
+        loadData();
+      }
+    }
+
     async function loadData() {
       const data = await api('/morning');
       if (!data) return;
@@ -299,6 +359,13 @@
       const hour = new Date().getHours();
       document.getElementById('greeting').textContent = `Good ${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'}, ${currentUser}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek} • ${data.greeting.date}`;
+
+      // Extract categories from backlog
+      const backlog = data.backlogByCategory || {};
+      const cats = Object.keys(backlog);
+      categories = ['General', ...cats.filter(c => c !== 'General')];
+      categories = [...new Set(categories)];
+      updateCategoryDropdown();
 
       // Sprint
       if (data.sprint) {
@@ -345,8 +412,6 @@
       document.getElementById('sprintTasks').innerHTML = sprintTasks.map(t => taskCard(t, false, false, true)).join('');
 
       // Backlog
-      const backlog = data.backlogByCategory || {};
-      const cats = Object.keys(backlog);
       let backlogTotal = 0;
       cats.forEach(c => backlogTotal += backlog[c].length);
       document.getElementById('backlogCount').textContent = backlogTotal;
