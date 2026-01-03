@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dashboard Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0a;
+      --bg-elevated: #141414;
+      --border: rgba(255,255,255,0.08);
+      --text: #fafafa;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.4);
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --purple: #a855f7;
+      --red: #ef4444;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-tertiary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .section {
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .section-title .dot.blue { background: var(--blue); }
+    .section-title .dot.green { background: var(--green); }
+    .section-title .dot.yellow { background: var(--yellow); }
+    .section-title .dot.purple { background: var(--purple); }
+    .section-title .dot.red { background: var(--red); }
+
+    .desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .feature::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--text-tertiary);
+    }
+
+    .color-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .color-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    .color-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--blue);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard Guide</h1>
+    <p class="subtitle">Quick reference for dashboard functions</p>
+
+    <div class="section">
+      <div class="section-title"><span class="dot blue"></span> Sprint Header</div>
+      <p class="desc">Shows current date and days remaining in your active plan.</p>
+      <div class="features">
+        <div class="feature">Always visible at top</div>
+        <div class="feature">Work days calculated (excludes weekends)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot green"></span> Goal Rings</div>
+      <p class="desc">Visual progress for each goal in your current plan. See at a glance what's on track.</p>
+      <div class="features">
+        <div class="feature">Tap to increment progress</div>
+        <div class="feature">Ring fills as you complete</div>
+        <div class="feature">Red = behind, Yellow = at risk, Green = on track</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot yellow"></span> Active Now</div>
+      <p class="desc">Your focus list. These are the tasks you're working on today.</p>
+      <div class="features">
+        <div class="feature">Tap checkbox to complete</div>
+        <div class="feature">Color dot shows category/project</div>
+        <div class="feature">Edit Mode: bulk check + mark done</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot purple"></span> Backlog Boxes</div>
+      <p class="desc">Tasks grouped by category. Collapsed by default so you see the shape, not the noise.</p>
+      <div class="features">
+        <div class="feature">Tap box to expand and see tasks</div>
+        <div class="feature">Tap task checkbox to activate immediately</div>
+        <div class="feature">Edit Mode: bulk select + activate</div>
+        <div class="feature">Number badge shows count</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot red"></span> Edit Mode</div>
+      <p class="desc">Toggle for batch operations. Work fast, save once.</p>
+      <div class="features">
+        <div class="feature">Tap [Edit] to enter</div>
+        <div class="feature">Check multiple tasks</div>
+        <div class="feature">"Done" button: complete all checked in Active</div>
+        <div class="feature">"Activate" button: move checked to Active</div>
+        <div class="feature">Tap [Save] to exit and apply</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Color Key</div>
+      <p class="desc">Colors represent categories/projects. Scan and know what's what.</p>
+      <div class="color-key">
+        <div class="color-item"><span class="color-swatch" style="background: var(--blue)"></span> LeadLink</div>
+        <div class="color-item"><span class="color-swatch" style="background: var(--green)"></span> MediVault</div>
+        <div class="color-item"><span class="color-swatch" style="background: var(--purple)"></span> Writing</div>
+        <div class="color-item"><span class="color-swatch" style="background: var(--yellow)"></span> Errands</div>
+        <div class="color-item"><span class="color-swatch" style="background: #6b7280"></span> General</div>
+      </div>
+    </div>
+
+    <a href="app.html" class="back-link">← Back to Dashboard</a>
+  </div>
+</body>
+</html>
