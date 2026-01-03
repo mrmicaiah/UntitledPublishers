@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
       --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'IBM Plex Mono', monospace;
@@ -33,55 +32,34 @@
       --color-eveready: #ec4899;
       --color-proverbs: #8b5cf6;
       --color-frame: #f472b6;
+      --color-sprint: #06b6d4;
       --color-success: #22c55e;
       --color-warning: #eab308;
       --color-danger: #ef4444;
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
     }
-
     html { font-size: 16px; -webkit-font-smoothing: antialiased; }
     body { font-family: var(--font-sans); background: var(--bg-base); color: var(--text-primary); min-height: 100vh; line-height: 1.5; }
-
     .app { display: flex; flex-direction: column; min-height: 100vh; }
-
     .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); }
     .header-left { display: flex; align-items: center; gap: 32px; }
     .sprint-info h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2px; }
     .sprint-info .dates { font-size: 0.875rem; color: var(--text-muted); }
-    .days-remaining { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 50px; }
-    .days-remaining .number { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 600; color: var(--color-leadlink); line-height: 1; }
+    .days-remaining { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05)); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 50px; }
+    .days-remaining .number { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 600; color: var(--color-sprint); line-height: 1; }
     .days-remaining .label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; }
     .header-right { display: flex; align-items: center; gap: 12px; }
     .btn-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); color: var(--text-secondary); font-size: 1.125rem; cursor: pointer; transition: all 0.15s ease; }
     .btn-icon:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .btn-icon.active { background: var(--color-leadlink); border-color: var(--color-leadlink); color: white; }
-
+    .btn-icon.active { background: var(--color-sprint); border-color: var(--color-sprint); color: white; }
     .main { flex: 1; padding: 32px; display: flex; flex-direction: column; gap: 32px; max-width: 1600px; margin: 0 auto; width: 100%; }
-
-    .goals-section { display: flex; flex-direction: column; gap: 16px; }
-    .section-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-    .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-    .goal-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: all 0.15s ease; }
-    .goal-card:hover { background: var(--bg-elevated); border-color: var(--border-default); transform: translateY(-2px); box-shadow: var(--shadow-card); }
-    .goal-ring { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
-    .goal-ring svg { transform: rotate(-90deg); width: 64px; height: 64px; }
-    .goal-ring .ring-bg { fill: none; stroke: var(--bg-base); stroke-width: 5; }
-    .goal-ring .ring-progress { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
-    .goal-ring .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .goal-ring .count { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; line-height: 1; }
-    .goal-ring .total { font-size: 0.625rem; color: var(--text-muted); margin-top: 2px; }
-    .goal-info { flex: 1; min-width: 0; }
-    .goal-info .title { font-size: 0.9375rem; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-    .goal-info .unit { font-size: 0.75rem; color: var(--text-muted); }
-
+    .section-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 16px; }
     .workspace { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; flex: 1; }
     @media (max-width: 1200px) { .workspace { grid-template-columns: 1fr; } }
-
-    .active-section { display: flex; flex-direction: column; gap: 16px; }
-    .active-header { display: flex; justify-content: space-between; align-items: center; }
+    .active-section { display: flex; flex-direction: column; }
+    .active-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .active-header .count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); background: var(--bg-elevated); padding: 4px 10px; border-radius: 20px; }
     .active-list { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
     .task-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
@@ -99,51 +77,75 @@
     .empty-state { padding: 48px 24px; text-align: center; color: var(--text-muted); }
     .empty-state .icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
     .empty-state .message { font-size: 0.875rem; }
-
-    .backlog-section { display: flex; flex-direction: column; gap: 16px; }
-    .backlog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .right-column { display: flex; flex-direction: column; gap: 32px; }
+    .sprint-section { background: var(--bg-surface); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: var(--radius-lg); overflow: hidden; }
+    .sprint-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), transparent); border-bottom: 1px solid var(--border-subtle); }
+    .sprint-header-left { display: flex; align-items: center; gap: 12px; }
+    .sprint-icon { font-size: 1.25rem; }
+    .sprint-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+    .sprint-dates { font-size: 0.75rem; color: var(--text-muted); margin-left: 8px; }
+    .sprint-badge { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--color-sprint); background: rgba(6, 182, 212, 0.15); padding: 4px 12px; border-radius: 20px; }
+    .goals-container { padding: 20px; border-bottom: 1px solid var(--border-subtle); }
+    .goals-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 12px; }
+    .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .goal-card { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--bg-elevated); border-radius: var(--radius-md); cursor: pointer; transition: all 0.15s ease; }
+    .goal-card:hover { background: var(--bg-hover); transform: translateY(-1px); }
+    .goal-ring { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
+    .goal-ring svg { transform: rotate(-90deg); width: 48px; height: 48px; }
+    .goal-ring .ring-bg { fill: none; stroke: var(--bg-base); stroke-width: 4; }
+    .goal-ring .ring-progress { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+    .goal-ring .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .goal-ring .count { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 600; line-height: 1; }
+    .goal-ring .total { font-size: 0.5rem; color: var(--text-muted); }
+    .goal-info { flex: 1; min-width: 0; }
+    .goal-info .title { font-size: 0.8125rem; font-weight: 500; line-height: 1.3; color: var(--text-primary); }
+    .goal-info .unit { font-size: 0.6875rem; color: var(--text-muted); }
+    .sprint-tasks-container { padding: 0; }
+    .sprint-tasks-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 16px 20px 12px; }
+    .sprint-tasks { max-height: 300px; overflow-y: auto; }
+    .sprint-task { display: flex; align-items: flex-start; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
+    .sprint-task:last-child { border-bottom: none; }
+    .sprint-task:hover { background: var(--bg-elevated); }
+    .sprint-task-text { flex: 1; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.4; }
+    .sprint-task-goal { font-size: 0.6875rem; color: var(--color-sprint); margin-top: 4px; }
+    .activate-btn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px dashed var(--border-default); background: transparent; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; }
+    .activate-btn:hover { border-style: solid; border-color: var(--color-sprint); color: var(--color-sprint); background: rgba(6, 182, 212, 0.1); }
+    .backlog-section { display: flex; flex-direction: column; }
+    .backlog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .backlog-category { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
-    .backlog-category-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-elevated); }
-    .category-color { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
-    .category-name { flex: 1; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
-    .category-count { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: var(--bg-base); padding: 4px 10px; border-radius: 20px; }
-    .backlog-tasks { max-height: 400px; overflow-y: auto; }
-    .backlog-task { display: flex; align-items: flex-start; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
+    .backlog-category-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-elevated); }
+    .category-color { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .category-name { flex: 1; font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); }
+    .category-count { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; color: var(--text-muted); background: var(--bg-base); padding: 3px 8px; border-radius: 12px; }
+    .backlog-tasks { max-height: 250px; overflow-y: auto; }
+    .backlog-task { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); transition: background 0.1s ease; }
     .backlog-task:last-child { border-bottom: none; }
     .backlog-task:hover { background: var(--bg-elevated); }
-    .backlog-task-text { flex: 1; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.4; }
-    .backlog-task-due { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .backlog-task-text { flex: 1; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.4; }
+    .backlog-task-due { font-size: 0.6875rem; color: var(--text-muted); margin-top: 3px; }
     .backlog-task-due.warning { color: var(--color-warning); }
-    .activate-btn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px dashed var(--border-default); background: transparent; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; }
-    .activate-btn:hover { border-style: solid; border-color: var(--color-leadlink); color: var(--color-leadlink); background: rgba(59, 130, 246, 0.1); }
-
     .edit-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-default); background: transparent; display: none; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; color: transparent; font-size: 0.625rem; transition: all 0.15s ease; }
     .edit-mode .edit-checkbox { display: flex; }
     .edit-mode .task-checkbox, .edit-mode .activate-btn { display: none; }
-    .edit-checkbox.selected { background: var(--color-leadlink); border-color: var(--color-leadlink); color: white; }
+    .edit-checkbox.selected { background: var(--color-sprint); border-color: var(--color-sprint); color: white; }
     .edit-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-surface); border-top: 1px solid var(--border-default); padding: 16px 32px; display: none; justify-content: center; gap: 16px; z-index: 100; }
     .edit-mode .edit-bar { display: flex; }
     .edit-bar-btn { padding: 12px 32px; border-radius: var(--radius-md); border: none; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.15s ease; }
     .edit-bar-btn.cancel { background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border-default); }
     .edit-bar-btn.done { background: var(--color-success); color: white; }
-    .edit-bar-btn.activate { background: var(--color-leadlink); color: white; }
+    .edit-bar-btn.activate { background: var(--color-sprint); color: white; }
     .edit-bar-btn:hover { transform: translateY(-1px); }
-    .edit-bar-btn:active { transform: scale(0.98); }
-
     .dropdown { position: relative; }
-    .dropdown-menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 160px; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.15s ease; z-index: 200; box-shadow: var(--shadow-card); }
+    .dropdown-menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 160px; background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.15s ease; z-index: 200; }
     .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-item { display: block; width: 100%; padding: 10px 14px; font-size: 0.875rem; font-family: var(--font-sans); color: var(--text-secondary); background: none; border: none; border-radius: var(--radius-sm); text-align: left; cursor: pointer; transition: all 0.1s ease; }
     .dropdown-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-
-    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-elevated); border: 1px solid var(--border-default); padding: 14px 28px; border-radius: var(--radius-md); font-size: 0.9375rem; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 1000; }
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-elevated); border: 1px solid var(--border-default); padding: 14px 28px; border-radius: var(--radius-md); font-size: 0.9375rem; font-weight: 500; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 1000; }
     .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .edit-mode .toast { bottom: 100px; }
-
     .loading { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 48px; color: var(--text-muted); font-size: 0.875rem; }
-    .spinner { width: 20px; height: 20px; border: 2px solid var(--border-default); border-top-color: var(--color-leadlink); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    .spinner { width: 20px; height: 20px; border: 2px solid var(--border-default); border-top-color: var(--color-sprint); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .color-leadlink { background: var(--color-leadlink); }
     .color-medivault { background: var(--color-medivault); }
     .color-writing { background: var(--color-writing); }
@@ -160,7 +162,6 @@
     .dot-eveready { background: var(--color-eveready); }
     .dot-proverbs { background: var(--color-proverbs); }
     .dot-frame { background: var(--color-frame); }
-
     @media (max-width: 768px) {
       .header { padding: 16px 20px; flex-wrap: wrap; gap: 16px; }
       .header-left { flex-wrap: wrap; gap: 16px; }
@@ -196,15 +197,7 @@
         </div>
       </div>
     </header>
-
     <main class="main">
-      <section class="goals-section" id="goalsSection">
-        <div class="section-title">Sprint Goals</div>
-        <div class="goals-grid" id="goalsGrid">
-          <div class="loading"><div class="spinner"></div> Loading...</div>
-        </div>
-      </section>
-
       <div class="workspace">
         <section class="active-section">
           <div class="active-header">
@@ -215,41 +208,52 @@
             <div class="loading"><div class="spinner"></div></div>
           </div>
         </section>
-
-        <section class="backlog-section">
-          <div class="section-title">Backlog</div>
-          <div class="backlog-grid" id="backlogGrid">
-            <div class="loading"><div class="spinner"></div></div>
-          </div>
-        </section>
+        <div class="right-column">
+          <section class="sprint-section" id="sprintSection">
+            <div class="sprint-header">
+              <div class="sprint-header-left">
+                <span class="sprint-icon">🎯</span>
+                <span class="sprint-title" id="sprintBoxTitle">Sprint</span>
+                <span class="sprint-dates" id="sprintBoxDates"></span>
+              </div>
+              <span class="sprint-badge" id="sprintTaskCount">0 tasks</span>
+            </div>
+            <div class="goals-container" id="goalsContainer">
+              <div class="goals-label">Goals</div>
+              <div class="goals-grid" id="goalsGrid"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+            <div class="sprint-tasks-container">
+              <div class="sprint-tasks-label">Sprint Tasks</div>
+              <div class="sprint-tasks" id="sprintTasks"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+          </section>
+          <section class="backlog-section">
+            <div class="section-title">Backlog</div>
+            <div class="backlog-grid" id="backlogGrid"><div class="loading"><div class="spinner"></div></div></div>
+          </section>
+        </div>
       </div>
     </main>
-
     <div class="edit-bar">
       <button class="edit-bar-btn cancel" onclick="exitEditMode()">Cancel</button>
       <button class="edit-bar-btn done" onclick="markSelectedDone()">✓ Complete (<span id="activeSelectedCount">0</span>)</button>
       <button class="edit-bar-btn activate" onclick="activateSelected()">+ Activate (<span id="backlogSelectedCount">0</span>)</button>
     </div>
   </div>
-
   <div class="toast" id="toast"></div>
-
   <script>
     (function() {
       if (localStorage.getItem('authenticated') !== 'true' || !localStorage.getItem('apiUrl')) {
         window.location.href = 'index.html';
       }
     })();
-
     const API_URL = localStorage.getItem('apiUrl');
-    const state = { data: null, editMode: false, selectedActive: new Set(), selectedBacklog: new Set() };
-
+    const state = { data: null, editMode: false, selectedActive: new Set(), selectedBacklog: new Set(), selectedSprint: new Set() };
     const CATEGORY_COLORS = {
-      'leadlink': 'leadlink', 'lead link': 'leadlink', 'medivault': 'medivault', 'medi vault': 'medivault',
+      'leadlink': 'leadlink', 'lead link': 'leadlink', 'medivault': 'medivault',
       'tech': 'medivault', 'writing': 'writing', 'the frame': 'frame', 'proverbs': 'proverbs',
-      'proverbs library': 'proverbs', 'errands': 'errands', 'errand': 'errands', 'eveready': 'eveready', 'general': 'general'
+      'proverbs library': 'proverbs', 'errands': 'errands', 'eveready': 'eveready', 'general': 'general'
     };
-
     function getCategoryColor(category) {
       if (!category) return 'general';
       const lower = category.toLowerCase();
@@ -258,11 +262,10 @@
       }
       return 'general';
     }
-
     async function api(endpoint, options = {}) {
       try {
-        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const response = await fetch(API_URL + endpoint, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         return await response.json();
       } catch (error) {
         console.error('API Error:', error);
@@ -270,22 +273,20 @@
         return null;
       }
     }
-
     async function loadData() {
       const data = await api('/morning');
       if (!data) return;
       state.data = data;
       renderHeader(data);
-      renderGoals(data.plan?.goals || []);
       renderActiveTasks(data.activeTasks || []);
+      renderSprint(data);
       renderBacklog(data.backlogByCategory || {});
     }
-
     function renderHeader(data) {
       const plan = data.plan;
       if (plan) {
         document.getElementById('sprintTitle').textContent = plan.title || 'Sprint';
-        document.getElementById('sprintDates').textContent = `${formatDate(plan.startDate)} → ${formatDate(plan.endDate)}`;
+        document.getElementById('sprintDates').textContent = formatDate(plan.startDate) + ' → ' + formatDate(plan.endDate);
         document.getElementById('daysLeft').textContent = plan.workDaysRemaining ?? '–';
       } else {
         document.getElementById('sprintTitle').textContent = 'No Active Plan';
@@ -293,154 +294,135 @@
         document.getElementById('daysLeft').textContent = '–';
       }
     }
-
-    function renderGoals(goals) {
-      const container = document.getElementById('goalsGrid');
-      const section = document.getElementById('goalsSection');
-      if (!goals.length) { section.style.display = 'none'; return; }
-      section.style.display = 'flex';
-      const circumference = 2 * Math.PI * 26;
-      container.innerHTML = goals.map(goal => {
-        const progress = goal.targetCount > 0 ? goal.completedCount / goal.targetCount : 0;
-        const dashOffset = circumference * (1 - Math.min(progress, 1));
-        const color = progress >= 1 ? 'var(--color-success)' : progress >= 0.5 ? 'var(--color-warning)' : 'var(--color-danger)';
-        return `<div class="goal-card" onclick="incrementGoal('${goal.id}')">
-          <div class="goal-ring">
-            <svg viewBox="0 0 64 64"><circle class="ring-bg" cx="32" cy="32" r="26"></circle><circle class="ring-progress" cx="32" cy="32" r="26" stroke="${color}" stroke-dasharray="${circumference}" stroke-dashoffset="${dashOffset}"></circle></svg>
-            <div class="ring-center"><span class="count">${goal.completedCount}</span><span class="total">/ ${goal.targetCount}</span></div>
-          </div>
-          <div class="goal-info"><div class="title">${escapeHtml(goal.description)}</div><div class="unit">${escapeHtml(goal.unit || '')}</div></div>
-        </div>`;
-      }).join('');
-    }
-
     function renderActiveTasks(tasks) {
       const container = document.getElementById('activeList');
       document.getElementById('activeCount').textContent = tasks.length;
-      if (!tasks.length) { container.innerHTML = '<div class="empty-state"><div class="icon">✓</div><div class="message">All clear! Activate tasks from backlog.</div></div>'; return; }
-      container.innerHTML = tasks.map(task => {
+      if (!tasks.length) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">✓</div><div class="message">All clear! Activate tasks from the sprint or backlog.</div></div>';
+        return;
+      }
+      container.innerHTML = tasks.map(function(task) {
         const colorClass = getCategoryColor(task.category || task.project);
         const isSelected = state.selectedActive.has(task.id);
-        return `<div class="task-item" data-id="${task.id}">
-          <div class="edit-checkbox ${isSelected ? 'selected' : ''}" onclick="toggleActiveSelect('${task.id}', event)">✓</div>
-          <div class="task-dot dot-${colorClass}"></div>
-          <div class="task-content">
-            <div class="task-text">${escapeHtml(task.text)}</div>
-            ${task.category || task.due_date ? `<div class="task-meta">${task.category ? escapeHtml(task.category) : ''}${task.due_date ? `<span class="${isOverdue(task.due_date) ? 'overdue' : 'due'}"> · ${formatDate(task.due_date)}</span>` : ''}</div>` : ''}
-          </div>
-          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">✓</div>
-        </div>`;
+        let meta = '';
+        if (task.category) meta += escapeHtml(task.category);
+        if (task.goal_description) meta += ' → ' + escapeHtml(task.goal_description);
+        if (task.due_date) meta += '<span class="' + (isOverdue(task.due_date) ? 'overdue' : 'due') + '"> · ' + formatDate(task.due_date) + '</span>';
+        return '<div class="task-item" data-id="' + task.id + '"><div class="edit-checkbox ' + (isSelected ? 'selected' : '') + '" onclick="toggleActiveSelect(\'' + task.id + '\', event)">✓</div><div class="task-dot dot-' + colorClass + '"></div><div class="task-content"><div class="task-text">' + escapeHtml(task.text) + '</div>' + (meta ? '<div class="task-meta">' + meta + '</div>' : '') + '</div><div class="task-checkbox" onclick="completeTask(\'' + task.id + '\', this)">✓</div></div>';
       }).join('');
     }
-
+    function renderSprint(data) {
+      const section = document.getElementById('sprintSection');
+      const plan = data.plan;
+      const sprintTasks = data.sprintTasks || [];
+      const goals = plan && plan.goals ? plan.goals : [];
+      if (!plan) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      document.getElementById('sprintBoxTitle').textContent = plan.title || 'Sprint';
+      document.getElementById('sprintBoxDates').textContent = formatDate(plan.startDate) + ' → ' + formatDate(plan.endDate);
+      document.getElementById('sprintTaskCount').textContent = sprintTasks.length + ' task' + (sprintTasks.length !== 1 ? 's' : '');
+      const goalsContainer = document.getElementById('goalsContainer');
+      const goalsGrid = document.getElementById('goalsGrid');
+      if (!goals.length) { goalsContainer.style.display = 'none'; }
+      else {
+        goalsContainer.style.display = 'block';
+        const circumference = 2 * Math.PI * 20;
+        goalsGrid.innerHTML = goals.map(function(goal) {
+          const progress = goal.targetCount > 0 ? goal.completedCount / goal.targetCount : 0;
+          const dashOffset = circumference * (1 - Math.min(progress, 1));
+          const color = progress >= 1 ? 'var(--color-success)' : progress >= 0.5 ? 'var(--color-warning)' : 'var(--color-danger)';
+          return '<div class="goal-card" onclick="incrementGoal(\'' + goal.id + '\')"><div class="goal-ring"><svg viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="20"></circle><circle class="ring-progress" cx="24" cy="24" r="20" stroke="' + color + '" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + dashOffset + '"></circle></svg><div class="ring-center"><span class="count">' + goal.completedCount + '</span><span class="total">/' + goal.targetCount + '</span></div></div><div class="goal-info"><div class="title">' + escapeHtml(goal.description) + '</div><div class="unit">' + escapeHtml(goal.unit || '') + '</div></div></div>';
+        }).join('');
+      }
+      const sprintTasksContainer = document.getElementById('sprintTasks');
+      if (!sprintTasks.length) {
+        sprintTasksContainer.innerHTML = '<div class="empty-state" style="padding:24px"><div class="message">No tasks linked to sprint goals yet.</div></div>';
+      } else {
+        sprintTasksContainer.innerHTML = sprintTasks.map(function(task) {
+          const isSelected = state.selectedSprint.has(task.id);
+          return '<div class="sprint-task" data-id="' + task.id + '"><div class="edit-checkbox ' + (isSelected ? 'selected' : '') + '" onclick="toggleSprintSelect(\'' + task.id + '\', event)">✓</div><div class="task-content"><div class="sprint-task-text">' + escapeHtml(task.text) + '</div>' + (task.goal_description ? '<div class="sprint-task-goal">→ ' + escapeHtml(task.goal_description) + '</div>' : '') + '</div><button class="activate-btn" onclick="activateTask(\'' + task.id + '\', event)" title="Activate">+</button></div>';
+        }).join('');
+      }
+    }
     function renderBacklog(backlogByCategory) {
       const container = document.getElementById('backlogGrid');
       const categories = Object.keys(backlogByCategory);
-      if (!categories.length) { container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><div class="message">No backlog tasks</div></div>'; return; }
-      container.innerHTML = categories.map(category => {
+      if (!categories.length) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><div class="message">No backlog tasks</div></div>';
+        return;
+      }
+      container.innerHTML = categories.map(function(category) {
         const tasks = backlogByCategory[category];
         const colorClass = getCategoryColor(category);
-        return `<div class="backlog-category">
-          <div class="backlog-category-header">
-            <div class="category-color color-${colorClass}"></div>
-            <div class="category-name">${escapeHtml(category)}</div>
-            <div class="category-count">${tasks.length}</div>
-          </div>
-          <div class="backlog-tasks">${tasks.map(task => {
-            const isSelected = state.selectedBacklog.has(task.id);
-            return `<div class="backlog-task" data-id="${task.id}">
-              <div class="edit-checkbox ${isSelected ? 'selected' : ''}" onclick="toggleBacklogSelect('${task.id}', event)">✓</div>
-              <div class="task-content">
-                <div class="backlog-task-text">${escapeHtml(task.text)}</div>
-                ${task.due_date ? `<div class="backlog-task-due ${isOverdue(task.due_date) ? 'warning' : ''}">${formatDate(task.due_date)}</div>` : ''}
-              </div>
-              <button class="activate-btn" onclick="activateTask('${task.id}', event)" title="Activate">+</button>
-            </div>`;
-          }).join('')}</div>
-        </div>`;
+        return '<div class="backlog-category"><div class="backlog-category-header"><div class="category-color color-' + colorClass + '"></div><div class="category-name">' + escapeHtml(category) + '</div><div class="category-count">' + tasks.length + '</div></div><div class="backlog-tasks">' + tasks.map(function(task) {
+          const isSelected = state.selectedBacklog.has(task.id);
+          return '<div class="backlog-task" data-id="' + task.id + '"><div class="edit-checkbox ' + (isSelected ? 'selected' : '') + '" onclick="toggleBacklogSelect(\'' + task.id + '\', event)">✓</div><div class="task-content"><div class="backlog-task-text">' + escapeHtml(task.text) + '</div>' + (task.due_date ? '<div class="backlog-task-due ' + (isOverdue(task.due_date) ? 'warning' : '') + '">' + formatDate(task.due_date) + '</div>' : '') + '</div><button class="activate-btn" onclick="activateTask(\'' + task.id + '\', event)" title="Activate">+</button></div>';
+        }).join('') + '</div></div>';
       }).join('');
     }
-
     async function completeTask(id, element) {
       element.classList.add('checked');
-      const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
-      if (result?.success) { showToast('Done ✓'); const item = element.closest('.task-item'); item.style.opacity = '0'; item.style.transform = 'translateX(20px)'; setTimeout(loadData, 300); }
-      else { element.classList.remove('checked'); }
+      const result = await api('/tasks/' + id + '/complete', { method: 'POST' });
+      if (result && result.success) {
+        showToast('Done ✓');
+        var item = element.closest('.task-item');
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(20px)';
+        setTimeout(loadData, 300);
+      } else { element.classList.remove('checked'); }
     }
-
     async function activateTask(id, event) {
       event.stopPropagation();
-      const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
-      if (result?.success) { showToast('Activated'); loadData(); }
+      const result = await api('/tasks/' + id + '/activate', { method: 'POST' });
+      if (result && result.success) { showToast('Activated'); loadData(); }
     }
-
     async function incrementGoal(id) {
-      const result = await api(`/goals/${id}/increment`, { method: 'POST' });
-      if (result?.success) { showToast('+1'); loadData(); }
+      const result = await api('/goals/' + id + '/increment', { method: 'POST' });
+      if (result && result.success) { showToast('+1'); loadData(); }
     }
-
     function toggleEditMode() {
       state.editMode = !state.editMode;
       document.getElementById('app').classList.toggle('edit-mode', state.editMode);
       document.getElementById('editBtn').classList.toggle('active', state.editMode);
-      if (!state.editMode) { state.selectedActive.clear(); state.selectedBacklog.clear(); updateSelectedCounts(); }
+      if (!state.editMode) { state.selectedActive.clear(); state.selectedBacklog.clear(); state.selectedSprint.clear(); updateSelectedCounts(); }
     }
-
     function exitEditMode() {
       state.editMode = false;
       state.selectedActive.clear();
       state.selectedBacklog.clear();
+      state.selectedSprint.clear();
       document.getElementById('app').classList.remove('edit-mode');
       document.getElementById('editBtn').classList.remove('active');
       loadData();
     }
-
-    function toggleActiveSelect(id, event) {
-      event.stopPropagation();
-      state.selectedActive.has(id) ? state.selectedActive.delete(id) : state.selectedActive.add(id);
-      event.currentTarget.classList.toggle('selected');
-      updateSelectedCounts();
-    }
-
-    function toggleBacklogSelect(id, event) {
-      event.stopPropagation();
-      state.selectedBacklog.has(id) ? state.selectedBacklog.delete(id) : state.selectedBacklog.add(id);
-      event.currentTarget.classList.toggle('selected');
-      updateSelectedCounts();
-    }
-
-    function updateSelectedCounts() {
-      document.getElementById('activeSelectedCount').textContent = state.selectedActive.size;
-      document.getElementById('backlogSelectedCount').textContent = state.selectedBacklog.size;
-    }
-
+    function toggleActiveSelect(id, event) { event.stopPropagation(); state.selectedActive.has(id) ? state.selectedActive.delete(id) : state.selectedActive.add(id); event.currentTarget.classList.toggle('selected'); updateSelectedCounts(); }
+    function toggleSprintSelect(id, event) { event.stopPropagation(); state.selectedSprint.has(id) ? state.selectedSprint.delete(id) : state.selectedSprint.add(id); event.currentTarget.classList.toggle('selected'); updateSelectedCounts(); }
+    function toggleBacklogSelect(id, event) { event.stopPropagation(); state.selectedBacklog.has(id) ? state.selectedBacklog.delete(id) : state.selectedBacklog.add(id); event.currentTarget.classList.toggle('selected'); updateSelectedCounts(); }
+    function updateSelectedCounts() { document.getElementById('activeSelectedCount').textContent = state.selectedActive.size; document.getElementById('backlogSelectedCount').textContent = state.selectedBacklog.size + state.selectedSprint.size; }
     async function markSelectedDone() {
       if (!state.selectedActive.size) { showToast('Select tasks first'); return; }
-      let completed = 0;
-      for (const id of state.selectedActive) { const result = await api(`/tasks/${id}/complete`, { method: 'POST' }); if (result?.success) completed++; }
-      showToast(`${completed} completed ✓`);
+      var completed = 0;
+      for (const id of state.selectedActive) { const result = await api('/tasks/' + id + '/complete', { method: 'POST' }); if (result && result.success) completed++; }
+      showToast(completed + ' completed ✓');
       exitEditMode();
     }
-
     async function activateSelected() {
-      if (!state.selectedBacklog.size) { showToast('Select tasks first'); return; }
-      let activated = 0;
-      for (const id of state.selectedBacklog) { const result = await api(`/tasks/${id}/activate`, { method: 'POST' }); if (result?.success) activated++; }
-      showToast(`${activated} activated`);
+      const toActivate = [...state.selectedBacklog, ...state.selectedSprint];
+      if (!toActivate.length) { showToast('Select tasks first'); return; }
+      var activated = 0;
+      for (const id of toActivate) { const result = await api('/tasks/' + id + '/activate', { method: 'POST' }); if (result && result.success) activated++; }
+      showToast(activated + ' activated');
       exitEditMode();
     }
-
-    function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
+    function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); setTimeout(function() { toast.classList.remove('show'); }, 2500); }
     function logout() { localStorage.clear(); window.location.href = 'index.html'; }
     function formatDate(dateStr) { if (!dateStr) return ''; const date = new Date(dateStr); return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
     function isOverdue(dateStr) { if (!dateStr) return false; const date = new Date(dateStr); const today = new Date(); today.setHours(0,0,0,0); return date < today; }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
     document.getElementById('editBtn').addEventListener('click', toggleEditMode);
-    document.getElementById('refreshBtn').addEventListener('click', () => { loadData(); showToast('Refreshed'); });
-    document.getElementById('menuBtn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown')) document.getElementById('dropdownMenu').classList.remove('show'); });
-
+    document.getElementById('refreshBtn').addEventListener('click', function() { loadData(); showToast('Refreshed'); });
+    document.getElementById('menuBtn').addEventListener('click', function(e) { e.stopPropagation(); document.getElementById('dropdownMenu').classList.toggle('show'); });
+    document.addEventListener('click', function(e) { if (!e.target.closest('.dropdown')) document.getElementById('dropdownMenu').classList.remove('show'); });
     loadData();
   </script>
 </body>
