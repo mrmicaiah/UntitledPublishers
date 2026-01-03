@@ -6,209 +6,288 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#09090b">
   <title>Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    
     :root {
-      --bg: #0a0a0a;
-      --bg-elevated: #141414;
-      --bg-hover: #1a1a1a;
-      --bg-active: #222;
-      --border: rgba(255,255,255,0.08);
-      --border-light: rgba(255,255,255,0.04);
+      --bg: #09090b;
+      --bg-card: #18181b;
+      --bg-hover: #27272a;
+      --bg-active: #3f3f46;
+      --border: rgba(255,255,255,0.06);
+      --border-light: rgba(255,255,255,0.03);
       --text: #fafafa;
-      --text-secondary: rgba(255,255,255,0.6);
-      --text-tertiary: rgba(255,255,255,0.4);
-      --accent: #3b82f6;
-      --accent-soft: rgba(59,130,246,0.15);
+      --text-secondary: rgba(255,255,255,0.65);
+      --text-muted: rgba(255,255,255,0.4);
+      
+      /* Category colors */
+      --leadlink: #3b82f6;
+      --leadlink-soft: rgba(59,130,246,0.12);
+      --medivault: #22c55e;
+      --medivault-soft: rgba(34,197,94,0.12);
+      --writing: #a855f7;
+      --writing-soft: rgba(168,85,247,0.12);
+      --errands: #f59e0b;
+      --errands-soft: rgba(245,158,11,0.12);
+      --general: #71717a;
+      --general-soft: rgba(113,113,122,0.12);
+      
+      /* Status colors */
       --success: #22c55e;
-      --success-soft: rgba(34,197,94,0.15);
-      --warning: #f59e0b;
-      --warning-soft: rgba(245,158,11,0.15);
+      --warning: #eab308;
       --danger: #ef4444;
-      --radius: 12px;
-      --radius-sm: 8px;
+      
+      --radius: 16px;
+      --radius-sm: 10px;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      min-height: 100dvh;
       -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
 
+    /* Sprint Header */
     .header {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-row {
+      padding: 20px 20px 16px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
     }
 
-    .greeting {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-tertiary);
+    .header-left { flex: 1; }
+
+    .sprint-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--text-muted);
       margin-bottom: 4px;
     }
 
-    .date {
-      font-size: 28px;
+    .sprint-title {
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
     }
 
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--bg-elevated);
+    .sprint-dates {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .days-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: linear-gradient(135deg, var(--leadlink-soft), transparent);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 100px;
+    }
+
+    .days-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--leadlink);
+    }
+
+    .days-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-    }
-
-    .plan-strip {
-      display: flex;
-      gap: 16px;
-      padding: 16px 20px;
-      background: var(--bg-elevated);
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .plan-strip::-webkit-scrollbar { display: none; }
-
-    .stat-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      white-space: nowrap;
-    }
-
-    .stat-pill .value { font-weight: 600; font-size: 14px; }
-    .stat-pill .label { font-size: 12px; color: var(--text-tertiary); }
-    .stat-pill.accent { background: var(--accent-soft); border-color: transparent; }
-    .stat-pill.accent .value { color: var(--accent); }
-
-    .nav {
-      display: flex;
-      padding: 12px 20px;
-      gap: 6px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-item {
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-tertiary);
-      background: transparent;
-      border: none;
-      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .nav-item:hover { color: var(--text-secondary); background: var(--bg-hover); }
-    .nav-item.active { color: var(--text); background: var(--bg-elevated); }
+    .icon-btn:active { transform: scale(0.95); background: var(--bg-hover); }
+    .icon-btn.edit-active { background: var(--leadlink); color: white; border-color: var(--leadlink); }
 
-    .content {
-      padding: 20px;
-      padding-bottom: 100px;
+    /* Main content scroll area */
+    .main {
+      padding: 0 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
 
-    .section { margin-bottom: 32px; }
-
+    /* Section styling */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      padding: 0 4px;
     }
 
     .section-title {
       font-size: 12px;
       font-weight: 600;
-      color: var(--text-tertiary);
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--text-muted);
     }
 
-    .section-count {
+    /* Goal Rings */
+    .goals-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin: 0 -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      scrollbar-width: none;
+    }
+    .goals-scroll::-webkit-scrollbar { display: none; }
+
+    .goal-ring {
+      flex-shrink: 0;
+      width: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .goal-ring:active { transform: scale(0.97); background: var(--bg-hover); }
+
+    .ring-container {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 10px;
+    }
+
+    .ring-svg {
+      transform: rotate(-90deg);
+      width: 64px;
+      height: 64px;
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: var(--bg);
+      stroke-width: 6;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.4s ease, stroke 0.3s ease;
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .ring-total {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .goal-label {
       font-size: 11px;
-      color: var(--text-tertiary);
-      background: var(--bg-elevated);
-      padding: 3px 8px;
-      border-radius: 100px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.3;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
-    .task-list {
+    /* Active Now Section */
+    .active-list {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      background: var(--bg-elevated);
+      background: var(--bg-card);
       border-radius: var(--radius);
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
-    .task {
+    .task-item {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
       padding: 14px 16px;
-      background: var(--bg-elevated);
-      cursor: pointer;
+      background: var(--bg-card);
       transition: background 0.15s ease;
     }
 
-    .task:hover { background: var(--bg-hover); }
-    .task:active { background: var(--bg-active); }
-    .task + .task { border-top: 1px solid var(--border-light); }
+    .task-item:not(:last-child) { border-bottom: 1px solid var(--border-light); }
+    .task-item:active { background: var(--bg-hover); }
 
-    .task-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .task-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
       flex-shrink: 0;
-      margin-top: 1px;
-      transition: all 0.15s ease;
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-tertiary);
     }
 
-    .task:hover .task-check { border-color: var(--success); color: var(--success); }
-    .task-check.done { background: var(--success); border-color: var(--success); color: white; }
+    .task-dot.leadlink { background: var(--leadlink); }
+    .task-dot.medivault { background: var(--medivault); }
+    .task-dot.writing { background: var(--writing); }
+    .task-dot.errands { background: var(--errands); }
+    .task-dot.general { background: var(--general); }
 
-    .task-body { flex: 1; min-width: 0; }
+    .task-content { flex: 1; min-width: 0; }
 
     .task-text {
       font-size: 14px;
@@ -218,227 +297,232 @@
     }
 
     .task-meta {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-
-    .task-tag {
       font-size: 11px;
-      color: var(--text-tertiary);
-      background: var(--bg);
-      padding: 2px 8px;
-      border-radius: 4px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
-    .task-tag.due { color: var(--warning); background: var(--warning-soft); }
-    .task-tag.overdue { color: var(--danger); background: rgba(239,68,68,0.15); }
-
-    .goals-grid { display: grid; gap: 12px; }
-
-    .goal-card {
-      background: var(--bg-elevated);
-      border-radius: var(--radius);
-      padding: 16px;
-    }
-
-    .goal-header {
+    .task-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: transparent;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      color: transparent;
     }
 
-    .goal-title { font-size: 14px; font-weight: 500; }
-    .goal-count { font-size: 13px; color: var(--text-tertiary); }
-
-    .goal-bar {
-      height: 4px;
-      background: var(--bg);
-      border-radius: 2px;
-      overflow: hidden;
+    .task-checkbox:hover { border-color: var(--success); }
+    .task-checkbox.checked { 
+      background: var(--success); 
+      border-color: var(--success); 
+      color: white;
     }
 
-    .goal-fill {
-      height: 100%;
-      background: var(--success);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-
-    .goal-fill.low { background: var(--danger); }
-    .goal-fill.mid { background: var(--warning); }
-
-    .launch-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .launch {
-      background: var(--bg-elevated);
-      border-radius: var(--radius);
-      padding: 16px;
-    }
-
-    .launch-header {
-      display: flex;
-      justify-content: space-between;
+    /* Edit mode checkbox */
+    .edit-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: transparent;
+      display: none;
       align-items: center;
-      margin-bottom: 10px;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .launch-title { font-size: 14px; font-weight: 600; }
-    .launch-percent { font-size: 13px; font-weight: 600; color: var(--success); }
-    .launch-percent.stalled { color: var(--warning); }
+    .edit-mode .edit-checkbox { display: flex; }
+    .edit-mode .task-checkbox { display: none; }
 
-    .launch-bar {
-      height: 4px;
-      background: var(--bg);
-      border-radius: 2px;
-      overflow: hidden;
+    .edit-checkbox.selected {
+      background: var(--leadlink);
+      border-color: var(--leadlink);
+      color: white;
     }
 
-    .launch-fill { height: 100%; background: var(--success); border-radius: 2px; }
-    .launch-meta { margin-top: 8px; font-size: 12px; color: var(--text-tertiary); }
-
-    .actions-grid {
+    /* Backlog Boxes */
+    .backlog-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
-    .action-btn {
+    .backlog-box {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .backlog-header {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .backlog-header:active { background: var(--bg-hover); }
+
+    .backlog-color {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .backlog-color.leadlink { background: var(--leadlink); }
+    .backlog-color.medivault { background: var(--medivault); }
+    .backlog-color.writing { background: var(--writing); }
+    .backlog-color.errands { background: var(--errands); }
+    .backlog-color.general { background: var(--general); }
+
+    .backlog-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .backlog-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--bg);
+      color: var(--text-secondary);
+    }
+
+    .backlog-tasks {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+
+    .backlog-box.expanded .backlog-tasks {
+      max-height: 400px;
+    }
+
+    .backlog-task {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .backlog-task:active { background: var(--bg-hover); }
+
+    .backlog-task-text {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .activate-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1px dashed var(--border);
+      background: transparent;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 24px 16px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .action-btn:hover { background: var(--bg-hover); }
-    .action-btn:active { transform: scale(0.98); }
-    .action-icon { font-size: 24px; }
-
-    .incoming-banner {
-      background: var(--warning-soft);
-      border: 1px solid rgba(245,158,11,0.2);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 24px;
+    .activate-btn:hover {
+      border-color: var(--leadlink);
+      color: var(--leadlink);
+      border-style: solid;
     }
 
-    .incoming-header {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--warning);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-
-    .incoming-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: var(--bg-elevated);
-      border-radius: var(--radius-sm);
-    }
-
-    .incoming-item + .incoming-item { margin-top: 8px; }
-    .incoming-text { font-size: 13px; font-weight: 500; }
-    .incoming-from { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
-
-    .claim-btn {
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      background: var(--success);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .command-bar {
+    /* Edit Mode Action Bar */
+    .edit-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       padding: 16px 20px;
       padding-bottom: max(16px, env(safe-area-inset-bottom));
-      background: linear-gradient(transparent, var(--bg) 20%);
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      display: none;
+      gap: 12px;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
     }
 
-    .command-input {
-      width: 100%;
-      padding: 14px 18px;
-      font-size: 15px;
+    .edit-mode .edit-bar {
+      display: flex;
+      transform: translateY(0);
+    }
+
+    .edit-btn {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
       font-family: inherit;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .command-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
+    .edit-btn:active { transform: scale(0.98); }
+
+    .edit-btn.done-btn {
+      background: var(--success);
+      color: white;
     }
 
-    .command-input::placeholder { color: var(--text-tertiary); }
-
-    .empty {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-tertiary);
+    .edit-btn.activate-btn-bar {
+      background: var(--leadlink);
+      color: white;
     }
 
-    .empty-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.5; }
-    .empty-text { font-size: 13px; }
-
-    .loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      color: var(--text-tertiary);
-      font-size: 13px;
+    .edit-btn.cancel-btn {
+      background: var(--bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
     }
 
-    .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 10px;
+    .selected-count {
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-
+    /* Toast */
     .toast {
       position: fixed;
-      bottom: 90px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated);
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 12px 20px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
       font-weight: 500;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
       opacity: 0;
       visibility: hidden;
       transition: all 0.2s ease;
@@ -451,120 +535,63 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
+    .edit-mode .toast { bottom: 100px; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--text-muted);
     }
 
-    .modal-overlay.show { opacity: 1; visibility: visible; }
-
-    .modal {
-      width: 100%;
-      max-width: 480px;
-      max-height: 85vh;
-      background: var(--bg-elevated);
-      border-radius: 16px 16px 0 0;
-      overflow: hidden;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
+    .empty-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+      opacity: 0.5;
     }
 
-    .modal-overlay.show .modal { transform: translateY(0); }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .modal-title { font-size: 16px; font-weight: 600; }
-
-    .modal-close {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-      border: none;
-      border-radius: 6px;
-      color: var(--text-secondary);
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .modal-body { padding: 20px; overflow-y: auto; }
-    .form-group { margin-bottom: 16px; }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-
-    .form-input, .form-textarea, .form-select {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 14px;
-      font-family: inherit;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-    }
-
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    .form-textarea { min-height: 100px; resize: vertical; }
-
-    .form-check {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .empty-text {
       font-size: 13px;
-      color: var(--text-secondary);
     }
 
-    .modal-footer {
+    /* Loading */
+    .loading {
       display: flex;
-      gap: 10px;
-      padding: 16px 20px;
-      border-top: 1px solid var(--border);
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
     }
 
-    .btn {
-      flex: 1;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 0.15s ease;
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--leadlink);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
     }
 
-    .btn-secondary { background: var(--bg); color: var(--text-secondary); }
-    .btn-primary { background: var(--accent); color: white; }
-    .btn:active { transform: scale(0.98); }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .dropdown { position: relative; }
+    /* Guide link */
+    .guide-link {
+      display: block;
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .guide-link:hover { color: var(--text-secondary); }
+
+    /* Dropdown menu */
+    .dropdown {
+      position: relative;
+    }
 
     .dropdown-menu {
       position: absolute;
@@ -572,18 +599,22 @@
       right: 0;
       margin-top: 8px;
       min-width: 140px;
-      background: var(--bg-elevated);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       padding: 6px;
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-8px);
+      transform: translateY(-8px) scale(0.95);
       transition: all 0.15s ease;
       z-index: 100;
     }
 
-    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
 
     .dropdown-item {
       display: block;
@@ -596,234 +627,103 @@
       border-radius: 6px;
       text-align: left;
       cursor: pointer;
+      font-family: inherit;
     }
 
-    .dropdown-item:hover { background: var(--bg-hover); color: var(--text); }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .command-hint {
-      font-size: 11px;
-      color: var(--text-tertiary);
-      text-align: center;
-      margin-top: 8px;
+    .dropdown-item:hover {
+      background: var(--bg-hover);
+      color: var(--text);
     }
+
+    /* Animations */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fadeSlideUp 0.3s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.05s; opacity: 0; }
+    .delay-2 { animation-delay: 0.1s; opacity: 0; }
+    .delay-3 { animation-delay: 0.15s; opacity: 0; }
   </style>
 </head>
 <body>
 
   <header class="header">
-    <div class="header-row">
-      <div>
-        <div class="greeting" id="greeting">Good Morning</div>
-        <div class="date" id="dateDisplay">Jan 2</div>
-      </div>
-      <div class="dropdown">
-        <div class="avatar" id="avatarBtn">M</div>
-        <div class="dropdown-menu" id="userMenu">
-          <button class="dropdown-item" onclick="refreshData()">↻ Refresh</button>
-          <button class="dropdown-item" onclick="logout()">Sign out</button>
-        </div>
-      </div>
+    <div class="header-left">
+      <div class="sprint-label">Current Sprint</div>
+      <div class="sprint-title" id="sprintTitle">Loading...</div>
+      <div class="sprint-dates" id="sprintDates"></div>
+    </div>
+    <div class="days-badge">
+      <span class="days-number" id="daysLeft">–</span>
+      <span class="days-label">days<br>left</span>
     </div>
   </header>
 
-  <div class="plan-strip" id="planStrip" style="display: none;">
-    <div class="stat-pill accent">
-      <span class="value" id="daysLeft">0</span>
-      <span class="label">days left</span>
-    </div>
-    <div class="stat-pill">
-      <span class="value" id="taskCount">0</span>
-      <span class="label">tasks</span>
-    </div>
-    <div class="stat-pill">
-      <span class="value" id="overdueCount">0</span>
-      <span class="label">overdue</span>
+  <div class="header-actions" style="position: absolute; top: 20px; right: 20px; display: flex; gap: 8px;">
+    <button class="icon-btn" id="editBtn" title="Edit Mode">✏️</button>
+    <div class="dropdown">
+      <button class="icon-btn" id="menuBtn">☰</button>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <button class="dropdown-item" onclick="refreshData()">↻ Refresh</button>
+        <button class="dropdown-item" onclick="window.location.href='guide.html'">? Help</button>
+        <button class="dropdown-item" onclick="logout()">Sign out</button>
+      </div>
     </div>
   </div>
 
-  <nav class="nav">
-    <button class="nav-item active" data-tab="today">Today</button>
-    <button class="nav-item" data-tab="tasks">Tasks</button>
-    <button class="nav-item" data-tab="launches">Launches</button>
-    <button class="nav-item" data-tab="quick">Quick</button>
-  </nav>
-
-  <main class="content">
-    <div class="tab-content active" id="tab-today">
-      <div class="incoming-banner" id="incomingBanner" style="display: none;">
-        <div class="incoming-header">📥 Incoming</div>
-        <div id="incomingList"></div>
+  <main class="main">
+    <!-- Goal Rings -->
+    <section class="section animate-in delay-1" id="goalsSection">
+      <div class="section-header">
+        <span class="section-title">Goals</span>
       </div>
+      <div class="goals-scroll" id="goalRings">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </section>
 
-      <section class="section">
-        <div class="section-header">
-          <span class="section-title">Active</span>
-          <span class="section-count" id="activeCount">0</span>
-        </div>
-        <div id="activeTasks">
-          <div class="loading"><div class="spinner"></div>Loading</div>
-        </div>
-      </section>
+    <!-- Active Now -->
+    <section class="section animate-in delay-2">
+      <div class="section-header">
+        <span class="section-title">Active Now</span>
+        <span class="section-count" id="activeCount" style="font-size: 11px; color: var(--text-muted);">0</span>
+      </div>
+      <div class="active-list" id="activeTasks">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </section>
 
-      <section class="section" id="goalsSection" style="display: none;">
-        <div class="section-header">
-          <span class="section-title">Goals</span>
-        </div>
-        <div class="goals-grid" id="goalsList"></div>
-      </section>
+    <!-- Backlog -->
+    <section class="section animate-in delay-3">
+      <div class="section-header">
+        <span class="section-title">Backlog</span>
+      </div>
+      <div class="backlog-grid" id="backlogGrid"></div>
+    </section>
 
-      <section class="section">
-        <div class="section-header">
-          <span class="section-title">Launches</span>
-        </div>
-        <div id="launchesPreview"></div>
-      </section>
-    </div>
-
-    <div class="tab-content" id="tab-tasks">
-      <section class="section">
-        <div class="section-header">
-          <span class="section-title">All Tasks</span>
-          <span class="section-count" id="allTasksCount">0</span>
-        </div>
-        <div id="allTasks">
-          <div class="loading"><div class="spinner"></div>Loading</div>
-        </div>
-      </section>
-    </div>
-
-    <div class="tab-content" id="tab-launches">
-      <section class="section">
-        <div class="section-header">
-          <span class="section-title">All Launches</span>
-        </div>
-        <div id="allLaunches">
-          <div class="loading"><div class="spinner"></div>Loading</div>
-        </div>
-      </section>
-    </div>
-
-    <div class="tab-content" id="tab-quick">
-      <section class="section">
-        <div class="actions-grid">
-          <button class="action-btn" onclick="openModal('addTaskModal')">
-            <span class="action-icon">＋</span>
-            Add Task
-          </button>
-          <button class="action-btn" onclick="openModal('journalModal')">
-            <span class="action-icon">✎</span>
-            Journal
-          </button>
-          <button class="action-btn" onclick="openModal('ideaModal')">
-            <span class="action-icon">💡</span>
-            Capture Idea
-          </button>
-          <button class="action-btn" onclick="refreshData()">
-            <span class="action-icon">↻</span>
-            Refresh
-          </button>
-        </div>
-      </section>
-    </div>
+    <a href="guide.html" class="guide-link">Dashboard Guide →</a>
   </main>
 
-  <div class="command-bar">
-    <input type="text" class="command-input" id="commandInput" placeholder="Add task or type '1 done' to complete">
-    <div class="command-hint">Press Enter to add task · "1 done" completes task #1</div>
+  <!-- Edit Mode Action Bar -->
+  <div class="edit-bar">
+    <button class="edit-btn cancel-btn" onclick="exitEditMode()">Cancel</button>
+    <button class="edit-btn done-btn" onclick="markSelectedDone()">
+      Done (<span class="selected-count" id="activeSelectedCount">0</span>)
+    </button>
+    <button class="edit-btn activate-btn-bar" onclick="activateSelected()">
+      Activate (<span class="selected-count" id="backlogSelectedCount">0</span>)
+    </button>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <!-- Add Task Modal -->
-  <div class="modal-overlay" id="addTaskModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">New Task</div>
-        <button class="modal-close" onclick="closeModal('addTaskModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">What needs to be done?</label>
-          <input type="text" class="form-input" id="newTaskText" placeholder="Enter task...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Category</label>
-          <input type="text" class="form-input" id="newTaskCategory" placeholder="General">
-        </div>
-        <div class="form-group">
-          <label class="form-check">
-            <input type="checkbox" id="newTaskActive">
-            Add to active list
-          </label>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('addTaskModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitNewTask()">Add Task</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Journal Modal -->
-  <div class="modal-overlay" id="journalModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Journal Entry</div>
-        <button class="modal-close" onclick="closeModal('journalModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">What's on your mind?</label>
-          <textarea class="form-textarea" id="journalContent" placeholder="Write freely..."></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mood</label>
-          <select class="form-select" id="journalMood">
-            <option value="">Select mood...</option>
-            <option value="focused">Focused</option>
-            <option value="calm">Calm</option>
-            <option value="excited">Excited</option>
-            <option value="frustrated">Frustrated</option>
-            <option value="anxious">Anxious</option>
-            <option value="grateful">Grateful</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('journalModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitJournal()">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Idea Modal -->
-  <div class="modal-overlay" id="ideaModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Capture Idea</div>
-        <button class="modal-close" onclick="closeModal('ideaModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Title</label>
-          <input type="text" class="form-input" id="ideaTitle" placeholder="Quick title...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Details</label>
-          <textarea class="form-textarea" id="ideaContent" placeholder="Expand on your idea..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('ideaModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitIdea()">Save</button>
-      </div>
-    </div>
-  </div>
-
   <script>
+    // Auth check
     if (localStorage.getItem('authenticated') !== 'true' || !localStorage.getItem('apiUrl')) {
       window.location.href = 'index.html';
     }
@@ -831,23 +731,38 @@
     const API_URL = localStorage.getItem('apiUrl');
     const USER_NAME = localStorage.getItem('userName') || 'User';
 
-    document.getElementById('avatarBtn').textContent = USER_NAME.charAt(0).toUpperCase();
+    // State
+    let currentData = null;
+    let editMode = false;
+    let selectedActive = new Set();
+    let selectedBacklog = new Set();
+    let expandedCategories = new Set();
 
-    document.getElementById('avatarBtn').addEventListener('click', () => {
-      document.getElementById('userMenu').classList.toggle('show');
-    });
+    // Category mapping
+    const CATEGORY_MAP = {
+      'leadlink': 'leadlink',
+      'lead link': 'leadlink',
+      'medivault': 'medivault',
+      'medi vault': 'medivault',
+      'writing': 'writing',
+      'the frame': 'writing',
+      'proverbs': 'writing',
+      'sean': 'writing',
+      'errands': 'errands',
+      'errand': 'errands',
+      'general': 'general'
+    };
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        document.getElementById('userMenu').classList.remove('show');
+    function getCategoryClass(category) {
+      if (!category) return 'general';
+      const lower = category.toLowerCase();
+      for (const [key, value] of Object.entries(CATEGORY_MAP)) {
+        if (lower.includes(key)) return value;
       }
-    });
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = 'index.html';
+      return 'general';
     }
 
+    // API
     async function api(endpoint, options = {}) {
       try {
         const res = await fetch(`${API_URL}${endpoint}`, {
@@ -863,243 +778,336 @@
       }
     }
 
-    let currentData = null;
-
-    async function loadMorningData() {
+    // Load data
+    async function loadData() {
       const data = await api('/morning');
       if (!data) return;
       currentData = data;
 
-      const hour = new Date().getHours();
-      const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-      document.getElementById('greeting').textContent = greeting;
-      document.getElementById('dateDisplay').textContent = data.greeting.date;
-
-      if (data.plan || data.stats) {
-        document.getElementById('planStrip').style.display = 'flex';
-        document.getElementById('daysLeft').textContent = data.plan?.workDaysRemaining || 0;
-        document.getElementById('taskCount').textContent = data.stats?.totalTasks || 0;
-        document.getElementById('overdueCount').textContent = data.stats?.overdue || 0;
+      // Sprint header
+      if (data.plan) {
+        document.getElementById('sprintTitle').textContent = data.plan.title || 'Sprint';
+        document.getElementById('sprintDates').textContent = 
+          `${formatDateShort(data.plan.startDate)} – ${formatDateShort(data.plan.endDate)}`;
+        document.getElementById('daysLeft').textContent = data.plan.workDaysRemaining || 0;
+      } else {
+        document.getElementById('sprintTitle').textContent = 'No active plan';
+        document.getElementById('sprintDates').textContent = '';
+        document.getElementById('daysLeft').textContent = '–';
       }
 
-      if (data.incoming?.length > 0) {
-        document.getElementById('incomingBanner').style.display = 'block';
-        renderIncoming(data.incoming);
-      }
+      // Goals
+      renderGoals(data.plan?.goals || []);
 
-      renderTasks(data.activeTasks, 'activeTasks', 'activeCount');
+      // Active tasks
+      renderActiveTasks(data.activeTasks || []);
 
-      if (data.plan?.goals?.length > 0) {
-        document.getElementById('goalsSection').style.display = 'block';
-        renderGoals(data.plan.goals);
-      }
-
-      renderLaunches(data.launches.slice(0, 3), 'launchesPreview');
-    }
-
-    function renderTasks(tasks, containerId, countId) {
-      const container = document.getElementById(containerId);
-      if (countId) document.getElementById(countId).textContent = tasks.length;
-
-      if (!tasks.length) {
-        container.innerHTML = '<div class="empty"><div class="empty-icon">✓</div><div class="empty-text">All clear</div></div>';
-        return;
-      }
-
-      container.innerHTML = `<div class="task-list">${tasks.map((t, i) => `
-        <div class="task" data-id="${t.id}">
-          <div class="task-check" onclick="completeTask('${t.id}', this)">${i + 1}</div>
-          <div class="task-body">
-            <div class="task-text">${esc(t.text)}</div>
-            <div class="task-meta">
-              ${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}
-              ${t.due_date ? `<span class="task-tag ${isOverdue(t.due_date) ? 'overdue' : 'due'}">${formatDate(t.due_date)}</span>` : ''}
-            </div>
-          </div>
-        </div>
-      `).join('')}</div>`;
+      // Backlog - group by category
+      renderBacklog(data.backlog || []);
     }
 
     function renderGoals(goals) {
-      document.getElementById('goalsList').innerHTML = goals.map(g => `
-        <div class="goal-card">
-          <div class="goal-header">
-            <span class="goal-title">${esc(g.description)}</span>
-            <span class="goal-count">${g.completedCount}/${g.targetCount}</span>
-          </div>
-          <div class="goal-bar">
-            <div class="goal-fill ${g.progress < 30 ? 'low' : g.progress < 70 ? 'mid' : ''}" style="width:${g.progress}%"></div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderLaunches(launches, containerId) {
-      const container = document.getElementById(containerId);
-      if (!launches.length) {
-        container.innerHTML = '<div class="empty"><div class="empty-icon">🚀</div><div class="empty-text">No active launches</div></div>';
+      const container = document.getElementById('goalRings');
+      
+      if (!goals.length) {
+        document.getElementById('goalsSection').style.display = 'none';
         return;
       }
 
-      container.innerHTML = `<div class="launch-list">${launches.map(l => `
-        <div class="launch">
-          <div class="launch-header">
-            <span class="launch-title">${esc(l.title)}</span>
-            <span class="launch-percent ${l.progress === 0 ? 'stalled' : ''}">${l.progress}%</span>
+      document.getElementById('goalsSection').style.display = 'block';
+      const circumference = 2 * Math.PI * 26;
+
+      container.innerHTML = goals.map(g => {
+        const progress = g.targetCount > 0 ? (g.completedCount / g.targetCount) : 0;
+        const dashOffset = circumference * (1 - Math.min(progress, 1));
+        const color = progress >= 1 ? 'var(--success)' : 
+                      progress >= 0.5 ? 'var(--warning)' : 'var(--danger)';
+
+        return `
+          <div class="goal-ring" data-goal-id="${g.id}" onclick="incrementGoal('${g.id}')">
+            <div class="ring-container">
+              <svg class="ring-svg" viewBox="0 0 64 64">
+                <circle class="ring-bg" cx="32" cy="32" r="26"/>
+                <circle class="ring-progress" cx="32" cy="32" r="26"
+                  stroke="${color}"
+                  stroke-dasharray="${circumference}"
+                  stroke-dashoffset="${dashOffset}"/>
+              </svg>
+              <div class="ring-center">
+                <span class="ring-count">${g.completedCount}</span>
+                <span class="ring-total">/ ${g.targetCount}</span>
+              </div>
+            </div>
+            <span class="goal-label">${esc(g.description)}</span>
           </div>
-          <div class="launch-bar"><div class="launch-fill" style="width:${l.progress}%"></div></div>
-          <div class="launch-meta">${l.phase || ''} · ${l.completed}/${l.total}</div>
-        </div>
-      `).join('')}</div>`;
+        `;
+      }).join('');
     }
 
-    function renderIncoming(items) {
-      document.getElementById('incomingList').innerHTML = items.map(item => `
-        <div class="incoming-item">
-          <div>
-            <div class="incoming-text">${esc(item.task_text || item.text)}</div>
-            <div class="incoming-from">from ${esc(item.from_user)}</div>
+    function renderActiveTasks(tasks) {
+      const container = document.getElementById('activeTasks');
+      document.getElementById('activeCount').textContent = tasks.length;
+
+      if (!tasks.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <div class="empty-text">All clear! Tap backlog to activate tasks.</div>
           </div>
-          <button class="claim-btn" onclick="claimTask('${item.task_id || item.id}')">Claim</button>
-        </div>
-      `).join('');
+        `;
+        return;
+      }
+
+      container.innerHTML = tasks.map(t => {
+        const catClass = getCategoryClass(t.category || t.project);
+        return `
+          <div class="task-item" data-id="${t.id}">
+            <div class="edit-checkbox ${selectedActive.has(t.id) ? 'selected' : ''}" 
+                 onclick="toggleActiveSelect('${t.id}', event)">
+              ${selectedActive.has(t.id) ? '✓' : ''}
+            </div>
+            <span class="task-dot ${catClass}"></span>
+            <div class="task-content">
+              <div class="task-text">${esc(t.text)}</div>
+              ${t.category || t.due_date ? `
+                <div class="task-meta">
+                  ${t.category ? t.category : ''}
+                  ${t.due_date ? ' · ' + formatDateShort(t.due_date) : ''}
+                </div>
+              ` : ''}
+            </div>
+            <div class="task-checkbox" onclick="completeTask('${t.id}', this)">✓</div>
+          </div>
+        `;
+      }).join('');
     }
 
-    async function loadAllTasks() {
-      const data = await api('/tasks');
-      if (data) renderTasks(data.tasks, 'allTasks', 'allTasksCount');
+    function renderBacklog(tasks) {
+      const grid = document.getElementById('backlogGrid');
+      
+      // Group by category
+      const groups = {};
+      tasks.forEach(t => {
+        const cat = getCategoryClass(t.category || t.project);
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(t);
+      });
+
+      // Category display names
+      const catNames = {
+        leadlink: 'LeadLink',
+        medivault: 'MediVault', 
+        writing: 'Writing',
+        errands: 'Errands',
+        general: 'General'
+      };
+
+      // Order: prioritize categories with tasks
+      const order = ['leadlink', 'medivault', 'writing', 'errands', 'general'];
+      const sortedCats = order.filter(c => groups[c]?.length);
+
+      if (!sortedCats.length) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: span 2;">
+            <div class="empty-icon">📋</div>
+            <div class="empty-text">No backlog tasks</div>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = sortedCats.map(cat => {
+        const tasks = groups[cat];
+        const expanded = expandedCategories.has(cat);
+        
+        return `
+          <div class="backlog-box ${expanded ? 'expanded' : ''}" data-category="${cat}">
+            <div class="backlog-header" onclick="toggleBacklogBox('${cat}')">
+              <span class="backlog-color ${cat}"></span>
+              <span class="backlog-name">${catNames[cat]}</span>
+              <span class="backlog-count">${tasks.length}</span>
+            </div>
+            <div class="backlog-tasks">
+              ${tasks.map(t => `
+                <div class="backlog-task" data-id="${t.id}">
+                  <div class="edit-checkbox ${selectedBacklog.has(t.id) ? 'selected' : ''}" 
+                       onclick="toggleBacklogSelect('${t.id}', event)">
+                    ${selectedBacklog.has(t.id) ? '✓' : ''}
+                  </div>
+                  <span class="backlog-task-text">${esc(t.text)}</span>
+                  <div class="activate-btn" onclick="activateTask('${t.id}', event)">+</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    async function loadAllLaunches() {
-      const data = await api('/launches');
-      if (data) renderLaunches(data.launches, 'allLaunches');
+    function toggleBacklogBox(cat) {
+      if (expandedCategories.has(cat)) {
+        expandedCategories.delete(cat);
+      } else {
+        expandedCategories.add(cat);
+      }
+      const box = document.querySelector(`.backlog-box[data-category="${cat}"]`);
+      if (box) box.classList.toggle('expanded');
     }
 
+    // Actions
     async function completeTask(id, el) {
-      el.classList.add('done');
-      el.textContent = '✓';
+      el.classList.add('checked');
       const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
       if (result?.success) {
         showToast('Done ✓');
         setTimeout(() => {
-          el.closest('.task').style.opacity = '0';
-          setTimeout(refreshData, 200);
-        }, 400);
+          el.closest('.task-item').style.opacity = '0';
+          el.closest('.task-item').style.transform = 'translateX(20px)';
+          setTimeout(loadData, 200);
+        }, 300);
       }
     }
 
-    async function claimTask(id) {
+    async function activateTask(id, event) {
+      event.stopPropagation();
       const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
       if (result?.success) {
-        showToast('Claimed');
-        refreshData();
+        showToast('Activated');
+        loadData();
       }
     }
 
-    async function quickAddTask(text) {
-      const result = await api('/tasks', { 
-        method: 'POST', 
-        body: JSON.stringify({ text, category: 'General', priority: 4 }) 
-      });
+    async function incrementGoal(id) {
+      const result = await api(`/goals/${id}/increment`, { method: 'POST' });
       if (result?.success) {
-        showToast('Added ✓');
-        refreshData();
+        showToast('+1');
+        loadData();
       }
     }
 
-    async function submitNewTask() {
-      const text = document.getElementById('newTaskText').value.trim();
-      if (!text) return showToast('Enter a task');
-      const category = document.getElementById('newTaskCategory').value.trim() || 'General';
-      const isActive = document.getElementById('newTaskActive').checked;
-      const result = await api('/tasks', { method: 'POST', body: JSON.stringify({ text, category, priority: isActive ? 4 : 3 }) });
-      if (result?.success) {
-        showToast('Added');
-        closeModal('addTaskModal');
-        document.getElementById('newTaskText').value = '';
-        refreshData();
+    // Edit mode
+    function toggleEditMode() {
+      editMode = !editMode;
+      document.body.classList.toggle('edit-mode', editMode);
+      document.getElementById('editBtn').classList.toggle('edit-active', editMode);
+      
+      if (!editMode) {
+        selectedActive.clear();
+        selectedBacklog.clear();
+        updateSelectedCounts();
       }
     }
 
-    async function submitJournal() {
-      const content = document.getElementById('journalContent').value.trim();
-      if (!content) return showToast('Write something');
-      const mood = document.getElementById('journalMood').value;
-      const result = await api('/journal', { method: 'POST', body: JSON.stringify({ content, mood }) });
-      if (result?.success) {
-        showToast('Saved');
-        closeModal('journalModal');
-        document.getElementById('journalContent').value = '';
-      }
+    function exitEditMode() {
+      editMode = false;
+      document.body.classList.remove('edit-mode');
+      document.getElementById('editBtn').classList.remove('edit-active');
+      selectedActive.clear();
+      selectedBacklog.clear();
+      loadData(); // Re-render to clear selections
     }
 
-    async function submitIdea() {
-      const title = document.getElementById('ideaTitle').value.trim();
-      if (!title) return showToast('Enter a title');
-      const content = document.getElementById('ideaContent').value.trim();
-      const result = await api('/ideas', { method: 'POST', body: JSON.stringify({ title, content }) });
-      if (result?.success) {
-        showToast('Captured 💡');
-        closeModal('ideaModal');
-        document.getElementById('ideaTitle').value = '';
-        document.getElementById('ideaContent').value = '';
+    function toggleActiveSelect(id, event) {
+      event.stopPropagation();
+      if (selectedActive.has(id)) {
+        selectedActive.delete(id);
+      } else {
+        selectedActive.add(id);
       }
+      const checkbox = event.currentTarget;
+      checkbox.classList.toggle('selected');
+      checkbox.innerHTML = selectedActive.has(id) ? '✓' : '';
+      updateSelectedCounts();
     }
 
-    // Command input - handles both completing tasks AND adding new ones
-    document.getElementById('commandInput').addEventListener('keypress', async (e) => {
-      if (e.key === 'Enter') {
-        const input = e.target.value.trim();
-        if (!input) return;
-        e.target.value = '';
+    function toggleBacklogSelect(id, event) {
+      event.stopPropagation();
+      if (selectedBacklog.has(id)) {
+        selectedBacklog.delete(id);
+      } else {
+        selectedBacklog.add(id);
+      }
+      const checkbox = event.currentTarget;
+      checkbox.classList.toggle('selected');
+      checkbox.innerHTML = selectedBacklog.has(id) ? '✓' : '';
+      updateSelectedCounts();
+    }
 
-        // Check for "N done" pattern first
-        const doneMatch = input.match(/^(\d+)\s*done$/i);
-        if (doneMatch && currentData?.activeTasks) {
-          const idx = parseInt(doneMatch[1]) - 1;
-          const task = currentData.activeTasks[idx];
-          if (task) {
-            const el = document.querySelector(`[data-id="${task.id}"] .task-check`);
-            if (el) completeTask(task.id, el);
-            return;
-          }
-        }
+    function updateSelectedCounts() {
+      document.getElementById('activeSelectedCount').textContent = selectedActive.size;
+      document.getElementById('backlogSelectedCount').textContent = selectedBacklog.size;
+    }
 
-        // Otherwise, add as a new task
-        await quickAddTask(input);
+    async function markSelectedDone() {
+      if (!selectedActive.size) return showToast('Select tasks first');
+      
+      let completed = 0;
+      for (const id of selectedActive) {
+        const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
+        if (result?.success) completed++;
+      }
+      
+      showToast(`${completed} done ✓`);
+      exitEditMode();
+    }
+
+    async function activateSelected() {
+      if (!selectedBacklog.size) return showToast('Select tasks first');
+      
+      let activated = 0;
+      for (const id of selectedBacklog) {
+        const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
+        if (result?.success) activated++;
+      }
+      
+      showToast(`${activated} activated`);
+      exitEditMode();
+    }
+
+    // Event listeners
+    document.getElementById('editBtn').addEventListener('click', toggleEditMode);
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      document.getElementById('dropdownMenu').classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        document.getElementById('dropdownMenu').classList.remove('show');
       }
     });
 
-    // Tabs
-    document.querySelectorAll('.nav-item').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-        if (tab.dataset.tab === 'tasks') loadAllTasks();
-        if (tab.dataset.tab === 'launches') loadAllLaunches();
-      });
-    });
+    // Helpers
+    function formatDateShort(d) {
+      if (!d) return '';
+      const date = new Date(d);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
 
-    function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
-    });
+    function esc(s) {
+      if (!s) return '';
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-    function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-    function isOverdue(d) { return new Date(d) < new Date(new Date().toDateString()); }
-    function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
-    function refreshData() { loadMorningData(); }
 
-    loadMorningData();
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    function refreshData() {
+      document.getElementById('dropdownMenu').classList.remove('show');
+      loadData();
+      showToast('Refreshed');
+    }
+
+    // Init
+    loadData();
   </script>
 </body>
 </html>
