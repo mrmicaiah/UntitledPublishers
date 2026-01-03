@@ -62,6 +62,10 @@
     .header-btn.notify-off { border-color: var(--rust-medium); color: var(--text-muted); }
     .msg-badge { position: absolute; top: -6px; right: -6px; background: var(--accent-red); color: white; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 10px; min-width: 16px; text-align: center; }
 
+    /* Debug Panel */
+    .debug-panel { position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.9); color: #0f0; font-family: monospace; font-size: 10px; padding: 8px; border-radius: 4px; max-width: 300px; max-height: 200px; overflow-y: auto; z-index: 9999; display: none; }
+    .debug-panel.show { display: block; }
+
     /* Add Task Box */
     .add-task-box { display: inline-flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; }
     .add-task-input { width: 200px; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-primary); font-size: 13px; font-family: inherit; }
@@ -208,6 +212,7 @@
           💬 <span id="msgBadge" class="msg-badge">0</span>
         </button>
         <button class="header-btn" id="notifyBtn" onclick="toggleNotifications()">🔔 Off</button>
+        <button class="header-btn" onclick="testNotification()">🧪</button>
         <button class="header-btn" onclick="loadData()">🔄</button>
         <button class="header-btn" onclick="logout()">Logout</button>
       </div>
@@ -290,6 +295,7 @@
     </div>
   </div>
 
+  <div class="debug-panel" id="debugPanel"></div>
   <div class="toast" id="toast"></div>
 
   <script>
@@ -301,28 +307,79 @@
     let categories = ['General'];
     let notificationsEnabled = false;
     let checkInterval = null;
-    let lastIncomingCount = -1;  // -1 = first load, don't notify
+    let lastIncomingCount = -1;
     let lastOverdueIds = new Set();
-    let lastMessageCount = -1;   // -1 = first load, don't notify
+    let lastMessageCount = -1;
     let currentMessages = [];
+
+    // Debug logging
+    function debug(msg) {
+      console.log('[DEBUG]', msg);
+      const panel = document.getElementById('debugPanel');
+      const time = new Date().toLocaleTimeString();
+      panel.innerHTML = `[${time}] ${msg}<br>` + panel.innerHTML;
+      if (panel.innerHTML.length > 5000) panel.innerHTML = panel.innerHTML.substring(0, 3000);
+    }
+
+    // Test notification button
+    function testNotification() {
+      debug('Testing notification...');
+      debug(`Permission: ${Notification.permission}`);
+      debug(`Enabled: ${notificationsEnabled}`);
+      
+      if (Notification.permission !== 'granted') {
+        debug('Permission not granted!');
+        showToast('Need notification permission first');
+        return;
+      }
+      
+      try {
+        new Notification('🧪 Test Notification', {
+          body: 'If you see this, notifications work!',
+          tag: 'test-' + Date.now()
+        });
+        debug('Notification sent!');
+        showToast('Test notification sent');
+      } catch (e) {
+        debug('Error: ' + e.message);
+        showToast('Notification error: ' + e.message);
+      }
+    }
 
     // Notification system
     async function requestNotificationPermission() {
+      debug('Requesting notification permission...');
       if (!('Notification' in window)) {
+        debug('Notifications not supported');
         showToast('Notifications not supported', 'error');
         return false;
       }
+      debug(`Current permission: ${Notification.permission}`);
       if (Notification.permission === 'granted') return true;
       if (Notification.permission === 'denied') {
+        debug('Notifications blocked');
         showToast('Notifications blocked - check browser settings', 'error');
         return false;
       }
       const permission = await Notification.requestPermission();
+      debug(`New permission: ${permission}`);
       return permission === 'granted';
     }
 
     function sendNotification(title, body, tag) {
-      if (!notificationsEnabled || Notification.permission !== 'granted') return;
+      debug(`sendNotification called: ${title}`);
+      debug(`  notificationsEnabled: ${notificationsEnabled}`);
+      debug(`  Notification.permission: ${Notification.permission}`);
+      
+      if (!notificationsEnabled) {
+        debug('  SKIPPED: notifications not enabled');
+        return;
+      }
+      if (Notification.permission !== 'granted') {
+        debug('  SKIPPED: permission not granted');
+        return;
+      }
+      
       try {
         new Notification(title, {
           body,
@@ -330,11 +387,17 @@
           tag,
           requireInteraction: false
         });
-      } catch (e) { console.error('Notification error:', e); }
+        debug('  Notification created successfully');
+      } catch (e) {
+        debug('  ERROR: ' + e.message);
+        console.error('Notification error:', e);
+      }
     }
 
     async function toggleNotifications() {
       const btn = document.getElementById('notifyBtn');
+      const panel = document.getElementById('debugPanel');
+      
       if (!notificationsEnabled) {
         const granted = await requestNotificationPermission();
         if (granted) {
@@ -343,8 +406,10 @@
           btn.textContent = '🔔 On';
           btn.classList.remove('notify-off');
           btn.classList.add('notify-on');
+          panel.classList.add('show'); // Show debug panel
           startBackgroundCheck();
           showToast('Notifications enabled');
+          debug('Notifications ENABLED');
         }
       } else {
         notificationsEnabled = false;
@@ -352,18 +417,22 @@
         btn.textContent = '🔔 Off';
         btn.classList.remove('notify-on');
         btn.classList.add('notify-off');
+        panel.classList.remove('show'); // Hide debug panel
         stopBackgroundCheck();
         showToast('Notifications disabled');
+        debug('Notifications DISABLED');
       }
     }
 
     function startBackgroundCheck() {
+      debug('Starting background check (every 15s)');
       if (checkInterval) return;
-      checkInterval = setInterval(checkForNotifications, 60000);
-      checkForNotifications();
+      checkInterval = setInterval(checkForNotifications, 15000); // Check every 15 seconds
+      checkForNotifications(); // Check immediately
     }
 
     function stopBackgroundCheck() {
+      debug('Stopping background check');
       if (checkInterval) {
         clearInterval(checkInterval);
         checkInterval = null;
@@ -371,39 +440,54 @@
     }
 
     async function checkForNotifications() {
-      if (!notificationsEnabled || !API_URL) return;
+      debug('--- checkForNotifications ---');
+      debug(`notificationsEnabled: ${notificationsEnabled}, API_URL: ${API_URL ? 'set' : 'not set'}`);
+      
+      if (!notificationsEnabled || !API_URL) {
+        debug('SKIP: not enabled or no API');
+        return;
+      }
+      
       try {
         const data = await api('/morning');
-        if (!data) return;
+        if (!data) {
+          debug('ERROR: No data from API');
+          return;
+        }
 
-        // Check for new messages
+        // Messages
         const msgCount = data.unreadMessages || 0;
+        debug(`Messages: current=${msgCount}, last=${lastMessageCount}`);
         if (lastMessageCount !== -1 && msgCount > lastMessageCount) {
+          debug('>>> NEW MESSAGE! Sending notification...');
           sendNotification(
             '💬 New Message',
             `You have a new message from your teammate!`,
-            'message'
+            'message-' + Date.now()
           );
         }
         lastMessageCount = msgCount;
 
-        // Check for new incoming tasks (assigned by teammate)
+        // Incoming tasks
         const incomingCount = data.incomingCount || (data.incoming || []).length;
+        debug(`Incoming: current=${incomingCount}, last=${lastIncomingCount}`);
         if (lastIncomingCount !== -1 && incomingCount > lastIncomingCount) {
           const newCount = incomingCount - lastIncomingCount;
+          debug(`>>> NEW TASK! (${newCount}) Sending notification...`);
           sendNotification(
             '📥 New Task',
             `You have ${newCount} new task${newCount > 1 ? 's' : ''} from your teammate!`,
-            'incoming'
+            'incoming-' + Date.now()
           );
         }
         lastIncomingCount = incomingCount;
 
-        // Check for newly overdue tasks
+        // Overdue tasks
         const overdue = data.overdueTasks || [];
         const currentOverdueIds = new Set(overdue.map(t => t.id));
         for (const task of overdue) {
           if (!lastOverdueIds.has(task.id)) {
+            debug(`>>> NEWLY OVERDUE: ${task.text}`);
             sendNotification(
               '⚠️ Task Overdue',
               task.text.substring(0, 100),
@@ -413,37 +497,27 @@
         }
         lastOverdueIds = currentOverdueIds;
 
-        // Check for tasks due today
-        const today = new Date().toISOString().split('T')[0];
-        const notifiedToday = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
-        if (notifiedToday.date !== today) {
-          localStorage.setItem('notifiedToday', JSON.stringify({ date: today, tasks: [] }));
-        }
-        const todayNotified = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
-        
-        const allTasks = [...(data.activeTasks || []), ...(data.sprintTasks || [])];
-        for (const task of allTasks) {
-          if (task.due_date === today && !todayNotified.tasks?.includes(task.id)) {
-            sendNotification(
-              '📅 Task Due Today',
-              task.text.substring(0, 100),
-              'due-' + task.id
-            );
-            todayNotified.tasks = [...(todayNotified.tasks || []), task.id];
-            localStorage.setItem('notifiedToday', JSON.stringify(todayNotified));
-          }
-        }
-      } catch (e) { console.error('Background check error:', e); }
+        debug('Check complete');
+      } catch (e) {
+        debug('ERROR: ' + e.message);
+        console.error('Background check error:', e);
+      }
     }
 
     function initNotifications() {
       const saved = localStorage.getItem('notificationsEnabled');
       const btn = document.getElementById('notifyBtn');
+      const panel = document.getElementById('debugPanel');
+      
+      debug(`initNotifications: saved=${saved}, permission=${Notification.permission}`);
+      
       if (saved === 'true' && Notification.permission === 'granted') {
         notificationsEnabled = true;
         btn.textContent = '🔔 On';
         btn.classList.add('notify-on');
+        panel.classList.add('show');
         startBackgroundCheck();
+        debug('Notifications restored from localStorage');
       } else {
         btn.classList.add('notify-off');
       }
@@ -492,6 +566,9 @@
       await api('/messages/read', { method: 'POST' });
       currentMessages = [];
       updateMessageUI();
+      // Reset message count to current after dismissing
+      lastMessageCount = 0;
+      debug('Messages dismissed, lastMessageCount reset to 0');
     }
 
     function formatRelativeTime(isoString) {
@@ -616,12 +693,14 @@
       document.getElementById('greeting').textContent = `Good ${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'}, ${currentUser}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek} • ${data.greeting.date}`;
 
-      // Update notification tracking (only after first load)
+      // Initialize notification tracking on first load
       if (lastIncomingCount === -1) {
         lastIncomingCount = data.incomingCount || (data.incoming || []).length;
+        debug(`Initial incomingCount set to ${lastIncomingCount}`);
       }
       if (lastMessageCount === -1) {
         lastMessageCount = data.unreadMessages || 0;
+        debug(`Initial messageCount set to ${lastMessageCount}`);
       }
       lastOverdueIds = new Set((data.overdueTasks || []).map(t => t.id));
 
@@ -629,6 +708,8 @@
       if (data.unreadMessages > 0) {
         document.getElementById('msgBtn').style.display = 'block';
         document.getElementById('msgBadge').textContent = data.unreadMessages;
+      } else {
+        document.getElementById('msgBtn').style.display = 'none';
       }
 
       // Extract categories from backlog
