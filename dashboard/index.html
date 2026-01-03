@@ -7,7 +7,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1a1512">
   <title>Productivity Engine</title>
-  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,122 +21,125 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-dark);
-      background-image: radial-gradient(ellipse at 20% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(184, 134, 11, 0.08) 0%, transparent 50%);
-      color: var(--text-primary); min-height: 100vh; padding-bottom: 20px;
+      color: var(--text-primary); min-height: 100vh; padding: 12px;
     }
     
-    /* Login Screen */
+    /* Login */
     .login-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark);
-      background-image: radial-gradient(ellipse at 30% 30%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 70%, rgba(184, 134, 11, 0.1) 0%, transparent 50%);
+      background-image: radial-gradient(ellipse at 30% 30%, rgba(139, 69, 19, 0.15) 0%, transparent 50%);
       display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
     }
     .login-screen.hidden { display: none; }
-    .login-logo { font-size: 64px; margin-bottom: 20px; animation: rotate-slow 20s linear infinite; filter: drop-shadow(0 0 20px var(--copper-glow)); }
+    .login-logo { font-size: 64px; margin-bottom: 20px; animation: rotate-slow 20s linear infinite; }
     .login-title { font-size: 24px; font-weight: 700; color: var(--brass-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 3px; }
-    .login-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 40px; font-family: 'Courier Prime', monospace; letter-spacing: 2px; }
-    .login-box { background: var(--bg-panel); border: 1px solid var(--rust-dark); border-radius: 8px; padding: 32px; width: 90%; max-width: 320px; box-shadow: 0 0 40px rgba(0,0,0,0.5); position: relative; }
-    .login-box::before, .login-box::after { content: ''; position: absolute; width: 10px; height: 10px; background: radial-gradient(circle, var(--steel) 30%, var(--rivet) 70%); border-radius: 50%; top: 12px; }
-    .login-box::before { left: 12px; } .login-box::after { right: 12px; }
+    .login-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 40px; font-family: 'Courier Prime', monospace; }
+    .login-box { background: var(--bg-panel); border: 1px solid var(--rust-dark); border-radius: 8px; padding: 32px; width: 90%; max-width: 320px; }
     .login-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block; text-align: center; }
     .pin-input-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
     .pin-digit { width: 50px; height: 60px; background: var(--bg-dark); border: 2px solid var(--rust-medium); border-radius: 6px; font-size: 24px; font-family: 'Courier Prime', monospace; color: var(--brass-light); text-align: center; }
-    .pin-digit:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 15px rgba(184, 134, 11, 0.3); }
-    .pin-digit.filled { border-color: var(--accent-green); }
+    .pin-digit:focus { outline: none; border-color: var(--brass); }
     .pin-digit.error { border-color: var(--accent-red); animation: shake 0.3s ease; }
     @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
     @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .login-btn { width: 100%; padding: 14px; background: linear-gradient(180deg, var(--rust-medium) 0%, var(--rust-dark) 100%); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-primary); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
-    .login-btn:hover { background: linear-gradient(180deg, var(--rust-light) 0%, var(--rust-medium) 100%); }
-    .login-error { color: var(--accent-red-glow); font-size: 12px; text-align: center; margin-top: 16px; font-family: 'Courier Prime', monospace; opacity: 0; transition: opacity 0.3s; }
+    .login-btn { width: 100%; padding: 14px; background: var(--rust-medium); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-primary); font-size: 14px; font-weight: 600; text-transform: uppercase; cursor: pointer; }
+    .login-btn:hover { background: var(--rust-light); }
+    .login-error { color: var(--accent-red-glow); font-size: 12px; text-align: center; margin-top: 16px; opacity: 0; }
     .login-error.show { opacity: 1; }
     
-    /* Main App */
     .main-app { display: none; } .main-app.visible { display: block; }
     
-    /* Header */
-    .header { padding: 16px; background: linear-gradient(180deg, var(--bg-rust) 0%, var(--bg-dark) 100%); border-bottom: 2px solid var(--rust-dark); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    /* Header Bar */
+    .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg-rust); border-radius: 6px; margin-bottom: 12px; border: 1px solid var(--rust-dark); }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo { font-size: 28px; filter: drop-shadow(0 0 8px var(--copper-glow)); }
-    .header-info .greeting { font-size: 18px; font-weight: 700; color: var(--text-primary); }
-    .header-info .date { font-size: 12px; color: var(--text-secondary); font-family: 'Courier Prime', monospace; }
-    .header-right { display: flex; gap: 8px; }
-    .header-btn { padding: 8px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 12px; cursor: pointer; }
+    .header-logo { font-size: 24px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--brass-light); }
+    .header-date { font-size: 11px; color: var(--text-muted); font-family: 'Courier Prime', monospace; }
+    .header-actions { display: flex; gap: 8px; }
+    .header-btn { padding: 6px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 11px; cursor: pointer; }
     .header-btn:hover { border-color: var(--brass); color: var(--text-primary); }
-    
+
     /* Sprint Banner */
-    .sprint-banner { margin: 0 16px 16px; padding: 16px; background: var(--bg-panel); border: 1px solid var(--brass); border-radius: 6px; box-shadow: 0 0 20px rgba(184, 134, 11, 0.1); }
-    .sprint-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .sprint-name { font-size: 16px; font-weight: 600; color: var(--brass-light); display: flex; align-items: center; gap: 8px; }
-    .sprint-name::before { content: '⚙️'; }
-    .sprint-days { font-size: 13px; color: var(--text-secondary); font-family: 'Courier Prime', monospace; }
+    .sprint-banner { background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-metal) 100%); border: 1px solid var(--brass); border-radius: 6px; padding: 16px; margin-bottom: 12px; }
+    .sprint-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .sprint-name { font-size: 15px; font-weight: 600; color: var(--brass-light); }
+    .sprint-days { font-size: 12px; color: var(--text-secondary); font-family: 'Courier Prime', monospace; }
     .sprint-days.urgent { color: var(--accent-red-glow); }
     .sprint-days.warning { color: var(--accent-yellow); }
-    .progress-bar { height: 8px; background: var(--bg-dark); border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-green) 0%, var(--accent-green-glow) 100%); border-radius: 4px; transition: width 0.3s; }
-    .progress-fill.warning { background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--brass-light) 100%); }
-    .progress-fill.danger { background: linear-gradient(90deg, var(--accent-red) 0%, var(--accent-red-glow) 100%); }
-    .sprint-stats { font-size: 12px; color: var(--text-muted); font-family: 'Courier Prime', monospace; }
-    .objectives-list { margin-top: 12px; }
-    .objective-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--rivet); }
-    .objective-icon { font-size: 14px; }
-    .objective-text { flex: 1; font-size: 13px; color: var(--text-primary); }
-    .objective-count { font-size: 12px; color: var(--brass); font-family: 'Courier Prime', monospace; }
-    
+    .progress-bar { height: 6px; background: var(--bg-dark); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+    .progress-fill { height: 100%; background: var(--accent-green-glow); border-radius: 3px; }
+    .progress-fill.warning { background: var(--accent-yellow); }
+    .progress-fill.danger { background: var(--accent-red-glow); }
+    .sprint-stats { font-size: 11px; color: var(--text-muted); font-family: 'Courier Prime', monospace; margin-bottom: 10px; }
+    .objectives-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .objective-chip { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: var(--bg-dark); border-radius: 4px; font-size: 11px; border: 1px solid var(--rivet); }
+    .objective-chip .icon { font-size: 12px; }
+    .objective-chip .count { color: var(--brass); font-family: 'Courier Prime', monospace; }
+
     /* Section */
-    .section { margin: 0 16px 24px; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--rust-dark); }
-    .section-title { font-size: 14px; font-weight: 600; color: var(--brass-light); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-    .section-count { background: var(--bg-metal); padding: 2px 8px; border-radius: 10px; font-size: 11px; color: var(--brass); font-family: 'Courier Prime', monospace; }
+    .section { margin-bottom: 16px; }
+    .section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 8px 12px; background: var(--bg-rust); border-radius: 4px; }
+    .section-title { font-size: 13px; font-weight: 600; color: var(--brass-light); text-transform: uppercase; letter-spacing: 1px; }
+    .section-count { font-size: 11px; color: var(--brass); font-family: 'Courier Prime', monospace; background: var(--bg-dark); padding: 2px 8px; border-radius: 10px; }
+    .section-header.active { background: linear-gradient(90deg, var(--accent-green) 0%, var(--bg-rust) 100%); }
+    .section-header.overdue { background: linear-gradient(90deg, var(--accent-red) 0%, var(--bg-rust) 100%); }
+    .section-header.sprint { background: linear-gradient(90deg, var(--copper) 0%, var(--bg-rust) 100%); }
+
+    /* Task Grid */
+    .task-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
     
-    /* Task Item */
-    .task-item { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-metal); border-radius: 4px; margin-bottom: 6px; border: 1px solid var(--rivet); }
-    .task-item.overdue { border-left: 3px solid var(--accent-red); }
-    .task-item.in-sprint { border-left: 3px solid var(--copper); }
-    .task-item.active-task { background: var(--bg-panel); border-color: var(--accent-green); }
-    .task-content { flex: 1; min-width: 0; }
-    .task-text { font-size: 13px; color: var(--text-primary); line-height: 1.4; }
-    .task-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-    .task-tag { font-size: 10px; padding: 2px 6px; border-radius: 2px; background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--rivet); }
+    /* Task Card */
+    .task-card { background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; min-height: 100px; transition: all 0.2s; position: relative; }
+    .task-card:hover { border-color: var(--rust-medium); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .task-card.active { border-color: var(--accent-green); background: linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, var(--bg-panel) 100%); }
+    .task-card.overdue { border-left: 3px solid var(--accent-red); }
+    .task-card.in-sprint { border-left: 3px solid var(--copper); }
+    
+    .task-text { font-size: 13px; color: var(--text-primary); line-height: 1.5; flex: 1; margin-bottom: 10px; }
+    .task-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .task-tag { font-size: 9px; padding: 2px 6px; border-radius: 2px; background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--rivet); text-transform: uppercase; letter-spacing: 0.5px; }
     .task-tag.due { color: var(--accent-yellow); border-color: var(--accent-yellow); }
     .task-tag.due.overdue { color: var(--accent-red-glow); border-color: var(--accent-red); }
     .task-tag.objective { color: var(--copper-glow); border-color: var(--copper); }
-    .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
-    .task-btn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--rivet); background: var(--bg-dark); color: var(--text-muted); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .task-tag.category { color: var(--text-secondary); }
+    
+    .task-actions { display: flex; gap: 6px; margin-top: auto; }
+    .task-btn { flex: 1; padding: 8px; border-radius: 4px; border: 1px solid var(--rivet); background: var(--bg-dark); color: var(--text-muted); font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.15s; }
     .task-btn:hover { border-color: var(--brass); color: var(--text-primary); }
-    .task-btn.complete:hover { border-color: var(--accent-green); color: var(--accent-green-glow); background: rgba(74, 124, 89, 0.2); }
-    .task-btn.activate:hover { border-color: var(--brass); color: var(--brass-light); background: rgba(184, 134, 11, 0.2); }
-    .task-btn.deactivate:hover { border-color: var(--rust-medium); color: var(--rust-light); }
-    .task-btn.completing { background: var(--accent-green); border-color: var(--accent-green); color: white; }
-    
-    /* Empty State */
-    .empty-state { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; }
-    
-    /* Category Group */
-    .category-group { margin-bottom: 16px; }
-    .category-header { font-size: 12px; font-weight: 600; color: var(--rust-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
-    .category-count { font-size: 10px; color: var(--brass); background: var(--bg-dark); padding: 1px 6px; border-radius: 8px; }
-    
+    .task-btn.complete { border-color: var(--accent-green); color: var(--accent-green-glow); }
+    .task-btn.complete:hover { background: var(--accent-green); color: white; }
+    .task-btn.activate { border-color: var(--brass); color: var(--brass); }
+    .task-btn.activate:hover { background: var(--brass); color: var(--bg-dark); }
+    .task-btn.deactivate { border-color: var(--rust-medium); color: var(--rust-light); }
+    .task-btn.deactivate:hover { background: var(--rust-medium); color: white; }
+    .task-btn.completing { background: var(--accent-green); color: white; pointer-events: none; }
+
+    /* Category Label */
+    .category-label { grid-column: 1 / -1; font-size: 12px; font-weight: 600; color: var(--rust-light); text-transform: uppercase; letter-spacing: 1px; padding: 8px 0 4px; border-bottom: 1px solid var(--rivet); margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+    .category-label:first-child { margin-top: 0; }
+    .category-count { font-size: 10px; color: var(--brass); background: var(--bg-dark); padding: 2px 6px; border-radius: 8px; font-family: 'Courier Prime', monospace; }
+
+    /* Empty */
+    .empty-state { grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted); font-size: 13px; background: var(--bg-metal); border-radius: 6px; border: 1px dashed var(--rivet); }
+
     /* Toast */
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-panel); border: 1px solid var(--brass); padding: 12px 24px; border-radius: 4px; font-size: 14px; z-index: 1000; opacity: 0; transition: opacity 0.3s; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-panel); border: 1px solid var(--brass); padding: 12px 24px; border-radius: 4px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.3s; }
     .toast.show { opacity: 1; }
     .toast.success { border-color: var(--accent-green); }
-    
+
     /* Loading */
-    .loading { display: flex; align-items: center; justify-content: center; padding: 40px; color: var(--text-secondary); }
+    .loading { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; padding: 40px; color: var(--text-secondary); }
     .spinner { width: 20px; height: 20px; border: 2px solid var(--rivet); border-top-color: var(--brass); border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    
+
     /* Responsive */
     @media (max-width: 600px) {
-      .task-text { font-size: 12px; }
-      .task-btn { width: 28px; height: 28px; font-size: 12px; }
+      .task-grid { grid-template-columns: 1fr; }
+      body { padding: 8px; }
     }
   </style>
 </head>
 <body>
-  <!-- Login Screen -->
+  <!-- Login -->
   <div class="login-screen" id="loginScreen">
     <div class="login-logo">⚙️</div>
     <div class="login-title">Productivity Engine</div>
@@ -145,73 +147,76 @@
     <div class="login-box">
       <label class="login-label">Enter Access Code</label>
       <div class="pin-input-container">
-        <input type="password" class="pin-digit" maxlength="1" data-index="0" inputmode="numeric">
-        <input type="password" class="pin-digit" maxlength="1" data-index="1" inputmode="numeric">
-        <input type="password" class="pin-digit" maxlength="1" data-index="2" inputmode="numeric">
-        <input type="password" class="pin-digit" maxlength="1" data-index="3" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
       </div>
       <button class="login-btn" onclick="attemptLogin()">Initialize</button>
-      <div class="login-error" id="loginError">ACCESS DENIED - INVALID CODE</div>
+      <div class="login-error" id="loginError">ACCESS DENIED</div>
     </div>
   </div>
 
-  <!-- Main App -->
+  <!-- Main -->
   <div class="main-app" id="mainApp">
-    <header class="header">
+    <div class="header-bar">
       <div class="header-left">
         <div class="header-logo">⚙️</div>
-        <div class="header-info">
-          <div class="greeting" id="greeting">Good Morning</div>
-          <div class="date" id="dateInfo">Loading...</div>
+        <div>
+          <div class="header-title" id="greeting">Productivity Engine</div>
+          <div class="header-date" id="dateInfo">Loading...</div>
         </div>
       </div>
-      <div class="header-right">
-        <button class="header-btn" onclick="refreshData()">🔄 Refresh</button>
+      <div class="header-actions">
+        <button class="header-btn" onclick="loadData()">🔄 Refresh</button>
         <button class="header-btn" onclick="logout()">Logout</button>
       </div>
-    </header>
+    </div>
 
-    <!-- Sprint Banner -->
     <div class="sprint-banner" id="sprintBanner" style="display: none;">
-      <div class="sprint-header">
-        <div class="sprint-name" id="sprintName">Sprint</div>
+      <div class="sprint-top">
+        <div class="sprint-name" id="sprintName">⚙️ Sprint</div>
         <div class="sprint-days" id="sprintDays">0 days</div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="sprintProgress" style="width: 0%"></div></div>
+      <div class="progress-bar"><div class="progress-fill" id="sprintProgress"></div></div>
       <div class="sprint-stats" id="sprintStats">0/0 tasks</div>
-      <div class="objectives-list" id="objectivesList"></div>
+      <div class="objectives-row" id="objectivesList"></div>
     </div>
 
-    <!-- Active Tasks -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">🎯 Active <span class="section-count" id="activeCount">0</span></div>
+    <!-- Active -->
+    <div class="section" id="activeSection">
+      <div class="section-header active">
+        <span class="section-title">🎯 Active</span>
+        <span class="section-count" id="activeCount">0</span>
       </div>
-      <div id="activeTasks"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      <div class="task-grid" id="activeTasks"><div class="loading"><div class="spinner"></div> Loading...</div></div>
     </div>
 
-    <!-- Overdue Tasks -->
+    <!-- Overdue -->
     <div class="section" id="overdueSection" style="display: none;">
-      <div class="section-header">
-        <div class="section-title">⚠️ Overdue <span class="section-count" id="overdueCount">0</span></div>
+      <div class="section-header overdue">
+        <span class="section-title">⚠️ Overdue</span>
+        <span class="section-count" id="overdueCount">0</span>
       </div>
-      <div id="overdueTasks"></div>
+      <div class="task-grid" id="overdueTasks"></div>
     </div>
 
-    <!-- Sprint Tasks (not active) -->
+    <!-- Sprint Tasks -->
     <div class="section" id="sprintTasksSection" style="display: none;">
-      <div class="section-header">
-        <div class="section-title">📌 Sprint Tasks <span class="section-count" id="sprintTasksCount">0</span></div>
+      <div class="section-header sprint">
+        <span class="section-title">📌 Sprint Queue</span>
+        <span class="section-count" id="sprintTasksCount">0</span>
       </div>
-      <div id="sprintTasks"></div>
+      <div class="task-grid" id="sprintTasks"></div>
     </div>
 
-    <!-- All Other Tasks (Backlog) -->
+    <!-- Backlog -->
     <div class="section">
       <div class="section-header">
-        <div class="section-title">📋 Backlog <span class="section-count" id="backlogCount">0</span></div>
+        <span class="section-title">📋 Backlog</span>
+        <span class="section-count" id="backlogCount">0</span>
       </div>
-      <div id="backlogTasks"></div>
+      <div class="task-grid" id="backlogTasks"></div>
     </div>
   </div>
 
@@ -222,14 +227,13 @@
       '1987': { name: 'micaiah', api: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api' },
       '1976': { name: 'irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
-
     let API_URL = '', API_KEY = '', currentUser = '';
 
     function checkSession() {
-      const session = localStorage.getItem('dashboardSession');
-      if (session) {
-        const { pin, timestamp } = JSON.parse(session);
-        if (Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000 && USER_CONFIG[pin]) {
+      const s = localStorage.getItem('dashboardSession');
+      if (s) {
+        const { pin, timestamp } = JSON.parse(s);
+        if (Date.now() - timestamp < 7*24*60*60*1000 && USER_CONFIG[pin]) {
           currentUser = USER_CONFIG[pin].name;
           API_KEY = pin;
           API_URL = USER_CONFIG[pin].api;
@@ -241,13 +245,12 @@
     }
 
     const pinInputs = document.querySelectorAll('.pin-digit');
-    pinInputs.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        if (e.target.value && index < 3) pinInputs[index + 1].focus();
-        input.classList.toggle('filled', !!e.target.value);
+    pinInputs.forEach((input, i) => {
+      input.addEventListener('input', e => {
+        if (e.target.value && i < 3) pinInputs[i+1].focus();
       });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !e.target.value && index > 0) pinInputs[index - 1].focus();
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !e.target.value && i > 0) pinInputs[i-1].focus();
         if (e.key === 'Enter') attemptLogin();
       });
     });
@@ -280,176 +283,135 @@
     function logout() { localStorage.removeItem('dashboardSession'); location.reload(); }
 
     async function api(endpoint, options = {}) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
+      const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` };
       try {
-        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
-        return await response.json();
-      } catch (error) {
-        console.error('API Error:', error);
-        showToast('Connection failed', 'error');
-        return null;
-      }
+        const r = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        if (!r.ok) throw new Error(r.status);
+        return await r.json();
+      } catch (e) { console.error(e); showToast('Connection failed', 'error'); return null; }
     }
 
     async function loadData() {
       const data = await api('/morning');
       if (!data) return;
 
-      // Header
       const hour = new Date().getHours();
-      const timeOfDay = hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening';
-      document.getElementById('greeting').textContent = `Good ${timeOfDay}, ${currentUser}`;
+      document.getElementById('greeting').textContent = `Good ${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'}, ${currentUser}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek} • ${data.greeting.date}`;
 
       // Sprint
       if (data.sprint) {
         document.getElementById('sprintBanner').style.display = 'block';
-        document.getElementById('sprintName').textContent = data.sprint.name;
-        
+        document.getElementById('sprintName').textContent = '⚙️ ' + data.sprint.name;
         const daysEl = document.getElementById('sprintDays');
-        daysEl.textContent = `${data.sprint.daysRemaining} days remaining`;
+        daysEl.textContent = data.sprint.daysRemaining + ' days left';
         daysEl.className = 'sprint-days' + (data.sprint.daysRemaining <= 3 ? ' urgent' : data.sprint.daysRemaining <= 7 ? ' warning' : '');
 
-        const objectives = data.sprint.objectives || [];
-        let totalTasks = 0, doneTasks = 0;
-        objectives.forEach(o => { totalTasks += o.totalTasks || 0; doneTasks += o.doneTasks || 0; });
-        const pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
-        
-        const progressEl = document.getElementById('sprintProgress');
-        progressEl.style.width = pct + '%';
-        progressEl.className = 'progress-fill' + (pct < 30 ? ' danger' : pct < 70 ? ' warning' : '');
-        document.getElementById('sprintStats').textContent = `${doneTasks}/${totalTasks} tasks complete (${pct}%)`;
+        const objs = data.sprint.objectives || [];
+        let total = 0, done = 0;
+        objs.forEach(o => { total += o.totalTasks || 0; done += o.doneTasks || 0; });
+        const pct = total > 0 ? Math.round(done/total*100) : 0;
+        const prog = document.getElementById('sprintProgress');
+        prog.style.width = pct + '%';
+        prog.className = 'progress-fill' + (pct < 30 ? ' danger' : pct < 70 ? ' warning' : '');
+        document.getElementById('sprintStats').textContent = `${done}/${total} tasks (${pct}%)`;
 
-        document.getElementById('objectivesList').innerHTML = objectives.map(obj => {
-          const icon = obj.doneTasks === obj.totalTasks && obj.totalTasks > 0 ? '✅' : obj.doneTasks > 0 ? '◐' : '○';
-          return `<div class="objective-row"><span class="objective-icon">${icon}</span><span class="objective-text">${esc(obj.statement)}</span><span class="objective-count">${obj.doneTasks}/${obj.totalTasks}</span></div>`;
+        document.getElementById('objectivesList').innerHTML = objs.map(o => {
+          const icon = o.doneTasks === o.totalTasks && o.totalTasks > 0 ? '✅' : o.doneTasks > 0 ? '◐' : '○';
+          return `<div class="objective-chip"><span class="icon">${icon}</span><span>${esc(o.statement)}</span><span class="count">${o.doneTasks}/${o.totalTasks}</span></div>`;
         }).join('');
       } else {
         document.getElementById('sprintBanner').style.display = 'none';
       }
 
-      // Active Tasks
-      const activeTasks = data.activeTasks || [];
-      document.getElementById('activeCount').textContent = activeTasks.length;
-      document.getElementById('activeTasks').innerHTML = activeTasks.length === 0 
-        ? '<div class="empty-state">No active tasks. Activate something from below!</div>'
-        : activeTasks.map(t => renderTask(t, true)).join('');
+      // Active
+      const active = data.activeTasks || [];
+      document.getElementById('activeCount').textContent = active.length;
+      document.getElementById('activeTasks').innerHTML = active.length === 0 
+        ? '<div class="empty-state">No active tasks — activate something below!</div>'
+        : active.map(t => taskCard(t, true)).join('');
 
-      // Overdue Tasks
-      const overdueTasks = data.overdueTasks || [];
-      document.getElementById('overdueCount').textContent = overdueTasks.length;
-      document.getElementById('overdueSection').style.display = overdueTasks.length > 0 ? 'block' : 'none';
-      document.getElementById('overdueTasks').innerHTML = overdueTasks.map(t => renderTask(t, false, true)).join('');
+      // Overdue
+      const overdue = data.overdueTasks || [];
+      document.getElementById('overdueCount').textContent = overdue.length;
+      document.getElementById('overdueSection').style.display = overdue.length ? 'block' : 'none';
+      document.getElementById('overdueTasks').innerHTML = overdue.map(t => taskCard(t, false, true)).join('');
 
-      // Sprint Tasks (in sprint but not active)
+      // Sprint tasks (not active)
       const sprintTasks = (data.sprintTasks || []).filter(t => !t.is_active);
       document.getElementById('sprintTasksCount').textContent = sprintTasks.length;
-      document.getElementById('sprintTasksSection').style.display = sprintTasks.length > 0 ? 'block' : 'none';
-      document.getElementById('sprintTasks').innerHTML = sprintTasks.map(t => renderTask(t, false, false, true)).join('');
+      document.getElementById('sprintTasksSection').style.display = sprintTasks.length ? 'block' : 'none';
+      document.getElementById('sprintTasks').innerHTML = sprintTasks.map(t => taskCard(t, false, false, true)).join('');
 
-      // Backlog by Category
+      // Backlog
       const backlog = data.backlogByCategory || {};
-      const categories = Object.keys(backlog);
-      let backlogCount = 0;
-      categories.forEach(c => backlogCount += backlog[c].length);
-      document.getElementById('backlogCount').textContent = backlogCount;
+      const cats = Object.keys(backlog);
+      let backlogTotal = 0;
+      cats.forEach(c => backlogTotal += backlog[c].length);
+      document.getElementById('backlogCount').textContent = backlogTotal;
 
-      if (categories.length === 0) {
-        document.getElementById('backlogTasks').innerHTML = '<div class="empty-state">Backlog is empty</div>';
+      if (cats.length === 0) {
+        document.getElementById('backlogTasks').innerHTML = '<div class="empty-state">Backlog empty</div>';
       } else {
-        document.getElementById('backlogTasks').innerHTML = categories.map(cat => {
+        let html = '';
+        cats.forEach(cat => {
           const tasks = backlog[cat];
-          return `<div class="category-group">
-            <div class="category-header">${esc(cat)} <span class="category-count">${tasks.length}</span></div>
-            ${tasks.map(t => renderTask(t, false)).join('')}
-          </div>`;
-        }).join('');
+          html += `<div class="category-label">${esc(cat)} <span class="category-count">${tasks.length}</span></div>`;
+          html += tasks.map(t => taskCard(t, false)).join('');
+        });
+        document.getElementById('backlogTasks').innerHTML = html;
       }
     }
 
-    function renderTask(task, isActive, isOverdue = false, inSprint = false) {
-      const classes = ['task-item'];
-      if (isActive) classes.push('active-task');
+    function taskCard(task, isActive, isOverdue = false, inSprint = false) {
+      const classes = ['task-card'];
+      if (isActive) classes.push('active');
       if (isOverdue) classes.push('overdue');
       if (inSprint || task.objective_id) classes.push('in-sprint');
 
-      let dueBadge = '';
+      let meta = '';
       if (task.due_date) {
-        const isOD = new Date(task.due_date) < new Date(new Date().toDateString());
-        dueBadge = `<span class="task-tag due ${isOD ? 'overdue' : ''}">${formatDate(task.due_date)}</span>`;
+        const od = new Date(task.due_date) < new Date(new Date().toDateString());
+        meta += `<span class="task-tag due ${od ? 'overdue' : ''}">${fmtDate(task.due_date)}</span>`;
       }
+      if (task.category) meta += `<span class="task-tag category">${esc(task.category)}</span>`;
+      if (task.objective_statement) meta += `<span class="task-tag objective">→ ${esc(task.objective_statement)}</span>`;
 
       return `<div class="${classes.join(' ')}" data-id="${task.id}">
-        <div class="task-content">
-          <div class="task-text">${esc(task.text)}</div>
-          <div class="task-meta">
-            ${dueBadge}
-            ${task.category ? `<span class="task-tag">${esc(task.category)}</span>` : ''}
-            ${task.objective_statement ? `<span class="task-tag objective">→ ${esc(task.objective_statement)}</span>` : ''}
-          </div>
-        </div>
+        <div class="task-text">${esc(task.text)}</div>
+        <div class="task-meta">${meta}</div>
         <div class="task-actions">
           ${isActive 
-            ? `<button class="task-btn deactivate" onclick="deactivateTask('${task.id}')" title="Remove from active">−</button>`
-            : `<button class="task-btn activate" onclick="activateTask('${task.id}')" title="Make active">★</button>`
-          }
-          <button class="task-btn complete" onclick="completeTask('${task.id}', this)" title="Complete">✓</button>
+            ? `<button class="task-btn deactivate" onclick="deactivate('${task.id}')">− Remove</button>`
+            : `<button class="task-btn activate" onclick="activate('${task.id}')">★ Activate</button>`}
+          <button class="task-btn complete" onclick="complete('${task.id}', this)">✓ Done</button>
         </div>
       </div>`;
     }
 
-    async function completeTask(id, btn) {
+    async function complete(id, btn) {
       btn.classList.add('completing');
-      btn.textContent = '...';
-      const result = await api(`/tasks/${id}/complete`, { method: 'POST' });
-      if (result && result.success) {
-        showToast('Task completed ✓');
-        btn.closest('.task-item').style.opacity = '0.3';
-        setTimeout(() => loadData(), 500);
-      } else {
-        btn.classList.remove('completing');
-        btn.textContent = '✓';
-      }
+      btn.innerHTML = '...';
+      const r = await api(`/tasks/${id}/complete`, { method: 'POST' });
+      if (r?.success) { showToast('Completed ✓'); setTimeout(loadData, 400); }
+      else { btn.classList.remove('completing'); btn.innerHTML = '✓ Done'; }
     }
 
-    async function activateTask(id) {
-      const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
-      if (result && result.success) {
-        showToast('Task activated');
-        loadData();
-      }
+    async function activate(id) {
+      const r = await api(`/tasks/${id}/activate`, { method: 'POST' });
+      if (r?.success) { showToast('Activated'); loadData(); }
     }
 
-    async function deactivateTask(id) {
-      const result = await api(`/tasks/${id}/deactivate`, { method: 'POST' });
-      if (result && result.success) {
-        showToast('Task deactivated');
-        loadData();
-      }
+    async function deactivate(id) {
+      const r = await api(`/tasks/${id}/deactivate`, { method: 'POST' });
+      if (r?.success) { showToast('Deactivated'); loadData(); }
     }
 
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
+    function fmtDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+    function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
+    function showToast(msg, type='success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast show ${type}`; setTimeout(() => t.classList.remove('show'), 3000); }
 
-    function esc(str) {
-      if (!str) return '';
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    function showToast(message, type = 'success') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = `toast show ${type}`;
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    function refreshData() { loadData(); }
-
-    if (!checkSession()) { pinInputs[0].focus(); }
+    if (!checkSession()) pinInputs[0].focus();
   </script>
 </body>
 </html>
