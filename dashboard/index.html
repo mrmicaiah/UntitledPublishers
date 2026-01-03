@@ -58,6 +58,8 @@
     .header-actions { display: flex; gap: 8px; }
     .header-btn { padding: 6px 12px; background: var(--bg-metal); border: 1px solid var(--rust-dark); border-radius: 4px; color: var(--text-secondary); font-size: 11px; cursor: pointer; }
     .header-btn:hover { border-color: var(--brass); color: var(--text-primary); }
+    .header-btn.notify-on { border-color: var(--accent-green); color: var(--accent-green-glow); }
+    .header-btn.notify-off { border-color: var(--rust-medium); color: var(--text-muted); }
 
     /* Add Task Box */
     .add-task-box { display: inline-flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; }
@@ -115,6 +117,7 @@
     .task-tag.due.overdue { color: var(--accent-red-glow); border-color: var(--accent-red); }
     .task-tag.objective { color: var(--copper-glow); border-color: var(--copper); }
     .task-tag.category { color: var(--text-secondary); }
+    .task-tag.handoff { color: var(--copper-glow); border-color: var(--copper); background: rgba(184, 115, 51, 0.2); }
     
     .task-actions { display: flex; gap: 6px; margin-top: auto; }
     .task-btn { flex: 1; padding: 8px; border-radius: 4px; border: 1px solid var(--rivet); background: var(--bg-dark); color: var(--text-muted); font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.15s; }
@@ -184,6 +187,7 @@
         </div>
       </div>
       <div class="header-actions">
+        <button class="header-btn" id="notifyBtn" onclick="toggleNotifications()">🔔 Off</button>
         <button class="header-btn" onclick="loadData()">🔄 Refresh</button>
         <button class="header-btn" onclick="logout()">Logout</button>
       </div>
@@ -257,6 +261,142 @@
     };
     let API_URL = '', API_KEY = '', currentUser = '';
     let categories = ['General'];
+    let notificationsEnabled = false;
+    let checkInterval = null;
+    let lastIncomingCount = 0;
+    let lastOverdueIds = new Set();
+
+    // Notification system
+    async function requestNotificationPermission() {
+      if (!('Notification' in window)) {
+        showToast('Notifications not supported', 'error');
+        return false;
+      }
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') {
+        showToast('Notifications blocked - check browser settings', 'error');
+        return false;
+      }
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
+    }
+
+    function sendNotification(title, body, tag) {
+      if (!notificationsEnabled || Notification.permission !== 'granted') return;
+      try {
+        new Notification(title, {
+          body,
+          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAAAAABWESUoAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAd0SU1FB+oBAxEuHrgy6RIAAAChSURBVDjL5ZChCgJBFEUPi91h/AW7RTBq1CJm8TfET/AnNi4YNQjaZLVYxWo0bFoWzHoNwsrizPTF296bwztvHtQpsT55Fte4HwIkSetm2Y+c4yabst+oPKQZra4BBtPEqRgC9iRJO78iXwB0AjvcAEwAaAMUfsAsAS7uX8xn2J4FWIUPpWPkVwBsxy+3AtDjfk4O37oKjPY/w9yKugF/kjf6XURzvfVXjQAAAABJRU5ErkJggg==',
+          tag,
+          requireInteraction: false
+        });
+      } catch (e) { console.error('Notification error:', e); }
+    }
+
+    async function toggleNotifications() {
+      const btn = document.getElementById('notifyBtn');
+      if (!notificationsEnabled) {
+        const granted = await requestNotificationPermission();
+        if (granted) {
+          notificationsEnabled = true;
+          localStorage.setItem('notificationsEnabled', 'true');
+          btn.textContent = '🔔 On';
+          btn.classList.remove('notify-off');
+          btn.classList.add('notify-on');
+          startBackgroundCheck();
+          showToast('Notifications enabled');
+        }
+      } else {
+        notificationsEnabled = false;
+        localStorage.setItem('notificationsEnabled', 'false');
+        btn.textContent = '🔔 Off';
+        btn.classList.remove('notify-on');
+        btn.classList.add('notify-off');
+        stopBackgroundCheck();
+        showToast('Notifications disabled');
+      }
+    }
+
+    function startBackgroundCheck() {
+      if (checkInterval) return;
+      checkInterval = setInterval(checkForNotifications, 60000); // Check every minute
+      checkForNotifications(); // Check immediately
+    }
+
+    function stopBackgroundCheck() {
+      if (checkInterval) {
+        clearInterval(checkInterval);
+        checkInterval = null;
+      }
+    }
+
+    async function checkForNotifications() {
+      if (!notificationsEnabled || !API_URL) return;
+      try {
+        const data = await api('/morning');
+        if (!data) return;
+
+        // Check for new incoming handoffs
+        const incomingCount = (data.incoming || []).length;
+        if (incomingCount > lastIncomingCount && lastIncomingCount !== 0) {
+          const newCount = incomingCount - lastIncomingCount;
+          sendNotification(
+            '📥 New Task Handoff',
+            `You have ${newCount} new task${newCount > 1 ? 's' : ''} from your teammate!`,
+            'handoff'
+          );
+        }
+        lastIncomingCount = incomingCount;
+
+        // Check for newly overdue tasks
+        const overdue = data.overdueTasks || [];
+        const currentOverdueIds = new Set(overdue.map(t => t.id));
+        for (const task of overdue) {
+          if (!lastOverdueIds.has(task.id)) {
+            sendNotification(
+              '⚠️ Task Overdue',
+              task.text.substring(0, 100),
+              'overdue-' + task.id
+            );
+          }
+        }
+        lastOverdueIds = currentOverdueIds;
+
+        // Check for tasks due today (notify once per day per task)
+        const today = new Date().toISOString().split('T')[0];
+        const notifiedToday = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
+        if (notifiedToday.date !== today) {
+          localStorage.setItem('notifiedToday', JSON.stringify({ date: today, tasks: [] }));
+        }
+        const todayNotified = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
+        
+        const allTasks = [...(data.activeTasks || []), ...(data.sprintTasks || [])];
+        for (const task of allTasks) {
+          if (task.due_date === today && !todayNotified.tasks?.includes(task.id)) {
+            sendNotification(
+              '📅 Task Due Today',
+              task.text.substring(0, 100),
+              'due-' + task.id
+            );
+            todayNotified.tasks = [...(todayNotified.tasks || []), task.id];
+            localStorage.setItem('notifiedToday', JSON.stringify(todayNotified));
+          }
+        }
+      } catch (e) { console.error('Background check error:', e); }
+    }
+
+    function initNotifications() {
+      const saved = localStorage.getItem('notificationsEnabled');
+      const btn = document.getElementById('notifyBtn');
+      if (saved === 'true' && Notification.permission === 'granted') {
+        notificationsEnabled = true;
+        btn.textContent = '🔔 On';
+        btn.classList.add('notify-on');
+        startBackgroundCheck();
+      } else {
+        btn.classList.add('notify-off');
+      }
+    }
 
     function checkSession() {
       const s = localStorage.getItem('dashboardSession');
@@ -306,10 +446,15 @@
     function showMainApp() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.add('visible');
+      initNotifications();
       loadData();
     }
 
-    function logout() { localStorage.removeItem('dashboardSession'); location.reload(); }
+    function logout() { 
+      stopBackgroundCheck();
+      localStorage.removeItem('dashboardSession'); 
+      location.reload(); 
+    }
 
     async function api(endpoint, options = {}) {
       const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` };
@@ -358,6 +503,10 @@
       const hour = new Date().getHours();
       document.getElementById('greeting').textContent = `Good ${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'}, ${currentUser}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek} • ${data.greeting.date}`;
+
+      // Update notification tracking
+      lastIncomingCount = (data.incoming || []).length;
+      lastOverdueIds = new Set((data.overdueTasks || []).map(t => t.id));
 
       // Extract categories from backlog
       const backlog = data.backlogByCategory || {};
@@ -441,6 +590,7 @@
       }
       if (task.category) meta += `<span class="task-tag category">${esc(task.category)}</span>`;
       if (task.objective_statement) meta += `<span class="task-tag objective">→ ${esc(task.objective_statement)}</span>`;
+      if (task.assigned_by) meta += `<span class="task-tag handoff">from ${esc(task.assigned_by)}</span>`;
 
       return `<div class="${classes.join(' ')}" data-id="${task.id}">
         <div class="task-text">${esc(task.text)}</div>
