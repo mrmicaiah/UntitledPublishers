@@ -26,6 +26,7 @@
       --accent-yellow: #f59e0b;
       --accent-red: #ef4444;
       --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
       --border-color: #374151;
     }
 
@@ -56,7 +57,7 @@
       font-size: 14px;
     }
 
-    .plan-badge {
+    .sprint-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -67,9 +68,17 @@
       margin-top: 12px;
     }
 
-    .plan-badge .days {
+    .sprint-badge .days {
       color: var(--accent-green);
       font-weight: 600;
+    }
+
+    .sprint-badge .days.warning {
+      color: var(--accent-yellow);
+    }
+
+    .sprint-badge .days.urgent {
+      color: var(--accent-red);
     }
 
     .nav-tabs {
@@ -150,6 +159,10 @@
       background: var(--bg-tertiary);
     }
 
+    .task-item.in-sprint {
+      border-left: 3px solid var(--accent-purple);
+    }
+
     .task-checkbox {
       width: 28px;
       height: 28px;
@@ -188,10 +201,16 @@
       word-wrap: break-word;
     }
 
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
     .task-due {
       font-size: 12px;
       color: var(--accent-yellow);
-      margin-top: 4px;
     }
 
     .task-due.overdue {
@@ -204,8 +223,14 @@
       background: var(--bg-tertiary);
       padding: 2px 8px;
       border-radius: 4px;
-      margin-top: 6px;
-      display: inline-block;
+    }
+
+    .task-objective {
+      font-size: 11px;
+      color: var(--accent-purple);
+      background: rgba(139, 92, 246, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
     }
 
     .progress-bar {
@@ -230,23 +255,52 @@
       background: var(--accent-red);
     }
 
-    .goal-item {
+    /* Sprint Objectives */
+    .objective-item {
       margin-bottom: 16px;
     }
 
-    .goal-header {
+    .objective-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 6px;
+    }
+
+    .objective-status {
+      font-size: 16px;
+      margin-right: 8px;
+    }
+
+    .objective-statement {
       font-size: 14px;
-    }
-
-    .goal-name {
       color: var(--text-primary);
+      flex: 1;
     }
 
-    .goal-progress {
+    .objective-progress {
+      font-size: 13px;
       color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .objective-tasks {
+      margin-left: 24px;
+      margin-top: 8px;
+    }
+
+    .objective-task {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .objective-task.done {
+      text-decoration: line-through;
+      opacity: 0.6;
     }
 
     .launch-card {
@@ -571,6 +625,55 @@
       gap: 10px;
       justify-content: flex-end;
     }
+
+    /* Backlog categories */
+    .backlog-category {
+      margin-bottom: 20px;
+    }
+
+    .backlog-category-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .backlog-category-count {
+      background: var(--bg-tertiary);
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 11px;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      margin: 0 16px 16px;
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -578,14 +681,34 @@
   <header class="header">
     <div class="greeting" id="greeting">☀️ Good Morning</div>
     <div class="date-info" id="dateInfo">Loading...</div>
-    <div class="plan-badge" id="planBadge" style="display: none;">
-      📋 <span id="planTitle">Plan</span> • <span class="days" id="planDays">0</span> work days left
+    <div class="sprint-badge" id="sprintBadge" style="display: none;">
+      📋 <span id="sprintName">Sprint</span> • <span class="days" id="sprintDays">0</span> days left
     </div>
   </header>
 
+  <div class="stats-bar" id="statsBar" style="display: none;">
+    <div class="stat-item">
+      <div class="stat-value" id="statActive">0</div>
+      <div class="stat-label">Active</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statSprint">0</div>
+      <div class="stat-label">Sprint</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statOverdue">0</div>
+      <div class="stat-label">Overdue</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-label">Total</div>
+    </div>
+  </div>
+
   <nav class="nav-tabs">
     <button class="nav-tab active" data-tab="today">Today</button>
-    <button class="nav-tab" data-tab="tasks">All Tasks</button>
+    <button class="nav-tab" data-tab="sprint">Sprint</button>
+    <button class="nav-tab" data-tab="backlog">Backlog</button>
     <button class="nav-tab" data-tab="launches">Launches</button>
     <button class="nav-tab" data-tab="actions">Quick</button>
     <button class="nav-tab" data-tab="settings">⚙️</button>
@@ -606,13 +729,11 @@
       </div>
     </section>
 
-    <section class="section" id="planSection" style="display: none;">
+    <section class="section">
       <div class="section-header">
-        <div class="section-title">📋 Plan Progress</div>
+        <div class="section-title">🚨 Overdue <span class="section-count" id="overdueCount">0</span></div>
       </div>
-      <div class="card">
-        <div id="planGoals"></div>
-      </div>
+      <div id="overdueTasks"></div>
     </section>
 
     <section class="section">
@@ -623,12 +744,24 @@
     </section>
   </div>
 
-  <div class="tab-content" id="tab-tasks">
+  <div class="tab-content" id="tab-sprint">
+    <section class="section" id="sprintSection">
+      <div id="sprintContent">
+        <div class="empty-state">
+          <div class="empty-state-icon">📋</div>
+          <div>No active sprint</div>
+          <div style="font-size: 13px; margin-top: 8px; color: var(--text-muted);">Say "let's build a sprint" to Claude</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="tab-content" id="tab-backlog">
     <section class="section">
       <div class="section-header">
-        <div class="section-title">📋 All Tasks <span class="section-count" id="allTasksCount">0</span></div>
+        <div class="section-title">📋 Backlog</div>
       </div>
-      <div id="allTasks">
+      <div id="backlogContent">
         <div class="loading"><div class="spinner"></div> Loading...</div>
       </div>
     </section>
@@ -675,8 +808,8 @@
         <input type="text" class="setting-input" id="apiUrl" placeholder="https://...">
       </div>
       <div class="setting-item">
-        <span class="setting-label">API Key</span>
-        <input type="password" class="setting-input" id="apiKey" placeholder="Enter API key">
+        <span class="setting-label">PIN</span>
+        <input type="password" class="setting-input" id="apiKey" placeholder="Enter PIN">
       </div>
       <div class="setting-item">
         <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
@@ -693,6 +826,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- Modals -->
   <div class="modal-overlay" id="addTaskModal">
     <div class="modal">
       <div class="modal-header">
@@ -788,24 +922,12 @@
         return null;
       }
 
-      const headers = {
-        'Content-Type': 'application/json',
-      };
-
-      if (API_KEY) {
-        headers['Authorization'] = `Bearer ${API_KEY}`;
-      }
+      const headers = { 'Content-Type': 'application/json' };
+      if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
 
       try {
-        const response = await fetch(`${API_URL}${endpoint}`, {
-          ...options,
-          headers: { ...headers, ...options.headers },
-        });
-
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers: { ...headers, ...options.headers } });
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
         return await response.json();
       } catch (error) {
         console.error('API Error:', error);
@@ -822,37 +944,52 @@
 
       currentData = data;
 
+      // Header
       document.getElementById('greeting').textContent = `☀️ Good ${getTimeOfDay()}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek}, ${data.greeting.date}`;
 
-      if (data.plan) {
-        document.getElementById('planBadge').style.display = 'inline-flex';
-        document.getElementById('planTitle').textContent = data.plan.title;
-        document.getElementById('planDays').textContent = data.plan.workDaysRemaining;
-
-        document.getElementById('planSection').style.display = 'block';
-        renderPlanGoals(data.plan.goals);
+      // Sprint badge
+      if (data.sprint) {
+        document.getElementById('sprintBadge').style.display = 'inline-flex';
+        document.getElementById('sprintName').textContent = data.sprint.name;
+        const daysEl = document.getElementById('sprintDays');
+        daysEl.textContent = data.sprint.daysRemaining;
+        daysEl.className = 'days' + (data.sprint.daysRemaining <= 3 ? ' urgent' : data.sprint.daysRemaining <= 7 ? ' warning' : '');
+      } else {
+        document.getElementById('sprintBadge').style.display = 'none';
       }
 
+      // Stats bar
+      if (data.stats) {
+        document.getElementById('statsBar').style.display = 'flex';
+        document.getElementById('statActive').textContent = data.stats.activeTasks || 0;
+        document.getElementById('statSprint').textContent = data.stats.sprintTasks || 0;
+        document.getElementById('statOverdue').textContent = data.stats.overdue || 0;
+        document.getElementById('statTotal').textContent = data.stats.totalTasks || 0;
+      }
+
+      // Incoming
       if (data.incoming && data.incoming.length > 0) {
         document.getElementById('incomingSection').style.display = 'block';
         renderIncoming(data.incoming);
+      } else {
+        document.getElementById('incomingSection').style.display = 'none';
       }
 
-      renderActiveTasks(data.activeTasks);
-      renderLaunchesPreview(data.launches);
-    }
+      // Active tasks
+      renderActiveTasks(data.activeTasks || []);
 
-    async function loadAllTasks() {
-      const data = await api('/tasks');
-      if (!data) return;
-      renderAllTasks(data.tasks);
-    }
+      // Overdue tasks
+      renderOverdueTasks(data.overdueTasks || []);
 
-    async function loadAllLaunches() {
-      const data = await api('/launches');
-      if (!data) return;
-      renderAllLaunches(data.launches);
+      // Sprint content
+      renderSprintContent(data.sprint);
+
+      // Backlog
+      renderBacklog(data.backlogByCategory || {});
+
+      // Launches
+      renderLaunchesPreview(data.launches || []);
     }
 
     function renderActiveTasks(tasks) {
@@ -860,79 +997,137 @@
       document.getElementById('activeCount').textContent = tasks.length;
 
       if (tasks.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">✨</div>
-            <div>No active tasks</div>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✨</div><div>No active tasks</div></div>`;
         return;
       }
 
       container.innerHTML = tasks.map((task, index) => `
-        <div class="task-item" data-id="${task.id}">
+        <div class="task-item ${task.objective_id ? 'in-sprint' : ''}" data-id="${task.id}">
           <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${index + 1}</div>
           <div class="task-content">
             <div class="task-text">${escapeHtml(task.text)}</div>
-            ${task.due_date ? `<div class="task-due ${isOverdue(task.due_date) ? 'overdue' : ''}">${formatDate(task.due_date)}</div>` : ''}
-            ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+            <div class="task-meta">
+              ${task.due_date ? `<span class="task-due ${isOverdue(task.due_date) ? 'overdue' : ''}">${formatDate(task.due_date)}</span>` : ''}
+              ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+              ${task.objective_statement ? `<span class="task-objective">→ ${escapeHtml(task.objective_statement)}</span>` : ''}
+            </div>
           </div>
         </div>
       `).join('');
     }
 
-    function renderAllTasks(tasks) {
-      const container = document.getElementById('allTasks');
-      document.getElementById('allTasksCount').textContent = tasks.length;
+    function renderOverdueTasks(tasks) {
+      const container = document.getElementById('overdueTasks');
+      document.getElementById('overdueCount').textContent = tasks.length;
 
       if (tasks.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">📋</div>
-            <div>No tasks</div>
-          </div>
-        `;
+        container.innerHTML = `<div style="color: var(--text-muted); font-size: 14px; padding: 12px;">None 🎉</div>`;
         return;
       }
 
-      container.innerHTML = tasks.map((task, index) => `
+      container.innerHTML = tasks.map(task => `
         <div class="task-item" data-id="${task.id}">
-          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">${task.is_active ? '🎯' : ''}</div>
+          <div class="task-checkbox" onclick="completeTask('${task.id}', this)">!</div>
           <div class="task-content">
             <div class="task-text">${escapeHtml(task.text)}</div>
-            ${task.due_date ? `<div class="task-due ${isOverdue(task.due_date) ? 'overdue' : ''}">${formatDate(task.due_date)}</div>` : ''}
-            ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+            <div class="task-meta">
+              <span class="task-due overdue">${formatDate(task.due_date)}</span>
+              ${task.category ? `<span class="task-category">${escapeHtml(task.category)}</span>` : ''}
+            </div>
           </div>
         </div>
       `).join('');
     }
 
-    function renderPlanGoals(goals) {
-      const container = document.getElementById('planGoals');
+    function renderSprintContent(sprint) {
+      const container = document.getElementById('sprintContent');
 
-      container.innerHTML = goals.map(goal => `
-        <div class="goal-item">
-          <div class="goal-header">
-            <span class="goal-name">${escapeHtml(goal.description)}</span>
-            <span class="goal-progress">${goal.completedCount}/${goal.targetCount}</span>
+      if (!sprint) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>No active sprint</div><div style="font-size: 13px; margin-top: 8px; color: var(--text-muted);">Say "let's build a sprint" to Claude</div></div>`;
+        return;
+      }
+
+      const objectives = sprint.objectives || [];
+      let totalTasks = 0;
+      let completedTasks = 0;
+
+      objectives.forEach(obj => {
+        totalTasks += obj.totalTasks || 0;
+        completedTasks += obj.doneTasks || 0;
+      });
+
+      const progressPct = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+      let html = `
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-weight: 600;">${escapeHtml(sprint.name)}</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">${sprint.daysRemaining} days left</div>
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill ${goal.progress < 30 ? 'danger' : goal.progress < 70 ? 'warning' : ''}" style="width: ${goal.progress}%"></div>
+          <div class="progress-bar" style="margin-bottom: 8px;">
+            <div class="progress-fill ${progressPct < 30 ? 'danger' : progressPct < 70 ? 'warning' : ''}" style="width: ${progressPct}%"></div>
           </div>
+          <div style="font-size: 12px; color: var(--text-muted);">${completedTasks}/${totalTasks} tasks (${progressPct}%)</div>
         </div>
-      `).join('');
+      `;
+
+      if (objectives.length > 0) {
+        html += objectives.map(obj => {
+          const objTotal = obj.totalTasks || 0;
+          const objDone = obj.doneTasks || 0;
+          const icon = objDone === objTotal && objTotal > 0 ? '✅' : objDone > 0 ? '◐' : '○';
+
+          return `
+            <div class="objective-item">
+              <div class="objective-header">
+                <span class="objective-status">${icon}</span>
+                <span class="objective-statement">${escapeHtml(obj.statement)}</span>
+                <span class="objective-progress">${objDone}/${objTotal}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderBacklog(backlogByCategory) {
+      const container = document.getElementById('backlogContent');
+      const categories = Object.keys(backlogByCategory);
+
+      if (categories.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>Backlog is empty</div></div>`;
+        return;
+      }
+
+      container.innerHTML = categories.map(cat => {
+        const tasks = backlogByCategory[cat];
+        return `
+          <div class="backlog-category">
+            <div class="backlog-category-header">
+              ${escapeHtml(cat)} <span class="backlog-category-count">${tasks.length}</span>
+            </div>
+            ${tasks.slice(0, 5).map(task => `
+              <div class="task-item" data-id="${task.id}">
+                <div class="task-checkbox" onclick="activateTask('${task.id}', this)">+</div>
+                <div class="task-content">
+                  <div class="task-text">${escapeHtml(task.text)}</div>
+                  ${task.due_date ? `<div class="task-meta"><span class="task-due">${formatDate(task.due_date)}</span></div>` : ''}
+                </div>
+              </div>
+            `).join('')}
+            ${tasks.length > 5 ? `<div style="font-size: 12px; color: var(--text-muted); padding: 8px;">+${tasks.length - 5} more</div>` : ''}
+          </div>
+        `;
+      }).join('');
     }
 
     function renderLaunchesPreview(launches) {
       const container = document.getElementById('launchesPreview');
 
       if (launches.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🚀</div>
-            <div>No active launches</div>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🚀</div><div>No active launches</div></div>`;
         return;
       }
 
@@ -950,16 +1145,15 @@
       `).join('');
     }
 
-    function renderAllLaunches(launches) {
+    async function loadAllLaunches() {
+      const data = await api('/launches');
+      if (!data) return;
+
       const container = document.getElementById('allLaunches');
+      const launches = data.launches || [];
 
       if (launches.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🚀</div>
-            <div>No launches</div>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🚀</div><div>No launches</div></div>`;
         return;
       }
 
@@ -979,11 +1173,10 @@
 
     function renderIncoming(items) {
       const container = document.getElementById('incomingList');
-
       container.innerHTML = items.map(item => `
         <div class="incoming-item">
           <div>
-            <div>${escapeHtml(item.text)}</div>
+            <div>${escapeHtml(item.text || item.task_text)}</div>
             <div class="incoming-from">from ${escapeHtml(item.from_user)}</div>
           </div>
           <div class="incoming-actions">
@@ -1010,6 +1203,14 @@
       }
     }
 
+    async function activateTask(id, element) {
+      const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
+      if (result && result.success) {
+        showToast('Task activated! 🎯');
+        refreshData();
+      }
+    }
+
     async function claimTask(id) {
       const result = await api(`/tasks/${id}/activate`, { method: 'POST' });
       if (result && result.success) {
@@ -1023,15 +1224,9 @@
       const category = document.getElementById('newTaskCategory').value.trim() || 'General';
       const isActive = document.getElementById('newTaskActive').checked;
 
-      if (!text) {
-        showToast('Please enter a task', 'error');
-        return;
-      }
+      if (!text) { showToast('Please enter a task', 'error'); return; }
 
-      const result = await api('/tasks', {
-        method: 'POST',
-        body: JSON.stringify({ text, category, isActive })
-      });
+      const result = await api('/tasks', { method: 'POST', body: JSON.stringify({ text, category, isActive }) });
 
       if (result && result.success) {
         showToast('Task added!');
@@ -1047,15 +1242,9 @@
       const content = document.getElementById('journalContent').value.trim();
       const mood = document.getElementById('journalMood').value;
 
-      if (!content) {
-        showToast('Please write something', 'error');
-        return;
-      }
+      if (!content) { showToast('Please write something', 'error'); return; }
 
-      const result = await api('/journal', {
-        method: 'POST',
-        body: JSON.stringify({ content, mood })
-      });
+      const result = await api('/journal', { method: 'POST', body: JSON.stringify({ content, mood }) });
 
       if (result && result.success) {
         showToast('Journal saved!');
@@ -1069,15 +1258,9 @@
       const title = document.getElementById('ideaTitle').value.trim();
       const content = document.getElementById('ideaContent').value.trim();
 
-      if (!title) {
-        showToast('Please enter a title', 'error');
-        return;
-      }
+      if (!title) { showToast('Please enter a title', 'error'); return; }
 
-      const result = await api('/ideas', {
-        method: 'POST',
-        body: JSON.stringify({ title, content })
-      });
+      const result = await api('/ideas', { method: 'POST', body: JSON.stringify({ title, content }) });
 
       if (result && result.success) {
         showToast('Idea captured! 💡');
@@ -1087,6 +1270,7 @@
       }
     }
 
+    // Command input
     document.getElementById('commandInput').addEventListener('keypress', async (e) => {
       if (e.key === 'Enter') {
         const command = e.target.value.trim().toLowerCase();
@@ -1098,60 +1282,40 @@
           if (index >= 0 && index < currentData.activeTasks.length) {
             const task = currentData.activeTasks[index];
             const checkbox = document.querySelector(`[data-id="${task.id}"] .task-checkbox`);
-            if (checkbox) {
-              completeTask(task.id, checkbox);
-            }
+            if (checkbox) completeTask(task.id, checkbox);
           }
         }
       }
     });
 
+    // Tab navigation
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
-
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(`tab-${tabName}`).classList.add('active');
-
-        if (tabName === 'tasks') loadAllTasks();
         if (tabName === 'launches') loadAllLaunches();
       });
     });
 
-    function openAddTaskModal() {
-      document.getElementById('addTaskModal').classList.add('show');
-    }
-
-    function openJournalModal() {
-      document.getElementById('journalModal').classList.add('show');
-    }
-
-    function openIdeaModal() {
-      document.getElementById('ideaModal').classList.add('show');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
+    // Modal helpers
+    function openAddTaskModal() { document.getElementById('addTaskModal').classList.add('show'); }
+    function openJournalModal() { document.getElementById('journalModal').classList.add('show'); }
+    function openIdeaModal() { document.getElementById('ideaModal').classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('show');
-        }
-      });
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('show'); });
     });
 
+    // Settings
     function saveSettings() {
       API_URL = document.getElementById('apiUrl').value.trim();
       API_KEY = document.getElementById('apiKey').value.trim();
-
       localStorage.setItem('apiUrl', API_URL);
       localStorage.setItem('apiKey', API_KEY);
-
       showToast('Settings saved!');
     }
 
@@ -1164,6 +1328,7 @@
       }
     }
 
+    // Helpers
     function getTimeOfDay() {
       const hour = new Date().getHours();
       if (hour < 12) return 'Morning';
@@ -1182,10 +1347,7 @@
 
     function escapeHtml(str) {
       if (!str) return '';
-      return str.replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
     function showToast(message, type = 'success') {
@@ -1195,19 +1357,13 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    function refreshData() {
-      loadMorningData();
-    }
+    function refreshData() { loadMorningData(); }
 
+    // Init
     if (API_URL) {
       loadMorningData();
     } else {
-      document.getElementById('activeTasks').innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-icon">⚙️</div>
-          <div>Configure API in settings</div>
-        </div>
-      `;
+      document.getElementById('activeTasks').innerHTML = `<div class="empty-state"><div class="empty-state-icon">⚙️</div><div>Configure API in settings</div></div>`;
     }
   </script>
 
