@@ -112,6 +112,7 @@
     .section-header.active { background: linear-gradient(90deg, var(--accent-green) 0%, var(--bg-rust) 100%); }
     .section-header.overdue { background: linear-gradient(90deg, var(--accent-red) 0%, var(--bg-rust) 100%); }
     .section-header.sprint { background: linear-gradient(90deg, var(--copper) 0%, var(--bg-rust) 100%); }
+    .section-header.incoming { background: linear-gradient(90deg, #6b5b95 0%, var(--bg-rust) 100%); }
 
     /* Task Grid */
     .task-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -122,6 +123,7 @@
     .task-card.active { border-color: var(--accent-green); background: linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, var(--bg-panel) 100%); }
     .task-card.overdue { border-left: 3px solid var(--accent-red); }
     .task-card.in-sprint { border-left: 3px solid var(--copper); }
+    .task-card.incoming { border-left: 3px solid #6b5b95; }
     
     .task-text { font-size: 13px; color: var(--text-primary); line-height: 1.5; flex: 1; margin-bottom: 10px; }
     .task-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
@@ -130,7 +132,7 @@
     .task-tag.due.overdue { color: var(--accent-red-glow); border-color: var(--accent-red); }
     .task-tag.objective { color: var(--copper-glow); border-color: var(--copper); }
     .task-tag.category { color: var(--text-secondary); }
-    .task-tag.handoff { color: var(--copper-glow); border-color: var(--copper); background: rgba(184, 115, 51, 0.2); }
+    .task-tag.handoff { color: #9b8bb9; border-color: #6b5b95; background: rgba(107, 91, 149, 0.2); }
     
     .task-actions { display: flex; gap: 6px; margin-top: auto; }
     .task-btn { flex: 1; padding: 8px; border-radius: 4px; border: 1px solid var(--rivet); background: var(--bg-dark); color: var(--text-muted); font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.15s; }
@@ -141,6 +143,8 @@
     .task-btn.activate:hover { background: var(--brass); color: var(--bg-dark); }
     .task-btn.deactivate { border-color: var(--rust-medium); color: var(--rust-light); }
     .task-btn.deactivate:hover { background: var(--rust-medium); color: white; }
+    .task-btn.claim { border-color: #6b5b95; color: #9b8bb9; }
+    .task-btn.claim:hover { background: #6b5b95; color: white; }
     .task-btn.completing { background: var(--accent-green); color: white; pointer-events: none; }
 
     /* Category Label */
@@ -240,6 +244,15 @@
       <div class="objectives-row" id="objectivesList"></div>
     </div>
 
+    <!-- Incoming -->
+    <div class="section" id="incomingSection" style="display: none;">
+      <div class="section-header incoming">
+        <span class="section-title">📥 Incoming</span>
+        <span class="section-count" id="incomingCount">0</span>
+      </div>
+      <div class="task-grid" id="incomingTasks"></div>
+    </div>
+
     <!-- Active -->
     <div class="section" id="activeSection">
       <div class="section-header active">
@@ -288,9 +301,9 @@
     let categories = ['General'];
     let notificationsEnabled = false;
     let checkInterval = null;
-    let lastIncomingCount = 0;
+    let lastIncomingCount = -1;  // -1 = first load, don't notify
     let lastOverdueIds = new Set();
-    let lastMessageCount = 0;
+    let lastMessageCount = -1;   // -1 = first load, don't notify
     let currentMessages = [];
 
     // Notification system
@@ -365,7 +378,7 @@
 
         // Check for new messages
         const msgCount = data.unreadMessages || 0;
-        if (msgCount > lastMessageCount && lastMessageCount !== -1) {
+        if (lastMessageCount !== -1 && msgCount > lastMessageCount) {
           sendNotification(
             '💬 New Message',
             `You have a new message from your teammate!`,
@@ -374,14 +387,14 @@
         }
         lastMessageCount = msgCount;
 
-        // Check for new incoming handoffs
-        const incomingCount = (data.incoming || []).length;
-        if (incomingCount > lastIncomingCount && lastIncomingCount !== 0) {
+        // Check for new incoming tasks (assigned by teammate)
+        const incomingCount = data.incomingCount || (data.incoming || []).length;
+        if (lastIncomingCount !== -1 && incomingCount > lastIncomingCount) {
           const newCount = incomingCount - lastIncomingCount;
           sendNotification(
-            '📥 New Task Handoff',
+            '📥 New Task',
             `You have ${newCount} new task${newCount > 1 ? 's' : ''} from your teammate!`,
-            'handoff'
+            'incoming'
           );
         }
         lastIncomingCount = incomingCount;
@@ -603,10 +616,14 @@
       document.getElementById('greeting').textContent = `Good ${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'}, ${currentUser}`;
       document.getElementById('dateInfo').textContent = `${data.greeting.dayOfWeek} • ${data.greeting.date}`;
 
-      // Update notification tracking
-      lastIncomingCount = (data.incoming || []).length;
+      // Update notification tracking (only after first load)
+      if (lastIncomingCount === -1) {
+        lastIncomingCount = data.incomingCount || (data.incoming || []).length;
+      }
+      if (lastMessageCount === -1) {
+        lastMessageCount = data.unreadMessages || 0;
+      }
       lastOverdueIds = new Set((data.overdueTasks || []).map(t => t.id));
-      lastMessageCount = data.unreadMessages || 0;
 
       // Update message badge
       if (data.unreadMessages > 0) {
@@ -646,6 +663,12 @@
         document.getElementById('sprintBanner').style.display = 'none';
       }
 
+      // Incoming tasks (from teammate)
+      const incoming = data.incoming || [];
+      document.getElementById('incomingCount').textContent = incoming.length;
+      document.getElementById('incomingSection').style.display = incoming.length ? 'block' : 'none';
+      document.getElementById('incomingTasks').innerHTML = incoming.map(t => incomingTaskCard(t)).join('');
+
       // Active
       const active = data.activeTasks || [];
       document.getElementById('activeCount').textContent = active.length;
@@ -683,6 +706,24 @@
       }
     }
 
+    function incomingTaskCard(task) {
+      let meta = `<span class="task-tag handoff">from ${esc(task.assigned_by)}</span>`;
+      if (task.due_date) {
+        const od = new Date(task.due_date) < new Date(new Date().toDateString());
+        meta += `<span class="task-tag due ${od ? 'overdue' : ''}">${fmtDate(task.due_date)}</span>`;
+      }
+      if (task.category) meta += `<span class="task-tag category">${esc(task.category)}</span>`;
+
+      return `<div class="task-card incoming" data-id="${task.id}">
+        <div class="task-text">${esc(task.text)}</div>
+        <div class="task-meta">${meta}</div>
+        <div class="task-actions">
+          <button class="task-btn claim" onclick="claimTask('${task.id}')">✓ Claim</button>
+          <button class="task-btn complete" onclick="complete('${task.id}', this)">✓ Done</button>
+        </div>
+      </div>`;
+    }
+
     function taskCard(task, isActive, isOverdue = false, inSprint = false) {
       const classes = ['task-card'];
       if (isActive) classes.push('active');
@@ -708,6 +749,11 @@
           <button class="task-btn complete" onclick="complete('${task.id}', this)">✓ Done</button>
         </div>
       </div>`;
+    }
+
+    async function claimTask(id) {
+      const r = await api(`/tasks/${id}/claim`, { method: 'POST' });
+      if (r?.success) { showToast('Task claimed'); loadData(); }
     }
 
     async function complete(id, btn) {
