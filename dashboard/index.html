@@ -60,15 +60,15 @@
     .header-btn:hover { border-color: var(--brass); color: var(--text-primary); }
 
     /* Add Task Box */
-    .add-task-box { display: flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-    .add-task-input { flex: 1; min-width: 200px; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-primary); font-size: 13px; font-family: inherit; }
+    .add-task-box { display: inline-flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--rivet); border-radius: 6px; margin-bottom: 12px; }
+    .add-task-input { width: 200px; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-primary); font-size: 13px; font-family: inherit; }
     .add-task-input:focus { outline: none; border-color: var(--brass); }
     .add-task-input::placeholder { color: var(--text-muted); }
-    .add-task-select { padding: 8px 10px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-secondary); font-size: 11px; font-family: inherit; cursor: pointer; min-width: 110px; }
+    .add-task-select { padding: 8px 10px; background: var(--bg-dark); border: 1px solid var(--rivet); border-radius: 4px; color: var(--text-secondary); font-size: 11px; font-family: inherit; cursor: pointer; }
     .add-task-select:focus { outline: none; border-color: var(--brass); }
     .add-task-checkbox { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
     .add-task-checkbox input { accent-color: var(--brass); cursor: pointer; }
-    .add-task-btn { padding: 8px 16px; background: var(--brass); border: 1px solid var(--brass-light); border-radius: 4px; color: var(--bg-dark); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .add-task-btn { padding: 8px 14px; background: var(--brass); border: 1px solid var(--brass-light); border-radius: 4px; color: var(--bg-dark); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .add-task-btn:hover { background: var(--brass-light); }
     .add-task-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -149,9 +149,8 @@
     @media (max-width: 600px) {
       .task-grid { grid-template-columns: 1fr; }
       body { padding: 8px; }
-      .add-task-box { flex-direction: column; align-items: stretch; }
-      .add-task-input { min-width: 100%; }
-      .add-task-row { display: flex; gap: 8px; justify-content: space-between; }
+      .add-task-box { display: flex; flex-wrap: wrap; width: 100%; }
+      .add-task-input { flex: 1; min-width: 150px; }
     }
   </style>
 </head>
@@ -192,14 +191,14 @@
 
     <!-- Add Task -->
     <div class="add-task-box">
-      <input type="text" class="add-task-input" id="newTaskInput" placeholder="Add a new task..." onkeydown="if(event.key==='Enter')addTask()">
+      <input type="text" class="add-task-input" id="newTaskInput" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTask()">
       <select class="add-task-select" id="newTaskCategory">
         <option value="General">General</option>
       </select>
       <label class="add-task-checkbox">
-        <input type="checkbox" id="newTaskActive"> Activate
+        <input type="checkbox" id="newTaskActive"> Active
       </label>
-      <button class="add-task-btn" onclick="addTask()">+ Add</button>
+      <button class="add-task-btn" onclick="addTask()">+</button>
     </div>
 
     <div class="sprint-banner" id="sprintBanner" style="display: none;">
