@@ -6,83 +6,93 @@
   <title>Courier - Email Platform</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --blue-600: #2563eb; --blue-500: #3b82f6; --blue-400: #60a5fa; --blue-100: #dbeafe; --blue-50: #eff6ff; --gray-900: #111827; --gray-700: #374151; --gray-500: #6b7280; --gray-400: #9ca3af; --gray-300: #d1d5db; --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb; --white: #ffffff; --green-600: #16a34a; --green-500: #22c55e; --green-100: #dcfce7; --red-500: #ef4444; --red-100: #fee2e2; --yellow-600: #ca8a04; --yellow-500: #eab308; --yellow-100: #fef9c3; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.5; }
-    .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--blue-50) 0%, var(--white) 100%); padding: 20px; }
-    .login-box { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-    .login-logo { width: 56px; height: 56px; background: var(--blue-500); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5rem; }
+    :root { 
+      --blue-700: #1d4ed8; --blue-600: #2563eb; --blue-500: #3b82f6; --blue-400: #60a5fa; --blue-100: #dbeafe; --blue-50: #eff6ff; 
+      --gray-900: #111827; --gray-800: #1f2937; --gray-700: #374151; --gray-600: #4b5563; --gray-500: #6b7280; --gray-400: #9ca3af; 
+      --gray-300: #d1d5db; --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb; --white: #ffffff; 
+      --green-700: #15803d; --green-600: #16a34a; --green-500: #22c55e; --green-100: #dcfce7; 
+      --red-700: #b91c1c; --red-600: #dc2626; --red-500: #ef4444; --red-100: #fee2e2; 
+      --yellow-700: #a16207; --yellow-600: #ca8a04; --yellow-500: #eab308; --yellow-100: #fef9c3;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.08);
+      --shadow: 0 2px 4px 0 rgb(0 0 0 / 0.12);
+      --shadow-md: 0 4px 8px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--gray-200); color: var(--gray-900); line-height: 1.5; }
+    .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--blue-100) 0%, var(--gray-200) 100%); padding: 20px; }
+    .login-box { background: var(--white); border: 2px solid var(--gray-400); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: var(--shadow-md); }
+    .login-logo { width: 60px; height: 60px; background: var(--blue-600); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.6rem; border: 2px solid var(--blue-700); box-shadow: var(--shadow); }
     .login-box h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 4px; color: var(--gray-900); }
-    .login-box .subtitle { color: var(--gray-500); margin-bottom: 32px; font-size: 0.95rem; }
+    .login-box .subtitle { color: var(--gray-600); margin-bottom: 32px; font-size: 0.95rem; }
     .pin-input { display: flex; gap: 12px; justify-content: center; margin-bottom: 8px; }
-    .pin-input input { width: 56px; height: 64px; text-align: center; font-size: 1.5rem; font-weight: 600; border: 2px solid var(--gray-200); border-radius: 10px; color: var(--gray-900); background: var(--white); }
+    .pin-input input { width: 56px; height: 64px; text-align: center; font-size: 1.5rem; font-weight: 600; border: 2px solid var(--gray-500); border-radius: 10px; color: var(--gray-900); background: var(--white); }
     .pin-input input:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 3px var(--blue-100); }
-    .error-msg { color: var(--red-500); font-size: 0.875rem; margin-top: 12px; display: none; }
-    header { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .error-msg { color: var(--red-600); font-size: 0.875rem; font-weight: 500; margin-top: 12px; display: none; }
+    header { background: var(--white); border-bottom: 2px solid var(--gray-400); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
     .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-icon { width: 36px; height: 36px; background: var(--blue-500); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; }
+    .logo-icon { width: 40px; height: 40px; background: var(--blue-600); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; border: 2px solid var(--blue-700); }
     .logo-text { font-weight: 700; font-size: 1.2rem; color: var(--gray-900); }
-    .logo-text span { font-weight: 400; color: var(--gray-400); font-size: 0.85rem; margin-left: 8px; }
-    .header-stats { display: flex; gap: 24px; font-size: 0.875rem; color: var(--gray-500); }
-    .header-stats strong { color: var(--gray-900); font-weight: 600; }
-    .tabs { background: var(--white); border-bottom: 1px solid var(--gray-200); display: flex; padding: 0 24px; gap: 4px; overflow-x: auto; }
-    .tab { padding: 14px 20px; border: none; background: none; color: var(--gray-500); font-size: 0.9rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; font-family: inherit; }
-    .tab:hover { color: var(--gray-700); }
-    .tab.active { color: var(--blue-600); border-bottom-color: var(--blue-600); }
+    .logo-text span { font-weight: 500; color: var(--gray-500); font-size: 0.85rem; margin-left: 8px; }
+    .header-stats { display: flex; gap: 20px; font-size: 0.875rem; color: var(--gray-600); align-items: center; }
+    .header-stats strong { color: var(--gray-900); font-weight: 700; }
+    .tabs { background: var(--white); border-bottom: 2px solid var(--gray-400); display: flex; padding: 0 24px; gap: 4px; overflow-x: auto; }
+    .tab { padding: 14px 20px; border: none; background: none; color: var(--gray-600); font-size: 0.9rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; white-space: nowrap; font-family: inherit; }
+    .tab:hover { color: var(--gray-800); background: var(--gray-50); }
+    .tab.active { color: var(--blue-700); border-bottom-color: var(--blue-600); }
     .app { display: none; } .app.active { display: block; }
     .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
     .panel { display: none; } .panel.active { display: block; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 10px; padding: 20px; }
-    .stat-card .label { font-size: 0.8rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .stat-card { background: var(--white); border: 2px solid var(--gray-400); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+    .stat-card .label { font-size: 0.8rem; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
     .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--gray-900); }
-    .stat-card .change { font-size: 0.8rem; color: var(--green-600); margin-top: 4px; }
-    .card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 10px; margin-bottom: 20px; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--gray-200); }
-    .card-header h2 { font-size: 1rem; font-weight: 600; color: var(--gray-900); }
+    .stat-card .change { font-size: 0.8rem; color: var(--green-600); margin-top: 4px; font-weight: 600; }
+    .card { background: var(--white); border: 2px solid var(--gray-400); border-radius: 12px; margin-bottom: 20px; box-shadow: var(--shadow); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 2px solid var(--gray-300); }
+    .card-header h2 { font-size: 1rem; font-weight: 700; color: var(--gray-900); }
     .card-body { padding: 0; }
-    .btn { padding: 8px 16px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid var(--gray-300); background: var(--white); color: var(--gray-700); font-family: inherit; }
-    .btn:hover { background: var(--gray-50); border-color: var(--gray-400); }
-    .btn-primary { background: var(--blue-500); border-color: var(--blue-500); color: white; }
-    .btn-primary:hover { background: var(--blue-600); border-color: var(--blue-600); }
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
-    .btn-danger { color: var(--red-500); border-color: var(--red-500); }
+    .btn { padding: 10px 18px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.15s; border: 2px solid var(--gray-400); background: var(--white); color: var(--gray-700); font-family: inherit; }
+    .btn:hover { background: var(--gray-100); border-color: var(--gray-500); }
+    .btn-primary { background: var(--blue-600); border-color: var(--blue-700); color: white; }
+    .btn-primary:hover { background: var(--blue-700); }
+    .btn-sm { padding: 8px 14px; font-size: 0.8rem; }
+    .btn-danger { color: var(--red-600); border-color: var(--red-500); }
     .btn-danger:hover { background: var(--red-500); color: white; }
     .table-container { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 12px 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
-    td { padding: 14px 20px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); font-size: 0.9rem; }
+    th { text-align: left; padding: 14px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-600); background: var(--gray-100); border-bottom: 2px solid var(--gray-400); }
+    td { padding: 14px 20px; border-bottom: 2px solid var(--gray-200); color: var(--gray-700); font-size: 0.9rem; }
     tr:hover { background: var(--gray-50); }
     tr:last-child td { border-bottom: none; }
-    .badge { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
-    .badge-active { background: var(--green-100); color: var(--green-600); }
-    .badge-draft { background: var(--yellow-100); color: var(--yellow-600); }
-    .badge-sent { background: var(--blue-100); color: var(--blue-600); }
-    .badge-archived { background: var(--gray-100); color: var(--gray-500); }
+    .badge { display: inline-block; padding: 5px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; border: 2px solid; }
+    .badge-active { background: var(--green-100); color: var(--green-700); border-color: var(--green-500); }
+    .badge-draft { background: var(--yellow-100); color: var(--yellow-700); border-color: var(--yellow-500); }
+    .badge-sent { background: var(--blue-100); color: var(--blue-700); border-color: var(--blue-500); }
+    .badge-archived { background: var(--gray-100); color: var(--gray-600); border-color: var(--gray-400); }
     .actions { display: flex; gap: 8px; }
     .filters { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-    .filters select, .filters input { padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 0.875rem; color: var(--gray-700); background: var(--white); font-family: inherit; }
+    .filters select, .filters input { padding: 10px 14px; border: 2px solid var(--gray-400); border-radius: 8px; font-size: 0.875rem; color: var(--gray-700); background: var(--white); font-family: inherit; }
     .filters select:focus, .filters input:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 3px var(--blue-100); }
     .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; margin-bottom: 6px; font-size: 0.875rem; font-weight: 500; color: var(--gray-700); }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 0.9rem; color: var(--gray-900); background: var(--white); font-family: inherit; }
+    .form-group label { display: block; margin-bottom: 6px; font-size: 0.875rem; font-weight: 600; color: var(--gray-700); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--gray-400); border-radius: 8px; font-size: 0.9rem; color: var(--gray-900); background: var(--white); font-family: inherit; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 3px var(--blue-100); }
     .form-group textarea { min-height: 120px; resize: vertical; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--white); border-radius: 12px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-    .modal-header { padding: 20px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--gray-900); }
-    .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-400); line-height: 1; }
-    .modal-close:hover { color: var(--gray-600); }
+    .modal { background: var(--white); border: 2px solid var(--gray-400); border-radius: 14px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-md); }
+    .modal-header { padding: 20px; border-bottom: 2px solid var(--gray-300); display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--gray-900); }
+    .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-500); line-height: 1; font-weight: 700; }
+    .modal-close:hover { color: var(--gray-700); }
     .modal-body { padding: 20px; }
-    .modal-footer { padding: 16px 20px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 12px; background: var(--gray-50); border-radius: 0 0 12px 12px; }
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--gray-900); color: white; padding: 14px 20px; border-radius: 8px; font-size: 0.9rem; z-index: 2000; display: none; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); }
-    .toast.success { background: var(--green-600); }
-    .toast.error { background: var(--red-500); }
+    .modal-footer { padding: 16px 20px; border-top: 2px solid var(--gray-300); display: flex; justify-content: flex-end; gap: 12px; background: var(--gray-100); border-radius: 0 0 12px 12px; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--gray-900); color: white; padding: 14px 24px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; z-index: 2000; display: none; box-shadow: var(--shadow-md); border: 2px solid var(--gray-700); }
+    .toast.success { background: var(--green-600); border-color: var(--green-700); }
+    .toast.error { background: var(--red-600); border-color: var(--red-700); }
     .toast.show { display: block; animation: slideIn 0.3s ease; }
     @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .loading, .empty-state { text-align: center; padding: 48px 20px; color: var(--gray-500); }
+    .loading, .empty-state { text-align: center; padding: 48px 20px; color: var(--gray-600); font-weight: 500; }
     @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .header-stats { display: none; } .tab { padding: 12px 16px; font-size: 0.85rem; } .content { padding: 16px; } }
   </style>
 </head>
@@ -147,19 +157,19 @@
   <div class="toast" id="toast"></div>
   <script>
     const API_BASE = 'https://email-bot-server.micaiah-tasks.workers.dev';
-    const CORRECT_PIN = '1987';
+    const VALID_PINS = ['1987', '1976'];
     let API_KEY = '';
     let currentLists = [];
     let searchTimeout = null;
     const pinInputs = document.querySelectorAll('.pin-input input');
     pinInputs.forEach((input, index) => { input.addEventListener('input', (e) => { if (e.target.value.length === 1 && index < pinInputs.length - 1) { pinInputs[index + 1].focus(); } checkPin(); }); input.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !e.target.value && index > 0) { pinInputs[index - 1].focus(); } }); });
-    function checkPin() { const pin = Array.from(pinInputs).map(i => i.value).join(''); if (pin.length === 4) { if (pin === CORRECT_PIN) { API_KEY = 'abc123'; document.getElementById('loginScreen').style.display = 'none'; document.getElementById('app').classList.add('active'); initApp(); } else { document.getElementById('pinError').style.display = 'block'; pinInputs.forEach(i => i.value = ''); pinInputs[0].focus(); } } }
+    function checkPin() { const pin = Array.from(pinInputs).map(i => i.value).join(''); if (pin.length === 4) { if (VALID_PINS.includes(pin)) { API_KEY = 'abc123'; document.getElementById('loginScreen').style.display = 'none'; document.getElementById('app').classList.add('active'); initApp(); } else { document.getElementById('pinError').style.display = 'block'; pinInputs.forEach(i => i.value = ''); pinInputs[0].focus(); } } }
     async function api(endpoint, method = 'GET', body = null) { const options = { method, headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' } }; if (body) options.body = JSON.stringify(body); const res = await fetch(`${API_BASE}${endpoint}`, options); return res.json(); }
     function showToast(message, type = 'success') { const toast = document.getElementById('toast'); toast.textContent = message; toast.className = `toast show ${type}`; setTimeout(() => toast.classList.remove('show'), 3000); }
     document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); tab.classList.add('active'); document.getElementById(`panel-${tab.dataset.tab}`).classList.add('active'); }); });
     async function initApp() { await loadStats(); await loadLists(); await loadSubscribers(); await loadSequences(); await loadTemplates(); await loadCampaigns(); }
     async function loadStats() { const data = await api('/api/stats'); document.getElementById('statLists').textContent = data.lists?.length || 0; document.getElementById('statSubscribers').textContent = data.total || 0; document.getElementById('statsGrid').innerHTML = `<div class="stat-card"><div class="label">Total Leads</div><div class="value">${data.total || 0}</div></div><div class="stat-card"><div class="label">Active Lists</div><div class="value">${data.lists?.length || 0}</div></div><div class="stat-card"><div class="label">Campaigns Sent</div><div class="value">${data.emails?.find(e => e.status === 'sent')?.count || 0}</div></div><div class="stat-card"><div class="label">New This Week</div><div class="value">${data.last_7_days?.reduce((a, d) => a + d.count, 0) || 0}</div></div>`; const recentHtml = data.last_7_days?.length ? `<table><thead><tr><th>Date</th><th>New Subscribers</th></tr></thead><tbody>${data.last_7_days.map(d => `<tr><td>${d.date}</td><td>${d.count}</td></tr>`).join('')}</tbody></table>` : '<p class="empty-state">No recent activity</p>'; document.getElementById('recentActivity').innerHTML = recentHtml; }
-    async function loadLists() { const data = await api('/api/lists?status=all'); currentLists = data.lists || []; document.getElementById('filterList').innerHTML = '<option value="">All Lists</option>' + currentLists.map(l => `<option value="${l.id}">${l.name}</option>`).join(''); if (!currentLists.length) { document.getElementById('listsTable').innerHTML = '<tr><td colspan="5" class="empty-state">No lists yet</td></tr>'; return; } document.getElementById('listsTable').innerHTML = currentLists.map(list => `<tr><td><strong>${list.name}</strong></td><td style="color: var(--gray-500);"><code>${list.slug}</code></td><td>${list.subscriber_count || 0}</td><td><span class="badge badge-${list.status}">${list.status}</span></td><td class="actions"><button class="btn btn-sm" onclick="editList('${list.id}')">Edit</button><button class="btn btn-sm btn-danger" onclick="archiveList('${list.id}')">Archive</button></td></tr>`).join(''); }
+    async function loadLists() { const data = await api('/api/lists?status=all'); currentLists = data.lists || []; document.getElementById('filterList').innerHTML = '<option value="">All Lists</option>' + currentLists.map(l => `<option value="${l.id}">${l.name}</option>`).join(''); if (!currentLists.length) { document.getElementById('listsTable').innerHTML = '<tr><td colspan="5" class="empty-state">No lists yet</td></tr>'; return; } document.getElementById('listsTable').innerHTML = currentLists.map(list => `<tr><td><strong>${list.name}</strong></td><td style="color: var(--gray-600);"><code>${list.slug}</code></td><td>${list.subscriber_count || 0}</td><td><span class="badge badge-${list.status}">${list.status}</span></td><td class="actions"><button class="btn btn-sm" onclick="editList('${list.id}')">Edit</button><button class="btn btn-sm btn-danger" onclick="archiveList('${list.id}')">Archive</button></td></tr>`).join(''); }
     async function loadSubscribers() { const listId = document.getElementById('filterList').value; const search = document.getElementById('filterSearch').value; let endpoint = listId ? `/api/lists/${listId}/subscribers` : '/api/subscribers'; if (search) endpoint += `?search=${encodeURIComponent(search)}`; const data = await api(endpoint); const subscribers = data.subscribers || []; if (!subscribers.length) { document.getElementById('subscribersTable').innerHTML = '<tr><td colspan="5" class="empty-state">No subscribers found</td></tr>'; return; } document.getElementById('subscribersTable').innerHTML = subscribers.map(sub => `<tr><td>${sub.email}</td><td>${sub.name || '-'}</td><td>${sub.source || '-'}</td><td>${formatDate(sub.subscribed_at || sub.created_at)}</td><td class="actions"><button class="btn btn-sm" onclick="viewSubscriber('${sub.id || sub.lead_id}')">View</button></td></tr>`).join(''); }
     function debounceSearch() { clearTimeout(searchTimeout); searchTimeout = setTimeout(loadSubscribers, 300); }
     async function loadSequences() { const data = await api('/api/sequences'); const sequences = data.sequences || []; if (!sequences.length) { document.getElementById('sequencesTable').innerHTML = '<tr><td colspan="6" class="empty-state">No sequences yet</td></tr>'; return; } document.getElementById('sequencesTable').innerHTML = sequences.map(seq => `<tr><td><strong>${seq.name}</strong></td><td>${seq.list_name || '-'}</td><td>${seq.step_count || 0}</td><td>${seq.active_enrollments || 0}</td><td><span class="badge badge-${seq.status}">${seq.status}</span></td><td class="actions"><button class="btn btn-sm" onclick="editSequence('${seq.id}')">Edit</button><button class="btn btn-sm" onclick="viewSequenceSteps('${seq.id}')">Steps</button></td></tr>`).join(''); }
@@ -180,10 +190,10 @@
     async function editCampaign(id) { const data = await api(`/api/emails/${id}`); openModal('campaign', id); setTimeout(() => { const form = document.getElementById('campaignForm'); form.list_id.value = data.email.list_id || ''; form.subject.value = data.email.subject; form.body_html.value = data.email.body_html; }, 10); }
     async function sendCampaign(id) { const preview = await api(`/api/emails/${id}/preview`); if (!confirm(`Send to ${preview.recipient_count} subscribers?`)) return; const res = await api(`/api/emails/${id}/send`, 'POST'); if (res.success) { showToast(`Sent to ${res.sent} subscribers!`); loadCampaigns(); } else { showToast(res.error || 'Failed to send', 'error'); } }
     async function editSequence(id) { const data = await api(`/api/sequences/${id}`); openModal('sequence', id); setTimeout(() => { const form = document.getElementById('sequenceForm'); form.name.value = data.sequence.name; form.list_id.value = data.sequence.list_id; form.description.value = data.sequence.description || ''; }, 10); }
-    async function viewSequenceSteps(id) { const data = await api(`/api/sequences/${id}`); document.getElementById('modalTitle').textContent = `Steps: ${data.sequence.name}`; let stepsHtml = data.steps.length ? data.steps.map((s, i) => `<div style="margin-bottom: 12px; padding: 16px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px;"><strong style="color: var(--gray-900);">Step ${i + 1}</strong><span style="color: var(--gray-500); font-size: 0.85rem; margin-left: 8px;">(${s.delay_minutes} min delay)</span><br><span style="color: var(--blue-600);">${s.subject}</span></div>`).join('') : '<p class="empty-state">No steps yet</p>'; document.getElementById('modalContent').innerHTML = `${stepsHtml}<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep('${id}')">+ Add Step</button></div>`; document.getElementById('modalOverlay').classList.add('active'); }
+    async function viewSequenceSteps(id) { const data = await api(`/api/sequences/${id}`); document.getElementById('modalTitle').textContent = `Steps: ${data.sequence.name}`; let stepsHtml = data.steps.length ? data.steps.map((s, i) => `<div style="margin-bottom: 12px; padding: 16px; background: var(--gray-100); border: 2px solid var(--gray-400); border-radius: 10px;"><strong style="color: var(--gray-900);">Step ${i + 1}</strong><span style="color: var(--gray-600); font-size: 0.85rem; margin-left: 8px;">(${s.delay_minutes} min delay)</span><br><span style="color: var(--blue-700);">${s.subject}</span></div>`).join('') : '<p class="empty-state">No steps yet</p>'; document.getElementById('modalContent').innerHTML = `${stepsHtml}<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep('${id}')">+ Add Step</button></div>`; document.getElementById('modalOverlay').classList.add('active'); }
     async function addSequenceStep(sequenceId) { document.getElementById('modalTitle').textContent = 'Add Step'; document.getElementById('modalContent').innerHTML = `<form onsubmit="saveSequenceStep(event, '${sequenceId}')"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="0" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="viewSequenceSteps('${sequenceId}')">Back</button><button type="submit" class="btn btn-primary">Add Step</button></div></form>`; }
     async function saveSequenceStep(e, sequenceId) { e.preventDefault(); const form = e.target; const data = { delay_minutes: parseInt(form.delay_minutes.value) || 0, subject: form.subject.value, body_html: form.body_html.value }; const res = await api(`/api/sequences/${sequenceId}/steps`, 'POST', data); if (res.success) { showToast('Step added!'); viewSequenceSteps(sequenceId); loadSequences(); } else { showToast(res.error || 'Failed to add step', 'error'); } }
-    async function viewSubscriber(id) { const data = await api(`/api/subscribers/${id}`); document.getElementById('modalTitle').textContent = data.subscriber.email; document.getElementById('modalContent').innerHTML = `<div style="margin-bottom: 16px;"><p style="margin-bottom: 8px;"><strong>Name:</strong> ${data.subscriber.name || '-'}</p><p style="margin-bottom: 8px;"><strong>Source:</strong> ${data.subscriber.source || '-'}</p><p style="margin-bottom: 8px;"><strong>Segment:</strong> ${data.subscriber.segment || '-'}</p><p><strong>Created:</strong> ${formatDate(data.subscriber.created_at)}</p></div><hr style="border: none; border-top: 1px solid var(--gray-200); margin: 20px 0;"><h4 style="color: var(--gray-900); margin-bottom: 12px; font-size: 0.9rem;">Subscriptions</h4>${data.subscriptions?.length ? data.subscriptions.map(s => `<p style="margin-bottom: 4px;">${s.list_name} - <span class="badge badge-${s.status}">${s.status}</span></p>`).join('') : '<p style="color: var(--gray-500);">No subscriptions</p>'}<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>`; document.getElementById('modalOverlay').classList.add('active'); }
+    async function viewSubscriber(id) { const data = await api(`/api/subscribers/${id}`); document.getElementById('modalTitle').textContent = data.subscriber.email; document.getElementById('modalContent').innerHTML = `<div style="margin-bottom: 16px;"><p style="margin-bottom: 8px;"><strong>Name:</strong> ${data.subscriber.name || '-'}</p><p style="margin-bottom: 8px;"><strong>Source:</strong> ${data.subscriber.source || '-'}</p><p style="margin-bottom: 8px;"><strong>Segment:</strong> ${data.subscriber.segment || '-'}</p><p><strong>Created:</strong> ${formatDate(data.subscriber.created_at)}</p></div><hr style="border: none; border-top: 2px solid var(--gray-300); margin: 20px 0;"><h4 style="color: var(--gray-900); margin-bottom: 12px; font-size: 0.9rem; font-weight: 700;">Subscriptions</h4>${data.subscriptions?.length ? data.subscriptions.map(s => `<p style="margin-bottom: 4px;">${s.list_name} - <span class="badge badge-${s.status}">${s.status}</span></p>`).join('') : '<p style="color: var(--gray-600);">No subscriptions</p>'}<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>`; document.getElementById('modalOverlay').classList.add('active'); }
     function formatDate(dateStr) { if (!dateStr) return '-'; return new Date(dateStr).toLocaleDateString(); }
     document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
   </script>
