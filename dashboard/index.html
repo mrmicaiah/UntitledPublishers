@@ -186,6 +186,7 @@
         <button class="header-btn help" onclick="showHelp()" title="Help">❓ Help</button>
         <button class="header-btn claude" onclick="window.open('https://claude.ai', '_blank')" title="Claude AI">✨ Claude</button>
         <button class="header-btn" onclick="window.location.href='/emailbot/'" title="Courier">📧 Courier</button>
+        <button class="header-btn" onclick="window.location.href='/dashboard/bots.html'" title="Bots">🤖 Bots</button>
         <button class="header-btn" id="msgBtn" onclick="showMessages()" style="display:none;">💬 <span id="msgBadge" class="msg-badge">0</span></button>
         <button class="header-btn" id="notifyBtn" onclick="toggleNotifications()">🔔 Off</button>
         <button class="header-btn" onclick="loadData()">↻</button>
@@ -211,7 +212,7 @@
         <div class="help-section"><h3>Task Sections</h3><table class="help-table"><tr><th>Section</th><th>Color</th><th>Meaning</th></tr><tr><td>📥 Incoming</td><td>Purple</td><td>Tasks from teammate — Claim or Complete</td></tr><tr><td>🎯 Active</td><td>Green</td><td>Your current focus</td></tr><tr><td>⚠️ Overdue</td><td>Red</td><td>Past due date</td></tr><tr><td>📌 Sprint Queue</td><td>Orange</td><td>In sprint but not active</td></tr><tr><td>📋 Backlog</td><td>Gray</td><td>Everything else by category</td></tr></table></div>
         <div class="help-section"><h3>Task Actions</h3><table class="help-table"><tr><th>Button</th><th>What It Does</th></tr><tr><td><code>★ Activate</code></td><td>Move to Active section</td></tr><tr><td><code>− Remove</code></td><td>Remove from Active (back to backlog)</td></tr><tr><td><code>✓ Done</code></td><td>Complete the task</td></tr><tr><td><code>✓ Claim</code></td><td>Accept incoming task from teammate</td></tr></table></div>
         <div class="help-section"><h3>Adding Tasks</h3><p>Use the input box at the top: Type task → Select category → Check "Active" if needed → Click Add or Enter</p></div>
-        <div class="help-section"><h3>Header Buttons</h3><table class="help-table"><tr><th>Button</th><th>Function</th></tr><tr><td>❓ Help</td><td>This guide</td></tr><tr><td>✨ Claude</td><td>Open Claude.ai</td></tr><tr><td>📧 Courier</td><td>Email dashboard</td></tr><tr><td>💬</td><td>View teammate messages</td></tr><tr><td>🔔</td><td>Toggle notifications</td></tr><tr><td>↻</td><td>Refresh data</td></tr></table></div>
+        <div class="help-section"><h3>Header Buttons</h3><table class="help-table"><tr><th>Button</th><th>Function</th></tr><tr><td>❓ Help</td><td>This guide</td></tr><tr><td>✨ Claude</td><td>Open Claude.ai</td></tr><tr><td>📧 Courier</td><td>Email dashboard</td></tr><tr><td>🤖 Bots</td><td>Worker status dashboard</td></tr><tr><td>💬</td><td>View teammate messages</td></tr><tr><td>🔔</td><td>Toggle notifications</td></tr><tr><td>↻</td><td>Refresh data</td></tr></table></div>
         <div class="help-tip">💡 <strong>Tip:</strong> Enable notifications to get alerts when your teammate sends tasks or messages!</div>
       </div>
     </div>
