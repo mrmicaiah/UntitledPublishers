@@ -61,11 +61,13 @@
     .bot-card.online { border-left: 5px solid var(--green-500); }
     .bot-card.offline { border-left: 5px solid var(--red-500); }
     .bot-card.unknown { border-left: 5px solid var(--yellow-500); }
+    .bot-card.standalone { border: 2px dashed var(--gray-400); background: var(--gray-50); }
+    .bot-card.standalone:hover { border-color: var(--gray-500); }
     
     .bot-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .bot-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid; }
     .bot-icon.mcp { background: var(--blue-100); border-color: var(--blue-400); }
-    .bot-icon.blog { background: var(--green-100); border-color: var(--green-400); }
+    .bot-icon.blog { background: var(--green-100); border-color: var(--green-500); }
     .bot-icon.email { background: var(--purple-100); border-color: var(--purple-400); }
     .bot-icon.seo { background: var(--orange-100); border-color: var(--orange-400); }
     
@@ -74,6 +76,7 @@
     .bot-status.online { background: var(--green-100); color: var(--green-700); }
     .bot-status.offline { background: var(--red-100); color: var(--red-700); }
     .bot-status.unknown { background: var(--yellow-100); color: var(--yellow-600); }
+    .bot-status.standalone { background: var(--gray-200); color: var(--gray-600); }
     
     .bot-desc { font-size: 0.9rem; color: var(--gray-600); margin-bottom: 16px; line-height: 1.5; }
     
@@ -94,7 +97,12 @@
     .section-title { font-size: 1rem; font-weight: 700; color: var(--gray-800); text-transform: uppercase; letter-spacing: 0.5px; }
     .section-count { font-size: 0.8rem; color: var(--blue-700); font-weight: 700; background: var(--blue-100); padding: 3px 12px; border-radius: 12px; border: 2px solid var(--blue-400); }
     
-    .empty-state { text-align: center; padding: 44px 20px; color: var(--gray-600); font-size: 0.9rem; font-weight: 500; background: var(--white); border: 2px dashed var(--gray-500); border-radius: 12px; }
+    .section-header.up { border-color: var(--blue-400); }
+    .section-header.up .section-title { color: var(--blue-700); }
+    .section-header.client { border-color: var(--green-400); }
+    .section-header.client .section-title { color: var(--green-700); }
+    .section-header.standalone { border-color: var(--gray-400); }
+    .section-header.standalone .section-title { color: var(--gray-600); }
     
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--gray-900); color: white; padding: 14px 28px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; z-index: 1000; opacity: 0; transition: opacity 0.3s; box-shadow: var(--shadow-md); }
     .toast.show { opacity: 1; }
@@ -140,23 +148,23 @@
       <h1 class="page-title">🤖 Bots Overview</h1>
       <p class="page-subtitle">All Cloudflare Workers powering Untitled Publishers infrastructure</p>
 
-      <div class="section-header">
-        <span class="section-title">⚙️ Core Infrastructure</span>
-        <span class="section-count" id="coreCount">0</span>
+      <!-- UP Workers -->
+      <div class="section-header up">
+        <span class="section-title">🏢 Untitled Publishers Workers</span>
       </div>
-      <div class="bot-grid" id="coreBots"></div>
+      <div class="bot-grid" id="upBots"></div>
 
-      <div class="section-header">
-        <span class="section-title">📝 Blog Workers</span>
-        <span class="section-count" id="blogCount">0</span>
+      <!-- Client Workers -->
+      <div class="section-header client">
+        <span class="section-title">👥 Client Workers</span>
       </div>
-      <div class="bot-grid" id="blogBots"></div>
+      <div class="bot-grid" id="clientBots"></div>
 
-      <div class="section-header">
-        <span class="section-title">🔧 Utilities</span>
-        <span class="section-count" id="utilCount">0</span>
+      <!-- Standalone / Legacy -->
+      <div class="section-header standalone">
+        <span class="section-title">📦 Standalone (Client-Specific)</span>
       </div>
-      <div class="bot-grid" id="utilBots"></div>
+      <div class="bot-grid" id="standaloneBots"></div>
     </div>
   </div>
 
@@ -168,82 +176,82 @@
       '1976': { name: 'Irene' }
     };
 
-    // Bot registry - add new bots here
-    const BOTS = [
-      // Core Infrastructure
+    // UP Workers - Untitled Publishers infrastructure
+    const UP_BOTS = [
       {
-        category: 'core',
         name: 'Productivity MCP (Micaiah)',
         icon: '⚙️',
         iconClass: 'mcp',
         url: 'https://productivity-mcp-server.micaiah-tasks.workers.dev',
-        description: 'Main productivity hub - tasks, sprints, Google Drive, Gmail, GitHub, Courier email marketing',
+        description: 'Main productivity hub with 70+ tools - tasks, sprints, Google Drive, Gmail, GitHub, Blogger, Courier email marketing, journaling, launch tracking',
         storage: ['D1: productivity-brain'],
         connections: ['Google Drive', 'Gmail (personal)', 'Gmail (company)', 'GitHub', 'Blogger', 'Contacts']
       },
       {
-        category: 'core',
         name: 'Productivity MCP (Irene)',
         icon: '⚙️',
         iconClass: 'mcp',
         url: 'https://productivity-irene.micaiah-tasks.workers.dev',
-        description: 'Irene\'s productivity instance - same features, separate OAuth tokens',
+        description: 'Irene\'s productivity instance - same codebase, separate OAuth tokens, shared database',
         storage: ['D1: productivity-brain (shared)'],
         connections: ['Google Drive', 'Gmail', 'GitHub']
       },
       {
-        category: 'core',
-        name: 'Email Bot Server',
+        name: 'Courier Email Platform',
         icon: '📧',
         iconClass: 'email',
         url: 'https://email-bot-server.micaiah-tasks.workers.dev',
-        description: 'Lead capture API for all UP properties - captures emails from landing pages',
+        description: 'Full email marketing platform - lists, subscribers, templates, sequences, campaigns, tracking. Replaces Beehiiv.',
         storage: ['D1: email-bot-db'],
-        connections: []
+        connections: ['Resend API']
       },
       {
-        category: 'core',
         name: 'SEO Scout',
         icon: '🔍',
         iconClass: 'seo',
         url: 'https://seo-scout.micaiah-tasks.workers.dev',
-        description: 'SEO research MCP - keyword discovery, competition analysis, difficulty scores',
+        description: 'SEO research MCP - keyword discovery, competition analysis, difficulty scores, long-tail finder',
         storage: [],
         connections: ['DataForSEO API']
       },
-      // Blog Workers
       {
-        category: 'blog',
-        name: 'Client Blogs',
-        icon: '📝',
-        iconClass: 'blog',
-        url: 'https://client-blogs-1.micaiah-tasks.workers.dev',
-        description: 'Multi-tenant blog admin for client websites (password auth)',
-        storage: ['KV: client-blogs'],
-        connections: ['GitHub (push)', 'Courier (email)'],
-        blogs: ['built-by-denny']
-      },
-      {
-        category: 'blog',
         name: 'UP Blogs',
         icon: '📝',
         iconClass: 'blog',
         url: 'https://up-blogs-1.micaiah-tasks.workers.dev',
-        description: 'Multi-tenant blog API for UP properties (API key auth, Claude-driven)',
+        description: 'Multi-tenant blog API for UP properties. API key auth, Claude-driven - no admin UI needed.',
         storage: ['KV: up-blogs'],
         connections: ['GitHub (push)', 'Courier (email)'],
-        blogs: ['micaiah-bussey']
-      },
-      // Utilities
+        blogs: ['Ready for: micaiah-bussey']
+      }
+    ];
+
+    // Client Workers - for external clients
+    const CLIENT_BOTS = [
       {
-        category: 'util',
-        name: 'Denny Blog Admin (Legacy)',
-        icon: '🔧',
+        name: 'Client Blogs',
+        icon: '📝',
+        iconClass: 'blog',
+        url: 'https://client-blogs-1.micaiah-tasks.workers.dev',
+        description: 'Multi-tenant blog admin for client websites. Password auth with admin dashboard.',
+        storage: ['KV: client-blogs'],
+        connections: ['GitHub (push)', 'Courier (email)'],
+        blogs: ['Ready for new clients']
+      }
+    ];
+
+    // Standalone - client-specific legacy workers
+    const STANDALONE_BOTS = [
+      {
+        name: 'Denny Blog Admin',
+        icon: '🏠',
         iconClass: 'blog',
         url: 'https://denny-blog-admin.micaiah-tasks.workers.dev',
-        description: 'Original single-tenant blog worker - being migrated to client-blogs-1',
+        description: 'Standalone blog worker for builtbydenny.com. Single-tenant, runs independently.',
         storage: ['KV: denny-blog'],
-        connections: ['GitHub']
+        connections: ['GitHub: mrmicaiah/built-by-denny'],
+        standalone: true,
+        client: 'Denny Liuzzo'
       }
     ];
 
@@ -303,17 +311,9 @@
     }
 
     function renderBots() {
-      const core = BOTS.filter(b => b.category === 'core');
-      const blog = BOTS.filter(b => b.category === 'blog');
-      const util = BOTS.filter(b => b.category === 'util');
-
-      document.getElementById('coreCount').textContent = core.length;
-      document.getElementById('blogCount').textContent = blog.length;
-      document.getElementById('utilCount').textContent = util.length;
-
-      document.getElementById('coreBots').innerHTML = core.map(renderBotCard).join('');
-      document.getElementById('blogBots').innerHTML = blog.map(renderBotCard).join('');
-      document.getElementById('utilBots').innerHTML = util.map(renderBotCard).join('');
+      document.getElementById('upBots').innerHTML = UP_BOTS.map(renderBotCard).join('');
+      document.getElementById('clientBots').innerHTML = CLIENT_BOTS.map(renderBotCard).join('');
+      document.getElementById('standaloneBots').innerHTML = STANDALONE_BOTS.map(renderBotCard).join('');
     }
 
     function renderBotCard(bot) {
@@ -333,20 +333,31 @@
 
       const blogsHtml = bot.blogs ? `
         <div class="bot-connections">
-          <div class="bot-connections-title">Active Blogs</div>
+          <div class="bot-connections-title">Blogs</div>
           <div class="connection-list">
             ${bot.blogs.map(b => `<span class="connection-item">${esc(b)}</span>`).join('')}
           </div>
         </div>
       ` : '';
 
+      const clientHtml = bot.client ? `
+        <div class="bot-connections">
+          <div class="bot-connections-title">Client</div>
+          <div class="connection-list">
+            <span class="connection-item">${esc(bot.client)}</span>
+          </div>
+        </div>
+      ` : '';
+
+      const cardClass = bot.standalone ? 'bot-card standalone unknown' : 'bot-card unknown';
+
       return `
-        <div class="bot-card unknown" id="bot-${slugify(bot.name)}">
+        <div class="${cardClass}" id="bot-${slugify(bot.name)}">
           <div class="bot-header">
             <div class="bot-icon ${bot.iconClass}">${bot.icon}</div>
             <div>
               <div class="bot-title">${esc(bot.name)}</div>
-              <span class="bot-status unknown" id="status-${slugify(bot.name)}">Checking...</span>
+              <span class="bot-status ${bot.standalone ? 'standalone' : 'unknown'}" id="status-${slugify(bot.name)}">${bot.standalone ? 'Standalone' : 'Checking...'}</span>
             </div>
           </div>
           <div class="bot-desc">${esc(bot.description)}</div>
@@ -354,14 +365,15 @@
           <div class="bot-url">${esc(bot.url)}</div>
           ${connectionsHtml}
           ${blogsHtml}
+          ${clientHtml}
         </div>
       `;
     }
 
     async function checkAllBots() {
       showToast('Checking bot status...');
-      
-      for (const bot of BOTS) {
+      const allBots = [...UP_BOTS, ...CLIENT_BOTS, ...STANDALONE_BOTS];
+      for (const bot of allBots) {
         checkBot(bot);
       }
     }
@@ -370,6 +382,27 @@
       const slug = slugify(bot.name);
       const card = document.getElementById(`bot-${slug}`);
       const status = document.getElementById(`status-${slug}`);
+      
+      // Skip status check for standalone bots - they keep their "Standalone" label
+      if (bot.standalone) {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 5000);
+          const response = await fetch(bot.url + '/health', { signal: controller.signal }).catch(() => fetch(bot.url, { signal: controller.signal }));
+          clearTimeout(timeout);
+          if (response.ok) {
+            card.classList.remove('offline');
+            card.classList.add('online');
+          } else {
+            card.classList.remove('online');
+            card.classList.add('offline');
+          }
+        } catch (e) {
+          card.classList.remove('online');
+          card.classList.add('offline');
+        }
+        return;
+      }
       
       try {
         const controller = new AbortController();
