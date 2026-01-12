@@ -55,6 +55,7 @@
       transition: all 0.2s;
     }
     .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .msg-badge { background: #ef4444; color: white; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; }
     
     /* Layout */
     .layout {
@@ -203,6 +204,43 @@
       overflow-y: auto;
     }
     
+    /* Message Banner */
+    .message-banner {
+      display: none;
+      background: #1e293b;
+      border: 1px solid #a855f7;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .message-banner.show { display: block; }
+    .message-banner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .message-banner-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #a855f7;
+    }
+    .message-banner-dismiss {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .message-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #334155;
+    }
+    .message-item:last-child { border-bottom: none; }
+    .message-from { font-size: 0.8rem; color: #a855f7; font-weight: 600; margin-bottom: 2px; }
+    .message-content { font-size: 0.85rem; color: #cbd5e1; }
+    .message-time { font-size: 0.7rem; color: #64748b; margin-top: 4px; }
+    
     /* Section Box */
     .section-box {
       background: #1e293b;
@@ -239,6 +277,7 @@
     .section-badge.warning { background: #eab308; }
     .section-badge.muted { background: #475569; }
     .section-badge.orange { background: #f97316; }
+    .section-badge.purple { background: #a855f7; }
     .section-toggle {
       color: #64748b;
       transition: transform 0.2s;
@@ -302,6 +341,7 @@
     .task-tag.due { background: rgba(234, 179, 8, 0.2); color: #eab308; }
     .task-tag.overdue { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
     .task-tag.due-today { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .task-tag.handoff { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
     
     .task-remove {
       background: none;
@@ -328,6 +368,18 @@
     }
     .task-row:hover .task-activate { opacity: 1; }
     .task-activate:hover { background: #3b82f6; color: white; }
+    
+    .task-claim {
+      background: none;
+      border: 1px solid #a855f7;
+      color: #a855f7;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      transition: all 0.15s;
+    }
+    .task-claim:hover { background: #a855f7; color: white; }
     
     /* Sprint Section */
     .sprint-progress {
@@ -537,6 +589,7 @@
         <a class="header-btn" href="focus.html">🎯 Focus</a>
         <a class="header-btn" href="projects.html">📁 Projects</a>
         <a class="header-btn" href="index.html">⚙️ Helm</a>
+        <button class="header-btn" id="msgBtn" onclick="showMessageBanner()" style="display:none;">💬<span class="msg-badge" id="msgBadge">0</span></button>
         <button class="header-btn" onclick="loadData()">↻</button>
       </div>
     </div>
@@ -562,6 +615,28 @@
 
       <!-- Right: Work -->
       <div class="right-panel">
+        <!-- Message Banner -->
+        <div class="message-banner" id="messageBanner">
+          <div class="message-banner-header">
+            <span class="message-banner-title">💬 Messages</span>
+            <button class="message-banner-dismiss" onclick="dismissMessages()">✕</button>
+          </div>
+          <div id="messageList"></div>
+        </div>
+
+        <!-- Incoming Section - visible when has items, closed by default -->
+        <div class="section-box" id="incomingSection">
+          <div class="section-header" onclick="toggleSection('incoming')">
+            <div class="section-title">
+              <span class="icon">📥</span>
+              <span>Incoming</span>
+              <span class="section-badge purple" id="incomingCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="incomingToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="incomingBody"></div>
+        </div>
+
         <!-- Active Section - always visible, open by default -->
         <div class="section-box">
           <div class="section-header" onclick="toggleSection('active')">
@@ -658,6 +733,8 @@
     let dueTasks = [];
     let sprintTasks = [];
     let orphanTasks = [];
+    let incomingTasks = [];
+    let messages = [];
     let sprintData = null;
 
     // Login
@@ -725,7 +802,47 @@
 
     // Load all data
     async function loadData() {
-      await Promise.all([loadScratchpad(), loadMorning(), loadOrphans()]);
+      await Promise.all([loadScratchpad(), loadMorning(), loadOrphans(), loadMessages()]);
+    }
+
+    // Messages
+    async function loadMessages() {
+      const data = await api('/messages');
+      messages = data?.messages || [];
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const msgBtn = document.getElementById('msgBtn');
+      const msgBadge = document.getElementById('msgBadge');
+      
+      if (messages.length > 0) {
+        msgBtn.style.display = 'flex';
+        msgBadge.textContent = messages.length;
+      } else {
+        msgBtn.style.display = 'none';
+      }
+    }
+
+    function showMessageBanner() {
+      if (messages.length === 0) return;
+      const banner = document.getElementById('messageBanner');
+      const list = document.getElementById('messageList');
+      list.innerHTML = messages.map(m => `
+        <div class="message-item">
+          <div class="message-from">${esc(m.from_user)}</div>
+          <div class="message-content">${esc(m.content)}</div>
+          <div class="message-time">${formatTime(m.created_at)}</div>
+        </div>
+      `).join('');
+      banner.classList.add('show');
+    }
+
+    async function dismissMessages() {
+      document.getElementById('messageBanner').classList.remove('show');
+      await api('/messages/read', { method: 'POST' });
+      messages = [];
+      renderMessages();
     }
 
     // Scratchpad
@@ -819,6 +936,7 @@
       activeTasks = data.activeTasks || [];
       sprintTasks = data.sprintTasks || [];
       sprintData = data.sprint;
+      incomingTasks = data.incoming || [];
       
       // Build due tasks: overdue + due today (not active)
       const today = new Date().toISOString().split('T')[0];
@@ -829,7 +947,6 @@
       for (const cat in backlog) {
         for (const task of backlog[cat]) {
           if (task.due_date === today && !task.is_active) {
-            // Check not already in dueTasks
             if (!dueTasks.find(t => t.id === task.id)) {
               dueTasks.push(task);
             }
@@ -837,16 +954,42 @@
         }
       }
       
-      // Sort: overdue first, then by date
       dueTasks.sort((a, b) => {
         if (a.due_date < today && b.due_date >= today) return -1;
         if (a.due_date >= today && b.due_date < today) return 1;
         return a.due_date.localeCompare(b.due_date);
       });
       
+      renderIncoming();
       renderActive();
       renderDue();
       renderSprint();
+    }
+
+    function renderIncoming() {
+      const section = document.getElementById('incomingSection');
+      document.getElementById('incomingCount').textContent = incomingTasks.length;
+      
+      if (incomingTasks.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+      
+      section.style.display = 'block';
+      
+      document.getElementById('incomingBody').innerHTML = incomingTasks.map(t => `
+        <div class="task-row" data-id="${t.id}">
+          <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+          <div class="task-content">
+            <div class="task-text">${esc(t.text)}</div>
+            <div class="task-meta">
+              <span class="task-tag handoff">from ${esc(t.assigned_by)}</span>
+              ${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}
+            </div>
+          </div>
+          <button class="task-claim" onclick="claimTask('${t.id}')">Claim</button>
+        </div>
+      `).join('');
     }
 
     function renderActive() {
@@ -1016,6 +1159,12 @@
       showToast('Task activated');
       loadMorning();
       loadOrphans();
+    }
+
+    async function claimTask(id) {
+      await api(`/tasks/${id}/claim`, { method: 'POST' });
+      showToast('Task claimed');
+      loadMorning();
     }
 
     // Section toggle
