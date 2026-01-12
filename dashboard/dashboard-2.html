@@ -208,7 +208,7 @@
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       overflow: hidden;
     }
     .section-header {
@@ -216,7 +216,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #334155;
       cursor: pointer;
     }
     .section-header:hover { background: rgba(51, 65, 85, 0.3); }
@@ -236,8 +235,10 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
+    .section-badge.danger { background: #ef4444; }
     .section-badge.warning { background: #eab308; }
     .section-badge.muted { background: #475569; }
+    .section-badge.orange { background: #f97316; }
     .section-toggle {
       color: #64748b;
       transition: transform 0.2s;
@@ -249,6 +250,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      border-top: 1px solid #334155;
     }
     .section-body.collapsed { display: none; }
     
@@ -313,6 +315,20 @@
     .task-row:hover .task-remove { opacity: 1; }
     .task-remove:hover { color: #ef4444; }
     
+    .task-activate {
+      background: none;
+      border: 1px solid #3b82f6;
+      color: #3b82f6;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      opacity: 0;
+      transition: all 0.15s;
+    }
+    .task-row:hover .task-activate { opacity: 1; }
+    .task-activate:hover { background: #3b82f6; color: white; }
+    
     /* Sprint Section */
     .sprint-progress {
       display: flex;
@@ -337,6 +353,18 @@
       font-size: 0.8rem;
       color: #94a3b8;
     }
+    .sprint-objectives {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sprint-objective {
+      padding: 10px 12px;
+      background: #0f172a;
+      border-radius: 6px;
+    }
+    .sprint-objective-text { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; }
+    .sprint-objective-progress { font-size: 0.75rem; color: #64748b; }
     
     /* Orphans Section */
     .orphan-row {
@@ -549,13 +577,26 @@
           </div>
         </div>
 
+        <!-- Due Section -->
+        <div class="section-box" id="dueSection" style="display: none;">
+          <div class="section-header" onclick="toggleSection('due')">
+            <div class="section-title">
+              <span class="icon">⚠️</span>
+              <span>Due</span>
+              <span class="section-badge danger" id="dueCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="dueToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="dueBody"></div>
+        </div>
+
         <!-- Sprint Section -->
         <div class="section-box" id="sprintSection" style="display: none;">
           <div class="section-header" onclick="toggleSection('sprint')">
             <div class="section-title">
               <span class="icon">🏃</span>
               <span id="sprintName">Sprint</span>
-              <span class="section-badge muted" id="sprintDays">0 days</span>
+              <span class="section-badge orange" id="sprintDays">0 days</span>
             </div>
             <span class="section-toggle collapsed" id="sprintToggle">▼</span>
           </div>
@@ -566,6 +607,7 @@
               </div>
               <span class="sprint-stats" id="sprintStats">0/0</span>
             </div>
+            <div class="sprint-objectives" id="sprintObjectives"></div>
             <div id="sprintTasks"></div>
           </div>
         </div>
@@ -611,6 +653,8 @@
     let API_URL = '', API_KEY = '';
     let scratchpadItems = [];
     let activeTasks = [];
+    let dueTasks = [];
+    let sprintTasks = [];
     let orphanTasks = [];
     let sprintData = null;
 
@@ -767,19 +811,18 @@
       }
     }
 
-    // Morning data (active tasks, sprint)
+    // Morning data (active tasks, sprint, due tasks)
     async function loadMorning() {
       const data = await api('/morning');
       if (!data) return;
 
       activeTasks = data.activeTasks || [];
+      dueTasks = data.overdueTasks || [];
+      sprintTasks = data.sprintTasks || [];
       sprintData = data.sprint;
       
-      // Add due today tasks that aren't active
-      const today = new Date().toISOString().split('T')[0];
-      const allTasks = [...(data.activeTasks || []), ...(data.sprintTasks || [])];
-      
       renderActive();
+      renderDue();
       renderSprint();
     }
 
@@ -823,6 +866,35 @@
       }).join('');
     }
 
+    function renderDue() {
+      const section = document.getElementById('dueSection');
+      if (dueTasks.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+      
+      section.style.display = 'block';
+      document.getElementById('dueCount').textContent = dueTasks.length;
+      
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('dueBody').innerHTML = dueTasks.map(t => {
+        const isOverdue = t.due_date < today;
+        return `
+          <div class="task-row" data-id="${t.id}">
+            <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+            <div class="task-content">
+              <div class="task-text">${esc(t.text)}</div>
+              <div class="task-meta">
+                <span class="task-tag ${isOverdue ? 'overdue' : 'due-today'}">${isOverdue ? 'Overdue: ' : ''}${formatDate(t.due_date)}</span>
+                ${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}
+              </div>
+            </div>
+            <button class="task-activate" onclick="activateTask('${t.id}')">Activate</button>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderSprint() {
       const section = document.getElementById('sprintSection');
       if (!sprintData) {
@@ -832,7 +904,7 @@
       
       section.style.display = 'block';
       document.getElementById('sprintName').textContent = sprintData.name;
-      document.getElementById('sprintDays').textContent = `${sprintData.daysRemaining} days`;
+      document.getElementById('sprintDays').textContent = `${sprintData.daysRemaining}d left`;
       
       const objs = sprintData.objectives || [];
       let total = 0, done = 0;
@@ -842,12 +914,34 @@
       document.getElementById('sprintProgress').style.width = pct + '%';
       document.getElementById('sprintStats').textContent = `${done}/${total} (${pct}%)`;
       
-      document.getElementById('sprintTasks').innerHTML = objs.map(o => `
-        <div style="margin-bottom: 8px;">
-          <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px;">${esc(o.statement)}</div>
-          <div style="font-size: 0.75rem; color: #64748b;">${o.doneTasks}/${o.totalTasks} tasks</div>
+      // Render objectives
+      document.getElementById('sprintObjectives').innerHTML = objs.map(o => `
+        <div class="sprint-objective">
+          <div class="sprint-objective-text">${esc(o.statement)}</div>
+          <div class="sprint-objective-progress">${o.doneTasks}/${o.totalTasks} tasks complete</div>
         </div>
       `).join('');
+      
+      // Render sprint tasks (not active)
+      const nonActiveSprint = sprintTasks.filter(t => !t.is_active);
+      if (nonActiveSprint.length > 0) {
+        document.getElementById('sprintTasks').innerHTML = `
+          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155;">
+            <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 8px;">Sprint Queue</div>
+            ${nonActiveSprint.map(t => `
+              <div class="task-row" data-id="${t.id}">
+                <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+                <div class="task-content">
+                  <div class="task-text">${esc(t.text)}</div>
+                </div>
+                <button class="task-activate" onclick="activateTask('${t.id}')">Activate</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        document.getElementById('sprintTasks').innerHTML = '';
+      }
     }
 
     // Orphans
