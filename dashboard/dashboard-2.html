@@ -562,7 +562,7 @@
 
       <!-- Right: Work -->
       <div class="right-panel">
-        <!-- Active Section -->
+        <!-- Active Section - always visible, open by default -->
         <div class="section-box">
           <div class="section-header" onclick="toggleSection('active')">
             <div class="section-title">
@@ -577,8 +577,8 @@
           </div>
         </div>
 
-        <!-- Due Section -->
-        <div class="section-box" id="dueSection" style="display: none;">
+        <!-- Due Section - visible when has items, closed by default -->
+        <div class="section-box" id="dueSection">
           <div class="section-header" onclick="toggleSection('due')">
             <div class="section-title">
               <span class="icon">⚠️</span>
@@ -587,16 +587,18 @@
             </div>
             <span class="section-toggle collapsed" id="dueToggle">▼</span>
           </div>
-          <div class="section-body collapsed" id="dueBody"></div>
+          <div class="section-body collapsed" id="dueBody">
+            <div class="empty-state">No due tasks</div>
+          </div>
         </div>
 
-        <!-- Sprint Section -->
-        <div class="section-box" id="sprintSection" style="display: none;">
+        <!-- Sprint Section - visible when has sprint, closed by default -->
+        <div class="section-box" id="sprintSection">
           <div class="section-header" onclick="toggleSection('sprint')">
             <div class="section-title">
               <span class="icon">🏃</span>
               <span id="sprintName">Sprint</span>
-              <span class="section-badge orange" id="sprintDays">0 days</span>
+              <span class="section-badge orange" id="sprintDays">-</span>
             </div>
             <span class="section-toggle collapsed" id="sprintToggle">▼</span>
           </div>
@@ -612,8 +614,8 @@
           </div>
         </div>
 
-        <!-- Orphans Section -->
-        <div class="section-box" id="orphansSection" style="display: none;">
+        <!-- Orphans Section - visible when has items, closed by default -->
+        <div class="section-box" id="orphansSection">
           <div class="section-header" onclick="toggleSection('orphans')">
             <div class="section-title">
               <span class="icon">📦</span>
@@ -767,7 +769,6 @@
       if (!text) return;
 
       if (makeActive) {
-        // Create task directly and activate
         const result = await api('/tasks', {
           method: 'POST',
           body: JSON.stringify({ text, category: 'General', priority: 3 })
@@ -779,7 +780,6 @@
           loadMorning();
         }
       } else {
-        // Add to scratchpad
         const result = await api('/scratchpad', {
           method: 'POST',
           body: JSON.stringify({ text })
@@ -811,15 +811,38 @@
       }
     }
 
-    // Morning data (active tasks, sprint, due tasks)
+    // Morning data
     async function loadMorning() {
       const data = await api('/morning');
       if (!data) return;
 
       activeTasks = data.activeTasks || [];
-      dueTasks = data.overdueTasks || [];
       sprintTasks = data.sprintTasks || [];
       sprintData = data.sprint;
+      
+      // Build due tasks: overdue + due today (not active)
+      const today = new Date().toISOString().split('T')[0];
+      dueTasks = [...(data.overdueTasks || [])];
+      
+      // Also check backlog for tasks due today
+      const backlog = data.backlogByCategory || {};
+      for (const cat in backlog) {
+        for (const task of backlog[cat]) {
+          if (task.due_date === today && !task.is_active) {
+            // Check not already in dueTasks
+            if (!dueTasks.find(t => t.id === task.id)) {
+              dueTasks.push(task);
+            }
+          }
+        }
+      }
+      
+      // Sort: overdue first, then by date
+      dueTasks.sort((a, b) => {
+        if (a.due_date < today && b.due_date >= today) return -1;
+        if (a.due_date >= today && b.due_date < today) return 1;
+        return a.due_date.localeCompare(b.due_date);
+      });
       
       renderActive();
       renderDue();
@@ -868,13 +891,14 @@
 
     function renderDue() {
       const section = document.getElementById('dueSection');
+      document.getElementById('dueCount').textContent = dueTasks.length;
+      
       if (dueTasks.length === 0) {
         section.style.display = 'none';
         return;
       }
       
       section.style.display = 'block';
-      document.getElementById('dueCount').textContent = dueTasks.length;
       
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('dueBody').innerHTML = dueTasks.map(t => {
@@ -885,7 +909,7 @@
             <div class="task-content">
               <div class="task-text">${esc(t.text)}</div>
               <div class="task-meta">
-                <span class="task-tag ${isOverdue ? 'overdue' : 'due-today'}">${isOverdue ? 'Overdue: ' : ''}${formatDate(t.due_date)}</span>
+                <span class="task-tag ${isOverdue ? 'overdue' : 'due-today'}">${isOverdue ? 'Overdue: ' : 'Today: '}${formatDate(t.due_date)}</span>
                 ${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}
               </div>
             </div>
@@ -897,6 +921,7 @@
 
     function renderSprint() {
       const section = document.getElementById('sprintSection');
+      
       if (!sprintData) {
         section.style.display = 'none';
         return;
@@ -914,7 +939,6 @@
       document.getElementById('sprintProgress').style.width = pct + '%';
       document.getElementById('sprintStats').textContent = `${done}/${total} (${pct}%)`;
       
-      // Render objectives
       document.getElementById('sprintObjectives').innerHTML = objs.map(o => `
         <div class="sprint-objective">
           <div class="sprint-objective-text">${esc(o.statement)}</div>
@@ -922,7 +946,6 @@
         </div>
       `).join('');
       
-      // Render sprint tasks (not active)
       const nonActiveSprint = sprintTasks.filter(t => !t.is_active);
       if (nonActiveSprint.length > 0) {
         document.getElementById('sprintTasks').innerHTML = `
@@ -953,13 +976,14 @@
 
     function renderOrphans() {
       const section = document.getElementById('orphansSection');
+      document.getElementById('orphansCount').textContent = orphanTasks.length;
+      
       if (orphanTasks.length === 0) {
         section.style.display = 'none';
         return;
       }
       
       section.style.display = 'block';
-      document.getElementById('orphansCount').textContent = orphanTasks.length;
       
       document.getElementById('orphansList').innerHTML = orphanTasks.map(t => `
         <div class="orphan-row">
