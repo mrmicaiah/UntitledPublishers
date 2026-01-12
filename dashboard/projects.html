@@ -15,6 +15,23 @@
     }
     .container { max-width: 1200px; margin: 0 auto; }
     
+    /* Top Nav */
+    .top-nav {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #1e293b;
+      font-size: 0.875rem;
+    }
+    .top-nav a {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .top-nav a:hover { color: #e2e8f0; }
+    .top-nav a.active { color: #3b82f6; }
+    
     header {
       display: flex;
       justify-content: space-between;
@@ -266,6 +283,9 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
+    @media (max-width: 768px) {
+      .pipeline { grid-template-columns: 1fr; }
+    }
     .pipeline-column {
       background: #1e293b;
       border-radius: 12px;
@@ -345,15 +365,20 @@
 </head>
 <body>
   <div class="container">
+    <nav class="top-nav">
+      <a href="index.html">Helm</a>
+      <a href="projects.html" class="active">Projects</a>
+    </nav>
+
     <header>
-      <h1>Projects</h1>
+      <h1 id="page-title">Projects</h1>
       <div class="header-actions">
-        <button class="btn btn-secondary" onclick="showTab('ideas')">Ideas</button>
-        <button class="btn" onclick="showCreateModal()">+ New Project</button>
+        <button class="btn btn-secondary" id="toggle-view" onclick="toggleView()">Ideas</button>
+        <button class="btn" id="create-btn" onclick="showCreateModal()">+ New Project</button>
       </div>
     </header>
 
-    <div class="tabs">
+    <div class="tabs" id="project-tabs">
       <button class="tab active" data-tab="active" onclick="filterProjects('active')">Active</button>
       <button class="tab" data-tab="completed" onclick="filterProjects('completed')">Completed</button>
       <button class="tab" data-tab="all" onclick="filterProjects('all')">All</button>
@@ -420,6 +445,7 @@
     const API_BASE = 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api';
     let currentProjects = [];
     let templates = [];
+    let currentView = 'projects';
 
     async function fetchProjects(status = 'active') {
       try {
@@ -608,6 +634,29 @@
       fetchProjects(status);
     }
 
+    // Toggle between Projects and Ideas
+    function toggleView() {
+      if (currentView === 'projects') {
+        currentView = 'ideas';
+        document.getElementById('projects-view').style.display = 'none';
+        document.getElementById('ideas-view').style.display = 'block';
+        document.getElementById('project-tabs').style.display = 'none';
+        document.getElementById('page-title').textContent = 'Ideas';
+        document.getElementById('toggle-view').textContent = 'Projects';
+        document.getElementById('create-btn').style.display = 'none';
+        fetchIdeas();
+      } else {
+        currentView = 'projects';
+        document.getElementById('projects-view').style.display = 'block';
+        document.getElementById('ideas-view').style.display = 'none';
+        document.getElementById('project-tabs').style.display = 'flex';
+        document.getElementById('page-title').textContent = 'Projects';
+        document.getElementById('toggle-view').textContent = 'Ideas';
+        document.getElementById('create-btn').style.display = 'block';
+        fetchProjects('active');
+      }
+    }
+
     // Ideas
     async function fetchIdeas() {
       try {
@@ -658,19 +707,6 @@
       `;
     }
 
-    function showTab(tab) {
-      if (tab === 'ideas') {
-        document.getElementById('projects-view').style.display = 'none';
-        document.getElementById('ideas-view').style.display = 'block';
-        document.querySelector('.tabs').style.display = 'none';
-        fetchIdeas();
-      } else {
-        document.getElementById('projects-view').style.display = 'block';
-        document.getElementById('ideas-view').style.display = 'none';
-        document.querySelector('.tabs').style.display = 'flex';
-      }
-    }
-
     // Create Project
     async function fetchTemplates() {
       try {
@@ -708,6 +744,10 @@
           body: JSON.stringify({ title, goal, target_date, template_id })
         });
         closeCreateModal();
+        document.getElementById('create-title').value = '';
+        document.getElementById('create-goal').value = '';
+        document.getElementById('create-date').value = '';
+        document.getElementById('create-template').value = '';
         fetchProjects('active');
       } catch (e) {
         alert('Failed to create project');
