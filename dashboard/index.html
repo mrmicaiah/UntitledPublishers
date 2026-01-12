@@ -55,6 +55,8 @@
     .header-btn.help:hover { background: var(--blue-500); color: white; }
     .header-btn.projects { border-color: var(--purple-600); color: var(--purple-700); }
     .header-btn.projects:hover { background: var(--purple-600); color: white; }
+    .header-btn.focus { border-color: var(--green-600); color: var(--green-700); }
+    .header-btn.focus:hover { background: var(--green-600); color: white; }
     .msg-badge { background: var(--red-600); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; min-width: 18px; text-align: center; }
     .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
     .add-task-box { display: flex; gap: 10px; align-items: center; padding: 16px 18px; background: var(--white); border: 2px solid var(--gray-400); border-radius: 12px; margin-bottom: 24px; flex-wrap: wrap; box-shadow: var(--shadow); }
@@ -185,6 +187,7 @@
         </div>
       </div>
       <div class="header-actions">
+        <a class="header-btn focus" href="focus.html" title="Focus Mode">🎯 Focus</a>
         <a class="header-btn projects" href="projects.html" title="Projects">📁 Projects</a>
         <button class="header-btn help" onclick="showHelp()" title="Help">❓ Help</button>
         <button class="header-btn claude" onclick="window.open('https://claude.ai', '_blank')" title="Claude AI">✨ Claude</button>
@@ -215,7 +218,7 @@
         <div class="help-section"><h3>Task Sections</h3><table class="help-table"><tr><th>Section</th><th>Color</th><th>Meaning</th></tr><tr><td>📥 Incoming</td><td>Purple</td><td>Tasks from teammate — Claim or Complete</td></tr><tr><td>🎯 Active</td><td>Green</td><td>Your current focus</td></tr><tr><td>⚠️ Overdue</td><td>Red</td><td>Past due date</td></tr><tr><td>📌 Sprint Queue</td><td>Orange</td><td>In sprint but not active</td></tr><tr><td>📋 Backlog</td><td>Gray</td><td>Everything else by category</td></tr></table></div>
         <div class="help-section"><h3>Task Actions</h3><table class="help-table"><tr><th>Button</th><th>What It Does</th></tr><tr><td><code>★ Activate</code></td><td>Move to Active section</td></tr><tr><td><code>− Remove</code></td><td>Remove from Active (back to backlog)</td></tr><tr><td><code>✓ Done</code></td><td>Complete the task</td></tr><tr><td><code>✓ Claim</code></td><td>Accept incoming task from teammate</td></tr></table></div>
         <div class="help-section"><h3>Adding Tasks</h3><p>Use the input box at the top: Type task → Select category → Check "Active" if needed → Click Add or Enter</p></div>
-        <div class="help-section"><h3>Header Buttons</h3><table class="help-table"><tr><th>Button</th><th>Function</th></tr><tr><td>📁 Projects</td><td>Project management dashboard</td></tr><tr><td>❓ Help</td><td>This guide</td></tr><tr><td>✨ Claude</td><td>Open Claude.ai</td></tr><tr><td>📧 Courier</td><td>Email dashboard</td></tr><tr><td>🤖 Bots</td><td>Worker status dashboard</td></tr><tr><td>💬</td><td>View teammate messages</td></tr><tr><td>🔔</td><td>Toggle notifications</td></tr><tr><td>↻</td><td>Refresh data</td></tr></table></div>
+        <div class="help-section"><h3>Header Buttons</h3><table class="help-table"><tr><th>Button</th><th>Function</th></tr><tr><td>🎯 Focus</td><td>Clean focus mode - active tasks only</td></tr><tr><td>📁 Projects</td><td>Project management dashboard</td></tr><tr><td>❓ Help</td><td>This guide</td></tr><tr><td>✨ Claude</td><td>Open Claude.ai</td></tr><tr><td>📧 Courier</td><td>Email dashboard</td></tr><tr><td>🤖 Bots</td><td>Worker status dashboard</td></tr><tr><td>💬</td><td>View teammate messages</td></tr><tr><td>🔔</td><td>Toggle notifications</td></tr><tr><td>↻</td><td>Refresh data</td></tr></table></div>
         <div class="help-tip">💡 <strong>Tip:</strong> Enable notifications to get alerts when your teammate sends tasks or messages!</div>
       </div>
     </div>
