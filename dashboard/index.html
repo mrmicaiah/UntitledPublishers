@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planning</title>
+  <title>Helm</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -34,8 +34,8 @@
     .login-error.show { opacity: 1; }
     
     /* Main App */
-    .main-app { display: none; height: 100vh; flex-direction: column; }
-    .main-app.visible { display: flex; }
+    .main-app { display: none; height: 100vh; }
+    .main-app.visible { display: flex; flex-direction: column; }
     
     /* Header */
     .header {
@@ -43,12 +43,10 @@
       padding: 12px 24px;
       background: rgba(15, 23, 42, 0.95);
       border-bottom: 1px solid #1e293b;
-      flex-shrink: 0;
     }
     .header-left { display: flex; align-items: center; gap: 12px; }
     .header-logo { font-size: 1.3rem; }
     .header-title { font-size: 1rem; font-weight: 600; }
-    .header-date { font-size: 0.75rem; color: #64748b; margin-left: 12px; }
     .header-actions { display: flex; gap: 8px; }
     .header-btn {
       padding: 6px 12px; background: transparent; border: 1px solid #334155;
@@ -59,8 +57,8 @@
     .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
     .header-btn.doing { border-color: #22c55e; color: #22c55e; }
     .header-btn.doing:hover { background: #22c55e; color: white; }
-    .header-btn.helm { border-color: #f97316; color: #f97316; }
-    .header-btn.helm:hover { background: #f97316; color: white; }
+    .header-btn.planning { border-color: #3b82f6; color: #3b82f6; }
+    .header-btn.planning:hover { background: #3b82f6; color: white; }
     .msg-badge { background: #ef4444; color: white; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; }
     
     /* Layout */
@@ -79,6 +77,7 @@
       flex-direction: column;
       overflow: hidden;
     }
+    
     .scratchpad-input { padding: 16px; border-bottom: 1px solid #334155; }
     .scratchpad-textarea {
       width: 100%; background: #0f172a; border: 1px solid #334155;
@@ -103,144 +102,171 @@
       justify-content: space-between; align-items: center; border-bottom: 1px solid #334155;
     }
     .scratchpad-count { background: #334155; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
-    
-    .scratchpad-list { flex: 1; overflow-y: auto; }
-    .scratch-item {
-      padding: 12px 16px; border-bottom: 1px solid #334155;
-      transition: background 0.15s;
+    .clean-btn {
+      background: none; border: 1px solid #475569; color: #94a3b8;
+      padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; font-family: inherit;
     }
-    .scratch-item:hover { background: rgba(51, 65, 85, 0.3); }
-    .scratch-item-text { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 8px; line-height: 1.4; }
-    .scratch-item-time { font-size: 0.7rem; color: #64748b; margin-bottom: 8px; }
-    .scratch-item-actions { display: flex; gap: 6px; }
-    .scratch-btn {
+    .clean-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    
+    .scratchpad-list { flex: 1; overflow-y: auto; padding: 8px; }
+    .scratchpad-item { background: #0f172a; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+    .scratchpad-item-text { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 8px; line-height: 1.4; }
+    .scratchpad-item-time { font-size: 0.7rem; color: #64748b; margin-bottom: 8px; }
+    .scratchpad-item-actions { display: flex; gap: 6px; }
+    .item-btn {
       padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
       cursor: pointer; border: 1px solid #334155; background: transparent;
       color: #94a3b8; transition: all 0.15s; font-family: inherit;
     }
-    .scratch-btn:hover { border-color: #64748b; color: #e2e8f0; }
-    .scratch-btn.activate { border-color: #22c55e; color: #22c55e; }
-    .scratch-btn.activate:hover { background: #22c55e; color: white; }
-    .scratch-btn.delete { border-color: #ef4444; color: #ef4444; }
-    .scratch-btn.delete:hover { background: #ef4444; color: white; }
+    .item-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .item-btn.activate { border-color: #22c55e; color: #22c55e; }
+    .item-btn.activate:hover { background: #22c55e; color: white; }
+    .item-btn.delete { border-color: #ef4444; color: #ef4444; }
+    .item-btn.delete:hover { background: #ef4444; color: white; }
     
     .scratchpad-empty { text-align: center; padding: 40px 20px; color: #64748b; }
     .scratchpad-empty-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.5; }
     
-    /* Right Panel */
-    .right-panel { display: flex; flex-direction: column; overflow: hidden; }
+    /* Right Panel - Work */
+    .right-panel { display: flex; flex-direction: column; overflow: hidden; padding: 24px; overflow-y: auto; }
     
-    /* Add Task Bar */
-    .add-task-bar {
-      display: flex; gap: 10px; padding: 16px 20px;
-      background: #1e293b; border-bottom: 1px solid #334155;
+    /* Message Banner */
+    .message-banner {
+      display: none; background: #1e293b; border: 1px solid #a855f7;
+      border-radius: 12px; padding: 16px; margin-bottom: 16px;
     }
-    .add-task-input {
-      flex: 1; padding: 10px 14px; background: #0f172a;
-      border: 1px solid #334155; border-radius: 8px;
-      font-size: 0.9rem; color: #e2e8f0; font-family: inherit;
-    }
-    .add-task-input:focus { outline: none; border-color: #3b82f6; }
-    .add-task-input::placeholder { color: #64748b; }
-    .add-task-select {
-      padding: 10px 12px; background: #0f172a; border: 1px solid #334155;
-      border-radius: 8px; font-size: 0.85rem; color: #94a3b8;
-      font-family: inherit; cursor: pointer;
-    }
-    .add-task-btn {
-      padding: 10px 20px; background: #3b82f6; border: none;
-      border-radius: 8px; color: white; font-size: 0.9rem;
-      font-weight: 500; cursor: pointer; font-family: inherit;
-    }
-    .add-task-btn:hover { background: #2563eb; }
+    .message-banner.show { display: block; }
+    .message-banner-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .message-banner-title { font-size: 0.9rem; font-weight: 600; color: #a855f7; }
+    .message-banner-dismiss { background: none; border: none; color: #64748b; font-size: 1.2rem; cursor: pointer; }
+    .message-item { padding: 10px 0; border-bottom: 1px solid #334155; }
+    .message-item:last-child { border-bottom: none; }
+    .message-from { font-size: 0.8rem; color: #a855f7; font-weight: 600; margin-bottom: 2px; }
+    .message-content { font-size: 0.85rem; color: #cbd5e1; }
+    .message-time { font-size: 0.7rem; color: #64748b; margin-top: 4px; }
     
-    /* Task List Area */
-    .task-area { flex: 1; overflow-y: auto; padding: 20px; }
+    /* Section Box */
+    .section-box { background: #1e293b; border: 1px solid #334155; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+    .section-header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .section-header:hover { background: rgba(51, 65, 85, 0.3); }
+    .section-title { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.9rem; }
+    .section-title .icon { font-size: 1.1rem; }
+    .section-badge { background: #3b82f6; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+    .section-badge.danger { background: #ef4444; }
+    .section-badge.warning { background: #eab308; }
+    .section-badge.muted { background: #475569; }
+    .section-badge.orange { background: #f97316; }
+    .section-badge.purple { background: #a855f7; }
+    .section-toggle { color: #64748b; transition: transform 0.2s; }
+    .section-toggle.collapsed { transform: rotate(-90deg); }
     
-    /* Section */
-    .section { margin-bottom: 24px; }
-    .section-header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 0; margin-bottom: 8px;
-      border-bottom: 1px solid #334155;
-    }
-    .section-icon { font-size: 1rem; }
-    .section-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
-    .section-count { font-size: 0.7rem; color: #64748b; background: #334155; padding: 2px 8px; border-radius: 8px; }
-    .section-header.attention .section-title { color: #ef4444; }
-    .section-header.active .section-title { color: #22c55e; }
+    .section-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #334155; }
+    .section-body.collapsed { display: none; }
     
     /* Task Row */
-    .task-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; margin-bottom: 4px;
-      background: #1e293b; border-radius: 8px;
-      transition: all 0.15s;
-    }
-    .task-row:hover { background: #283548; }
+    .task-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #0f172a; border-radius: 8px; transition: all 0.15s; }
+    .task-row:hover { background: #1a2744; transform: translateX(4px); }
     
     .task-checkbox {
-      width: 20px; height: 20px; border: 2px solid #475569;
-      border-radius: 50%; cursor: pointer; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
+      width: 22px; height: 22px; border: 2px solid #475569; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.2s;
     }
     .task-checkbox:hover { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
     .task-checkbox.completing { background: #22c55e; border-color: #22c55e; }
-    .task-checkbox.completing::after { content: '✓'; color: white; font-size: 0.65rem; font-weight: 700; }
+    .task-checkbox.completing::after { content: '✓'; color: white; font-size: 0.7rem; font-weight: 700; }
     
     .task-content { flex: 1; min-width: 0; }
     .task-text { font-size: 0.9rem; color: #e2e8f0; }
-    .task-meta { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
-    .task-tag {
-      font-size: 0.65rem; padding: 2px 6px; border-radius: 3px;
-      background: #334155; color: #94a3b8;
-    }
+    .task-meta { display: flex; gap: 8px; margin-top: 4px; }
+    .task-tag { font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; background: #334155; color: #94a3b8; }
+    .task-tag.due { background: rgba(234, 179, 8, 0.2); color: #eab308; }
     .task-tag.overdue { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-    .task-tag.due-soon { background: rgba(234, 179, 8, 0.2); color: #eab308; }
-    .task-tag.due { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .task-tag.due-today { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
     .task-tag.handoff { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
-    .task-tag.category { background: #334155; color: #64748b; }
     
-    .task-actions { display: flex; gap: 6px; }
-    .action-btn {
-      padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
-      cursor: pointer; border: 1px solid transparent; background: transparent;
-      color: #64748b; transition: all 0.15s; font-family: inherit;
-    }
-    .action-btn:hover { color: #e2e8f0; }
-    .action-btn.activate { border-color: #3b82f6; color: #3b82f6; }
-    .action-btn.activate:hover { background: #3b82f6; color: white; }
-    .action-btn.deactivate { border-color: #64748b; color: #64748b; }
-    .action-btn.deactivate:hover { background: #64748b; color: white; }
-    .action-btn.claim { border-color: #a855f7; color: #a855f7; }
-    .action-btn.claim:hover { background: #a855f7; color: white; }
+    .task-remove { background: none; border: none; color: #475569; cursor: pointer; padding: 4px; opacity: 0; transition: all 0.15s; }
+    .task-row:hover .task-remove { opacity: 1; }
+    .task-remove:hover { color: #ef4444; }
     
-    /* Category Group */
-    .category-group { margin-bottom: 16px; }
-    .category-header {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px 0; cursor: pointer; user-select: none;
+    .task-activate {
+      background: none; border: 1px solid #3b82f6; color: #3b82f6;
+      cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem;
+      opacity: 0; transition: all 0.15s; font-family: inherit;
     }
-    .category-toggle { color: #64748b; font-size: 0.8rem; transition: transform 0.2s; }
-    .category-toggle.collapsed { transform: rotate(-90deg); }
-    .category-name { font-size: 0.8rem; font-weight: 500; color: #94a3b8; }
-    .category-count { font-size: 0.7rem; color: #64748b; }
-    .category-tasks { padding-left: 8px; }
-    .category-tasks.collapsed { display: none; }
+    .task-row:hover .task-activate { opacity: 1; }
+    .task-activate:hover { background: #3b82f6; color: white; }
+    
+    .task-claim {
+      background: none; border: 1px solid #a855f7; color: #a855f7;
+      cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .task-claim:hover { background: #a855f7; color: white; }
+    
+    /* Sprint Section */
+    .sprint-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .progress-bar { flex: 1; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #22c55e); border-radius: 4px; transition: width 0.3s; }
+    .sprint-stats { font-size: 0.8rem; color: #94a3b8; }
+    .sprint-objectives { display: flex; flex-direction: column; gap: 8px; }
+    .sprint-objective { padding: 10px 12px; background: #0f172a; border-radius: 6px; }
+    .sprint-objective-text { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; }
+    .sprint-objective-progress { font-size: 0.75rem; color: #64748b; }
+    
+    /* Orphans Section */
+    .orphan-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0f172a; border-radius: 6px; }
+    .orphan-text { flex: 1; font-size: 0.85rem; color: #cbd5e1; }
+    .orphan-btn {
+      padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;
+      border: 1px solid #334155; background: transparent; color: #94a3b8; font-family: inherit;
+    }
+    .orphan-btn:hover { border-color: #64748b; color: #e2e8f0; }
     
     /* Empty State */
-    .empty-state { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; }
+    .empty-state { text-align: center; padding: 30px; color: #64748b; }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5; }
+    .empty-title { font-size: 0.95rem; color: #94a3b8; margin-bottom: 4px; }
+    .empty-subtitle { font-size: 0.8rem; }
+    
+    /* Clean Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #1e293b; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
+    .modal-header { padding: 16px 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-weight: 600; }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
+    .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+    .modal-item { background: #0f172a; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+    .modal-item-text { font-size: 0.9rem; margin-bottom: 12px; color: #e2e8f0; }
+    .modal-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .modal-btn {
+      padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+      border: 1px solid #334155; background: transparent; color: #94a3b8;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .modal-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .modal-btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
+    .modal-btn.primary:hover { background: #2563eb; }
+    .modal-btn.success { border-color: #22c55e; color: #22c55e; }
+    .modal-btn.success:hover { background: #22c55e; color: white; }
+    .modal-btn.warning { border-color: #eab308; color: #eab308; }
+    .modal-btn.warning:hover { background: #eab308; color: #0f172a; }
+    .modal-btn.danger { border-color: #ef4444; color: #ef4444; }
+    .modal-btn.danger:hover { background: #ef4444; color: white; }
+    
+    .scratchpad-zero { text-align: center; padding: 40px; }
+    .scratchpad-zero-icon { font-size: 4rem; margin-bottom: 16px; }
+    .scratchpad-zero-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
+    .scratchpad-zero-subtitle { color: #64748b; }
     
     /* Toast */
     .toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: #22c55e; color: white; padding: 12px 24px;
-      border-radius: 8px; font-weight: 500; z-index: 2000;
-      opacity: 0; transition: opacity 0.3s;
+      border-radius: 8px; font-weight: 500; z-index: 2000; opacity: 0; transition: opacity 0.3s;
     }
     .toast.show { opacity: 1; }
-    .toast.error { background: #ef4444; }
     
     /* Loading */
     .loading { display: flex; align-items: center; justify-content: center; padding: 30px; color: #64748b; }
@@ -248,10 +274,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     
     /* Responsive */
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 280px 1fr; }
-    }
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
       .layout { grid-template-columns: 1fr; }
       .left-panel { display: none; }
     }
@@ -259,8 +282,8 @@
 </head>
 <body>
   <div class="login-screen" id="loginScreen">
-    <div class="login-logo">📋</div>
-    <div class="login-title">Planning</div>
+    <div class="login-logo">🚀</div>
+    <div class="login-title">Helm</div>
     <div class="login-box">
       <label class="login-label">Enter your PIN</label>
       <div class="pin-container">
@@ -276,14 +299,13 @@
   <div class="main-app" id="mainApp">
     <div class="header">
       <div class="header-left">
-        <div class="header-logo">📋</div>
-        <div class="header-title">Planning</div>
-        <div class="header-date" id="dateInfo"></div>
+        <div class="header-logo">🚀</div>
+        <div class="header-title">Helm</div>
       </div>
       <div class="header-actions">
-        <a class="header-btn helm" href="dashboard-2.html">🚀 Helm</a>
+        <a class="header-btn planning" href="planning.html">📋 Planning</a>
         <a class="header-btn doing" href="doing.html">🎯 Doing</a>
-        <button class="header-btn" id="msgBtn" onclick="showMessages()" style="display:none;">💬<span class="msg-badge" id="msgBadge">0</span></button>
+        <button class="header-btn" id="msgBtn" onclick="showMessageBanner()" style="display:none;">💬<span class="msg-badge" id="msgBadge">0</span></button>
         <button class="header-btn" onclick="loadData()">↻</button>
       </div>
     </div>
@@ -294,28 +316,117 @@
         <div class="scratchpad-input">
           <textarea class="scratchpad-textarea" id="scratchInput" placeholder="What's on your mind?"></textarea>
           <div class="scratchpad-actions">
-            <button class="scratchpad-btn primary" onclick="addScratch(true)">+ Active</button>
-            <button class="scratchpad-btn secondary" onclick="addScratch(false)">Dump</button>
+            <button class="scratchpad-btn primary" onclick="addToScratchpad(true)">+ Active</button>
+            <button class="scratchpad-btn secondary" onclick="addToScratchpad(false)">Dump</button>
           </div>
         </div>
         <div class="scratchpad-header">
           <span>Scratchpad <span class="scratchpad-count" id="scratchCount">0</span></span>
+          <button class="clean-btn" onclick="openCleanModal()">Clean</button>
         </div>
-        <div class="scratchpad-list" id="scratchList"></div>
-      </div>
-
-      <!-- Right: Tasks -->
-      <div class="right-panel">
-        <div class="add-task-bar">
-          <input type="text" class="add-task-input" id="taskInput" placeholder="Add a task...">
-          <select class="add-task-select" id="taskCategory"><option value="General">General</option></select>
-          <button class="add-task-btn" onclick="addTask()">Add</button>
-        </div>
-        
-        <div class="task-area" id="taskArea">
+        <div class="scratchpad-list" id="scratchList">
           <div class="loading"><div class="spinner"></div> Loading...</div>
         </div>
       </div>
+
+      <!-- Right: Work -->
+      <div class="right-panel">
+        <!-- Message Banner -->
+        <div class="message-banner" id="messageBanner">
+          <div class="message-banner-header">
+            <span class="message-banner-title">💬 Messages</span>
+            <button class="message-banner-dismiss" onclick="dismissMessages()">✕</button>
+          </div>
+          <div id="messageList"></div>
+        </div>
+
+        <!-- Incoming Section -->
+        <div class="section-box" id="incomingSection">
+          <div class="section-header" onclick="toggleSection('incoming')">
+            <div class="section-title">
+              <span class="icon">📥</span>
+              <span>Incoming</span>
+              <span class="section-badge purple" id="incomingCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="incomingToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="incomingBody"></div>
+        </div>
+
+        <!-- Active Section -->
+        <div class="section-box">
+          <div class="section-header" onclick="toggleSection('active')">
+            <div class="section-title">
+              <span class="icon">🎯</span>
+              <span>Active</span>
+              <span class="section-badge" id="activeCount">0</span>
+            </div>
+            <span class="section-toggle" id="activeToggle">▼</span>
+          </div>
+          <div class="section-body" id="activeBody">
+            <div class="loading"><div class="spinner"></div> Loading...</div>
+          </div>
+        </div>
+
+        <!-- Due Section -->
+        <div class="section-box" id="dueSection">
+          <div class="section-header" onclick="toggleSection('due')">
+            <div class="section-title">
+              <span class="icon">⚠️</span>
+              <span>Due</span>
+              <span class="section-badge danger" id="dueCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="dueToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="dueBody"></div>
+        </div>
+
+        <!-- Sprint Section -->
+        <div class="section-box" id="sprintSection">
+          <div class="section-header" onclick="toggleSection('sprint')">
+            <div class="section-title">
+              <span class="icon">🏃</span>
+              <span id="sprintName">Sprint</span>
+              <span class="section-badge orange" id="sprintDays">-</span>
+            </div>
+            <span class="section-toggle collapsed" id="sprintToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="sprintBody">
+            <div class="sprint-progress">
+              <div class="progress-bar"><div class="progress-fill" id="sprintProgress" style="width: 0%"></div></div>
+              <span class="sprint-stats" id="sprintStats">0/0</span>
+            </div>
+            <div class="sprint-objectives" id="sprintObjectives"></div>
+            <div id="sprintTasks"></div>
+          </div>
+        </div>
+
+        <!-- Orphans Section -->
+        <div class="section-box" id="orphansSection">
+          <div class="section-header" onclick="toggleSection('orphans')">
+            <div class="section-title">
+              <span class="icon">📦</span>
+              <span>Orphans</span>
+              <span class="section-badge warning" id="orphansCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="orphansToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="orphansBody">
+            <div id="orphansList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clean Modal -->
+  <div class="modal-overlay" id="cleanModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Clean Scratchpad</div>
+        <button class="modal-close" onclick="closeCleanModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="cleanModalBody"></div>
     </div>
   </div>
 
@@ -327,10 +438,8 @@
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '';
-    let scratchItems = [], categories = ['General'];
-    let incomingTasks = [], activeTasks = [], overdueTasks = [], backlog = {};
+    let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], sprintData = null;
 
-    // Login
     function checkSession() {
       const s = localStorage.getItem('dashboardSession');
       if (s) {
@@ -388,294 +497,294 @@
     }
 
     async function loadData() {
-      await Promise.all([loadScratchpad(), loadTasks(), loadMessages()]);
+      await Promise.all([loadScratchpad(), loadMorning(), loadOrphans(), loadMessages()]);
     }
 
-    // Scratchpad
+    async function loadMessages() {
+      const data = await api('/messages');
+      messages = data?.messages || [];
+      const msgBtn = document.getElementById('msgBtn');
+      const msgBadge = document.getElementById('msgBadge');
+      if (messages.length > 0) { msgBtn.style.display = 'flex'; msgBadge.textContent = messages.length; }
+      else msgBtn.style.display = 'none';
+    }
+
+    function showMessageBanner() {
+      if (messages.length === 0) return;
+      const banner = document.getElementById('messageBanner');
+      document.getElementById('messageList').innerHTML = messages.map(m => `
+        <div class="message-item">
+          <div class="message-from">${esc(m.from_user)}</div>
+          <div class="message-content">${esc(m.content)}</div>
+          <div class="message-time">${formatTime(m.created_at)}</div>
+        </div>
+      `).join('');
+      banner.classList.add('show');
+    }
+
+    async function dismissMessages() {
+      document.getElementById('messageBanner').classList.remove('show');
+      await api('/messages/read', { method: 'POST' });
+      messages = [];
+      document.getElementById('msgBtn').style.display = 'none';
+    }
+
     async function loadScratchpad() {
       const data = await api('/scratchpad');
-      scratchItems = data?.items || [];
+      scratchpadItems = data?.items || [];
       renderScratchpad();
     }
 
     function renderScratchpad() {
-      document.getElementById('scratchCount').textContent = scratchItems.length;
+      document.getElementById('scratchCount').textContent = scratchpadItems.length;
       const list = document.getElementById('scratchList');
-      
-      if (scratchItems.length === 0) {
+      if (scratchpadItems.length === 0) {
         list.innerHTML = '<div class="scratchpad-empty"><div class="scratchpad-empty-icon">✨</div><div>Scratchpad clear</div></div>';
         return;
       }
-
-      list.innerHTML = scratchItems.map(item => `
-        <div class="scratch-item">
-          <div class="scratch-item-text">${esc(item.text)}</div>
-          <div class="scratch-item-time">${formatTime(item.created_at)}</div>
-          <div class="scratch-item-actions">
-            <button class="scratch-btn activate" onclick="processScratch('${item.id}', 'activate')">✓ Active</button>
-            <button class="scratch-btn" onclick="processScratch('${item.id}', 'task')">→ Task</button>
-            <button class="scratch-btn delete" onclick="processScratch('${item.id}', 'delete')">🗑</button>
+      list.innerHTML = scratchpadItems.map(item => `
+        <div class="scratchpad-item">
+          <div class="scratchpad-item-text">${esc(item.text)}</div>
+          <div class="scratchpad-item-time">${formatTime(item.created_at)}</div>
+          <div class="scratchpad-item-actions">
+            <button class="item-btn activate" onclick="processScratchpad('${item.id}', 'activate')">✓ Active</button>
+            <button class="item-btn" onclick="processScratchpad('${item.id}', 'task')">→ Task</button>
+            <button class="item-btn" onclick="processScratchpad('${item.id}', 'orphan')">→ Orphan</button>
+            <button class="item-btn delete" onclick="processScratchpad('${item.id}', 'delete')">🗑</button>
           </div>
         </div>
       `).join('');
     }
 
-    async function addScratch(makeActive) {
+    async function addToScratchpad(makeActive) {
       const input = document.getElementById('scratchInput');
       const text = input.value.trim();
       if (!text) return;
-
       if (makeActive) {
         const r = await api('/tasks', { method: 'POST', body: JSON.stringify({ text, category: 'General', priority: 3 }) });
         if (r?.id) {
           await api(`/tasks/${r.id}/activate`, { method: 'POST' });
           showToast('Task activated');
           input.value = '';
-          loadTasks();
+          loadMorning();
         }
       } else {
         const r = await api('/scratchpad', { method: 'POST', body: JSON.stringify({ text }) });
-        if (r?.success) {
-          showToast('Added to scratchpad');
-          input.value = '';
-          loadScratchpad();
-        }
+        if (r?.success) { showToast('Added to scratchpad'); input.value = ''; loadScratchpad(); }
       }
     }
 
-    async function processScratch(id, action) {
+    async function processScratchpad(id, action) {
       const r = await api(`/scratchpad/${id}/process`, { method: 'POST', body: JSON.stringify({ action }) });
       if (r?.success) {
-        showToast(action === 'activate' ? 'Task activated' : action === 'task' ? 'Moved to tasks' : 'Deleted');
+        showToast(action === 'activate' ? 'Task activated!' : action === 'task' ? 'Moved to tasks' : action === 'orphan' ? 'Moved to orphans' : 'Deleted');
         loadScratchpad();
-        if (action === 'activate' || action === 'task') loadTasks();
+        if (action === 'activate') loadMorning();
+        if (action === 'orphan') loadOrphans();
       }
     }
 
-    document.getElementById('scratchInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addScratch(false); }
-      if (e.key === 'Enter' && e.shiftKey) { e.preventDefault(); addScratch(true); }
-    });
-
-    // Tasks
-    async function loadTasks() {
+    async function loadMorning() {
       const data = await api('/morning');
       if (!data) return;
-
-      document.getElementById('dateInfo').textContent = data.greeting?.dayOfWeek + ' • ' + data.greeting?.date;
-      
-      incomingTasks = data.incoming || [];
       activeTasks = data.activeTasks || [];
-      overdueTasks = data.overdueTasks || [];
-      backlog = data.backlogByCategory || {};
-
-      // Update category dropdown
-      const cats = Object.keys(backlog);
-      categories = ['General', ...cats.filter(c => c !== 'General')];
-      categories = [...new Set(categories)];
-      const select = document.getElementById('taskCategory');
-      select.innerHTML = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
-
-      renderTasks();
-    }
-
-    function renderTasks() {
-      const area = document.getElementById('taskArea');
+      sprintTasks = data.sprintTasks || [];
+      sprintData = data.sprint;
+      incomingTasks = data.incoming || [];
       const today = new Date().toISOString().split('T')[0];
-      
-      // Build "Needs Attention" - overdue + incoming + due today/tomorrow
-      const attention = [];
-      
-      // Add overdue (not active)
-      overdueTasks.forEach(t => {
-        if (!t.is_active) attention.push({ ...t, reason: 'overdue' });
-      });
-      
-      // Add incoming
-      incomingTasks.forEach(t => {
-        attention.push({ ...t, reason: 'incoming' });
-      });
-      
-      // Add due today/tomorrow from backlog
-      const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+      dueTasks = [...(data.overdueTasks || [])];
+      const backlog = data.backlogByCategory || {};
       for (const cat in backlog) {
-        backlog[cat].forEach(t => {
-          if (!t.is_active && (t.due_date === today || t.due_date === tomorrow)) {
-            if (!attention.find(a => a.id === t.id)) {
-              attention.push({ ...t, reason: t.due_date === today ? 'due-today' : 'due-soon' });
-            }
+        for (const task of backlog[cat]) {
+          if (task.due_date === today && !task.is_active && !dueTasks.find(t => t.id === task.id)) {
+            dueTasks.push(task);
           }
-        });
+        }
       }
-
-      let html = '';
-
-      // Needs Attention Section
-      if (attention.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-header attention">
-              <span class="section-icon">⚠️</span>
-              <span class="section-title">Needs Attention</span>
-              <span class="section-count">${attention.length}</span>
-            </div>
-            ${attention.map(t => taskRow(t, false, t.reason)).join('')}
-          </div>
-        `;
-      }
-
-      // Active Section
-      html += `
-        <div class="section">
-          <div class="section-header active">
-            <span class="section-icon">🎯</span>
-            <span class="section-title">Active</span>
-            <span class="section-count">${activeTasks.length}</span>
-          </div>
-          ${activeTasks.length === 0 
-            ? '<div class="empty-state">No active tasks. Activate something from below.</div>'
-            : activeTasks.map(t => taskRow(t, true)).join('')}
-        </div>
-      `;
-
-      // Backlog Section
-      const backlogCats = Object.keys(backlog).filter(c => backlog[c].length > 0);
-      if (backlogCats.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-header">
-              <span class="section-icon">📋</span>
-              <span class="section-title">Backlog</span>
-            </div>
-            ${backlogCats.map(cat => categoryGroup(cat, backlog[cat])).join('')}
-          </div>
-        `;
-      }
-
-      area.innerHTML = html;
+      dueTasks.sort((a, b) => a.due_date < today && b.due_date >= today ? -1 : a.due_date >= today && b.due_date < today ? 1 : a.due_date.localeCompare(b.due_date));
+      renderIncoming();
+      renderActive();
+      renderDue();
+      renderSprint();
     }
 
-    function taskRow(task, isActive, reason = null) {
-      const today = new Date().toISOString().split('T')[0];
-      let tags = '';
-      
-      if (reason === 'overdue') tags += '<span class="task-tag overdue">Overdue</span>';
-      else if (reason === 'incoming') tags += `<span class="task-tag handoff">from ${esc(task.assigned_by)}</span>`;
-      else if (reason === 'due-today') tags += '<span class="task-tag overdue">Due today</span>';
-      else if (reason === 'due-soon') tags += '<span class="task-tag due-soon">Due tomorrow</span>';
-      else if (task.due_date) {
-        if (task.due_date < today) tags += '<span class="task-tag overdue">Overdue</span>';
-        else if (task.due_date === today) tags += '<span class="task-tag overdue">Due today</span>';
-        else tags += `<span class="task-tag due">${formatDate(task.due_date)}</span>`;
-      }
-      
-      if (task.category && !isActive) tags += `<span class="task-tag category">${esc(task.category)}</span>`;
-
-      let actions = '';
-      if (reason === 'incoming') {
-        actions = `<button class="action-btn claim" onclick="claimTask('${task.id}')">Claim</button>`;
-      } else if (isActive) {
-        actions = `<button class="action-btn deactivate" onclick="deactivate('${task.id}')">−</button>`;
-      } else {
-        actions = `<button class="action-btn activate" onclick="activate('${task.id}')">★</button>`;
-      }
-
-      return `
+    function renderIncoming() {
+      const section = document.getElementById('incomingSection');
+      document.getElementById('incomingCount').textContent = incomingTasks.length;
+      if (incomingTasks.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      document.getElementById('incomingBody').innerHTML = incomingTasks.map(t => `
         <div class="task-row">
-          <div class="task-checkbox" onclick="complete('${task.id}', this)"></div>
+          <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
           <div class="task-content">
-            <div class="task-text">${esc(task.text)}</div>
-            ${tags ? `<div class="task-meta">${tags}</div>` : ''}
+            <div class="task-text">${esc(t.text)}</div>
+            <div class="task-meta"><span class="task-tag handoff">from ${esc(t.assigned_by)}</span></div>
           </div>
-          <div class="task-actions">${actions}</div>
+          <button class="task-claim" onclick="claimTask('${t.id}')">Claim</button>
         </div>
-      `;
+      `).join('');
     }
 
-    function categoryGroup(cat, tasks) {
-      const id = 'cat-' + cat.replace(/\s+/g, '-').toLowerCase();
-      return `
-        <div class="category-group">
-          <div class="category-header" onclick="toggleCategory('${id}')">
-            <span class="category-toggle" id="${id}-toggle">▼</span>
-            <span class="category-name">${esc(cat)}</span>
-            <span class="category-count">(${tasks.length})</span>
-          </div>
-          <div class="category-tasks" id="${id}-tasks">
-            ${tasks.map(t => taskRow(t, false)).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function toggleCategory(id) {
-      document.getElementById(id + '-toggle').classList.toggle('collapsed');
-      document.getElementById(id + '-tasks').classList.toggle('collapsed');
-    }
-
-    // Task Actions
-    async function addTask() {
-      const input = document.getElementById('taskInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const category = document.getElementById('taskCategory').value;
-      const r = await api('/tasks', { method: 'POST', body: JSON.stringify({ text, category, priority: 3 }) });
-      if (r?.success) {
-        showToast('Task added');
-        input.value = '';
-        loadTasks();
+    function renderActive() {
+      document.getElementById('activeCount').textContent = activeTasks.length;
+      const body = document.getElementById('activeBody');
+      if (activeTasks.length === 0) {
+        body.innerHTML = '<div class="empty-state"><div class="empty-icon">🎯</div><div class="empty-title">No active tasks</div><div class="empty-subtitle">Add something to scratchpad</div></div>';
+        return;
       }
+      const today = new Date().toISOString().split('T')[0];
+      body.innerHTML = activeTasks.map(t => {
+        let dueBadge = '';
+        if (t.due_date) {
+          if (t.due_date < today) dueBadge = '<span class="task-tag overdue">Overdue</span>';
+          else if (t.due_date === today) dueBadge = '<span class="task-tag due-today">Due today</span>';
+          else dueBadge = `<span class="task-tag due">${formatDate(t.due_date)}</span>`;
+        }
+        return `
+          <div class="task-row">
+            <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+            <div class="task-content">
+              <div class="task-text">${esc(t.text)}</div>
+              <div class="task-meta">${dueBadge}${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}</div>
+            </div>
+            <button class="task-remove" onclick="deactivateTask('${t.id}')">✕</button>
+          </div>
+        `;
+      }).join('');
     }
 
-    document.getElementById('taskInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') addTask();
-    });
+    function renderDue() {
+      const section = document.getElementById('dueSection');
+      document.getElementById('dueCount').textContent = dueTasks.length;
+      if (dueTasks.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('dueBody').innerHTML = dueTasks.map(t => `
+        <div class="task-row">
+          <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+          <div class="task-content">
+            <div class="task-text">${esc(t.text)}</div>
+            <div class="task-meta"><span class="task-tag ${t.due_date < today ? 'overdue' : 'due-today'}">${t.due_date < today ? 'Overdue' : 'Today'}</span></div>
+          </div>
+          <button class="task-activate" onclick="activateTask('${t.id}')">Activate</button>
+        </div>
+      `).join('');
+    }
 
-    async function complete(id, el) {
+    function renderSprint() {
+      const section = document.getElementById('sprintSection');
+      if (!sprintData) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      document.getElementById('sprintName').textContent = sprintData.name;
+      document.getElementById('sprintDays').textContent = `${sprintData.daysRemaining}d`;
+      const objs = sprintData.objectives || [];
+      let total = 0, done = 0;
+      objs.forEach(o => { total += o.totalTasks || 0; done += o.doneTasks || 0; });
+      const pct = total > 0 ? Math.round(done/total*100) : 0;
+      document.getElementById('sprintProgress').style.width = pct + '%';
+      document.getElementById('sprintStats').textContent = `${done}/${total}`;
+      document.getElementById('sprintObjectives').innerHTML = objs.map(o => `
+        <div class="sprint-objective">
+          <div class="sprint-objective-text">${esc(o.statement)}</div>
+          <div class="sprint-objective-progress">${o.doneTasks}/${o.totalTasks}</div>
+        </div>
+      `).join('');
+      const queue = sprintTasks.filter(t => !t.is_active);
+      document.getElementById('sprintTasks').innerHTML = queue.length > 0 ? `
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid #334155;">
+          <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">Queue</div>
+          ${queue.map(t => `
+            <div class="task-row">
+              <div class="task-checkbox" onclick="completeTask('${t.id}', this)"></div>
+              <div class="task-content"><div class="task-text">${esc(t.text)}</div></div>
+              <button class="task-activate" onclick="activateTask('${t.id}')">Activate</button>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+    }
+
+    async function loadOrphans() {
+      const data = await api('/orphans');
+      orphanTasks = data?.tasks || [];
+      const section = document.getElementById('orphansSection');
+      document.getElementById('orphansCount').textContent = orphanTasks.length;
+      if (orphanTasks.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      document.getElementById('orphansList').innerHTML = orphanTasks.map(t => `
+        <div class="orphan-row">
+          <div class="orphan-text">${esc(t.text)}</div>
+          <button class="orphan-btn" onclick="activateTask('${t.id}')">Activate</button>
+        </div>
+      `).join('');
+    }
+
+    async function completeTask(id, el) {
       el.classList.add('completing');
       const r = await api(`/tasks/${id}/complete`, { method: 'POST' });
-      if (r?.success) { showToast('Completed ✓'); setTimeout(loadTasks, 300); }
+      if (r?.success) { showToast('Completed! 🎉'); setTimeout(loadMorning, 300); }
       else el.classList.remove('completing');
     }
 
-    async function activate(id) {
-      await api(`/tasks/${id}/activate`, { method: 'POST' });
-      showToast('Activated');
-      loadTasks();
+    async function deactivateTask(id) {
+      await api(`/tasks/${id}/deactivate`, { method: 'POST' });
+      showToast('Removed');
+      loadMorning();
     }
 
-    async function deactivate(id) {
-      await api(`/tasks/${id}/deactivate`, { method: 'POST' });
-      showToast('Removed from active');
-      loadTasks();
+    async function activateTask(id) {
+      await api(`/tasks/${id}/activate`, { method: 'POST' });
+      showToast('Activated');
+      loadMorning();
+      loadOrphans();
     }
 
     async function claimTask(id) {
       await api(`/tasks/${id}/claim`, { method: 'POST' });
-      showToast('Task claimed');
-      loadTasks();
+      showToast('Claimed');
+      loadMorning();
     }
 
-    // Messages
-    let messages = [];
-    async function loadMessages() {
-      const data = await api('/messages');
-      messages = data?.messages || [];
-      const btn = document.getElementById('msgBtn');
-      const badge = document.getElementById('msgBadge');
-      if (messages.length > 0) { btn.style.display = 'flex'; badge.textContent = messages.length; }
-      else btn.style.display = 'none';
+    function toggleSection(name) {
+      document.getElementById(name + 'Body').classList.toggle('collapsed');
+      document.getElementById(name + 'Toggle').classList.toggle('collapsed');
     }
 
-    function showMessages() {
-      if (messages.length === 0) return;
-      alert(messages.map(m => `${m.from_user}: ${m.content}`).join('\n\n'));
+    function openCleanModal() {
+      document.getElementById('cleanModal').classList.add('active');
+      renderCleanModal();
     }
 
-    // Helpers
+    function closeCleanModal() {
+      document.getElementById('cleanModal').classList.remove('active');
+    }
+
+    function renderCleanModal() {
+      const body = document.getElementById('cleanModalBody');
+      if (scratchpadItems.length === 0) {
+        body.innerHTML = '<div class="scratchpad-zero"><div class="scratchpad-zero-icon">🎉</div><div class="scratchpad-zero-title">Scratchpad Zero!</div></div>';
+        return;
+      }
+      body.innerHTML = scratchpadItems.map(item => `
+        <div class="modal-item">
+          <div class="modal-item-text">${esc(item.text)}</div>
+          <div class="modal-item-actions">
+            <button class="modal-btn success" onclick="processAndNext('${item.id}', 'activate')">✓ Activate</button>
+            <button class="modal-btn" onclick="processAndNext('${item.id}', 'task')">→ Task</button>
+            <button class="modal-btn warning" onclick="processAndNext('${item.id}', 'orphan')">→ Orphan</button>
+            <button class="modal-btn danger" onclick="processAndNext('${item.id}', 'delete')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function processAndNext(id, action) {
+      await processScratchpad(id, action);
+      renderCleanModal();
+    }
+
     function formatTime(ts) {
-      const d = new Date(ts), now = new Date();
-      const diff = Math.floor((now - d) / 60000);
+      const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 60000);
       if (diff < 1) return 'just now';
       if (diff < 60) return diff + 'm ago';
       if (diff < 1440) return Math.floor(diff/60) + 'h ago';
@@ -694,6 +803,15 @@
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
+
+    document.getElementById('scratchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addToScratchpad(false); }
+      if (e.key === 'Enter' && e.shiftKey) { e.preventDefault(); addToScratchpad(true); }
+    });
+
+    document.getElementById('cleanModal').addEventListener('click', e => {
+      if (e.target.id === 'cleanModal') closeCleanModal();
+    });
 
     if (!checkSession()) pinInputs[0].focus();
   </script>
