@@ -59,6 +59,9 @@
     .header-btn.doing:hover { background: #22c55e; color: white; }
     .header-btn.planning { border-color: #3b82f6; color: #3b82f6; }
     .header-btn.planning:hover { background: #3b82f6; color: white; }
+    .header-btn.messages { border-color: #a855f7; color: #a855f7; }
+    .header-btn.messages:hover { background: #a855f7; color: white; }
+    .msg-badge { background: #ef4444; color: white; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; }
     
     /* Layout - Three Columns */
     .layout {
@@ -134,41 +137,33 @@
     /* Center Panel - Work */
     .center-panel { display: flex; flex-direction: column; overflow: hidden; padding: 20px; overflow-y: auto; }
     
-    /* Messages Section */
-    .messages-section {
-      display: none;
-      background: #1e293b;
-      border: 1px solid #a855f7;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-    .messages-section.show { display: block; }
-    .messages-header {
-      padding: 12px 16px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(168, 85, 247, 0.1);
-      border-bottom: 1px solid #334155;
-    }
-    .messages-title { font-size: 0.9rem; font-weight: 600; color: #a855f7; display: flex; align-items: center; gap: 8px; }
-    .messages-dismiss { background: none; border: none; color: #64748b; font-size: 1.2rem; cursor: pointer; }
-    .messages-list { padding: 12px 16px; }
-    .message-item { padding: 12px; background: #0f172a; border-radius: 8px; margin-bottom: 10px; }
+    /* Messages Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #1e293b; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
+    .modal-header { padding: 16px 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
+    .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+    
+    .message-item { padding: 14px; background: #0f172a; border-radius: 8px; margin-bottom: 12px; }
     .message-item:last-child { margin-bottom: 0; }
     .message-from { font-size: 0.8rem; color: #a855f7; font-weight: 600; margin-bottom: 4px; }
-    .message-content { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 8px; }
+    .message-content { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 10px; line-height: 1.4; }
     .message-footer { display: flex; justify-content: space-between; align-items: center; }
     .message-time { font-size: 0.7rem; color: #64748b; }
     .message-actions { display: flex; gap: 6px; }
     .message-btn {
-      padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
+      padding: 5px 12px; border-radius: 4px; font-size: 0.75rem;
       cursor: pointer; border: 1px solid #334155; background: transparent;
       color: #94a3b8; transition: all 0.15s; font-family: inherit;
     }
     .message-btn:hover { border-color: #64748b; color: #e2e8f0; }
     .message-btn.activate { border-color: #22c55e; color: #22c55e; }
     .message-btn.activate:hover { background: #22c55e; color: white; }
-    
+    .messages-empty { text-align: center; padding: 40px; color: #64748b; }
+    .messages-empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+
     /* Section Box */
     .section-box { background: #1e293b; border: 1px solid #334155; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
     .section-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
@@ -184,11 +179,20 @@
     .section-toggle { color: #64748b; transition: transform 0.2s; }
     .section-toggle.collapsed { transform: rotate(-90deg); }
     
-    .section-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #334155; }
+    .section-body { 
+      padding: 14px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 8px; 
+      border-top: 1px solid #334155;
+      max-height: 300px;
+      overflow-y: auto;
+    }
     .section-body.collapsed { display: none; }
+    .section-body.short { max-height: 140px; } /* ~2 tasks */
     
     /* Task Row */
-    .task-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0f172a; border-radius: 8px; transition: all 0.15s; }
+    .task-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0f172a; border-radius: 8px; transition: all 0.15s; flex-shrink: 0; }
     .task-row:hover { background: #1a2744; transform: translateX(4px); }
     
     .task-checkbox {
@@ -229,17 +233,17 @@
     .task-claim:hover { background: #a855f7; color: white; }
     
     /* Sprint Section */
-    .sprint-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .sprint-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-shrink: 0; }
     .progress-bar { flex: 1; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #22c55e); border-radius: 3px; transition: width 0.3s; }
     .sprint-stats { font-size: 0.75rem; color: #94a3b8; }
-    .sprint-objectives { display: flex; flex-direction: column; gap: 6px; }
+    .sprint-objectives { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
     .sprint-objective { padding: 8px 10px; background: #0f172a; border-radius: 6px; }
     .sprint-objective-text { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 2px; }
     .sprint-objective-progress { font-size: 0.7rem; color: #64748b; }
     
     /* Orphans */
-    .orphan-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #0f172a; border-radius: 6px; }
+    .orphan-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #0f172a; border-radius: 6px; flex-shrink: 0; }
     .orphan-text { flex: 1; font-size: 0.8rem; color: #cbd5e1; }
     .orphan-btn {
       padding: 3px 8px; border-radius: 4px; font-size: 0.65rem; cursor: pointer;
@@ -254,13 +258,6 @@
     .empty-subtitle { font-size: 0.75rem; }
     
     /* Clean Modal */
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: #1e293b; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
-    .modal-header { padding: 16px 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-    .modal-title { font-weight: 600; }
-    .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
-    .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
     .modal-item { background: #0f172a; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
     .modal-item-text { font-size: 0.9rem; margin-bottom: 12px; color: #e2e8f0; }
     .modal-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -332,6 +329,7 @@
       <div class="header-actions">
         <a class="header-btn planning" href="planning.html">📋 Planning</a>
         <a class="header-btn doing" href="doing.html">🎯 Doing</a>
+        <button class="header-btn messages" id="msgBtn" onclick="openMessagesModal()" style="display:none;">💬 Messages<span class="msg-badge" id="msgBadge">0</span></button>
         <button class="header-btn" onclick="loadData()">↻</button>
       </div>
     </div>
@@ -357,15 +355,6 @@
 
       <!-- Center: Work -->
       <div class="center-panel">
-        <!-- Messages Section (inline) -->
-        <div class="messages-section" id="messagesSection">
-          <div class="messages-header">
-            <span class="messages-title">💬 Messages <span class="panel-count" id="msgCount">0</span></span>
-            <button class="messages-dismiss" onclick="dismissMessages()">✕</button>
-          </div>
-          <div class="messages-list" id="messagesList"></div>
-        </div>
-
         <!-- Incoming Section -->
         <div class="section-box" id="incomingSection">
           <div class="section-header" onclick="toggleSection('incoming')">
@@ -376,7 +365,7 @@
             </div>
             <span class="section-toggle collapsed" id="incomingToggle">▼</span>
           </div>
-          <div class="section-body collapsed" id="incomingBody"></div>
+          <div class="section-body collapsed short" id="incomingBody"></div>
         </div>
 
         <!-- Active Section -->
@@ -459,6 +448,17 @@
           <div class="loading"><div class="spinner"></div></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Messages Modal -->
+  <div class="modal-overlay" id="messagesModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">💬 Messages</div>
+        <button class="modal-close" onclick="closeMessagesModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="messagesModalBody"></div>
     </div>
   </div>
 
@@ -547,31 +547,47 @@
     async function loadMessages() {
       const data = await api('/messages');
       messages = data?.messages || [];
-      renderMessages();
+      renderMessagesButton();
     }
 
-    function renderMessages() {
-      const section = document.getElementById('messagesSection');
-      document.getElementById('msgCount').textContent = messages.length;
-      
-      if (messages.length === 0) {
-        section.classList.remove('show');
-        return;
+    function renderMessagesButton() {
+      const btn = document.getElementById('msgBtn');
+      const badge = document.getElementById('msgBadge');
+      if (messages.length > 0) {
+        btn.style.display = 'flex';
+        badge.textContent = messages.length;
+      } else {
+        btn.style.display = 'none';
       }
-      
-      section.classList.add('show');
-      document.getElementById('messagesList').innerHTML = messages.map(m => `
-        <div class="message-item">
-          <div class="message-from">${esc(m.from_user)}</div>
-          <div class="message-content">${esc(m.content)}</div>
-          <div class="message-footer">
-            <span class="message-time">${formatTime(m.created_at)}</span>
-            <div class="message-actions">
-              <button class="message-btn activate" onclick="messageToTask('${esc(m.content.replace(/'/g, "\\'"))}')">+ Active Task</button>
+    }
+
+    function openMessagesModal() {
+      const body = document.getElementById('messagesModalBody');
+      if (messages.length === 0) {
+        body.innerHTML = '<div class="messages-empty"><div class="messages-empty-icon">📭</div><div>No messages</div></div>';
+      } else {
+        body.innerHTML = messages.map(m => `
+          <div class="message-item">
+            <div class="message-from">${esc(m.from_user)}</div>
+            <div class="message-content">${esc(m.content)}</div>
+            <div class="message-footer">
+              <span class="message-time">${formatTime(m.created_at)}</span>
+              <div class="message-actions">
+                <button class="message-btn activate" onclick="messageToTask('${esc(m.content.replace(/'/g, "\\'"))}')">+ Active Task</button>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
+      document.getElementById('messagesModal').classList.add('active');
+    }
+
+    function closeMessagesModal() {
+      document.getElementById('messagesModal').classList.remove('active');
+      // Mark as read
+      api('/messages/read', { method: 'POST' });
+      messages = [];
+      renderMessagesButton();
     }
 
     async function messageToTask(content) {
@@ -581,12 +597,6 @@
         showToast('Message → Active task');
         loadMorning();
       }
-    }
-
-    async function dismissMessages() {
-      document.getElementById('messagesSection').classList.remove('show');
-      await api('/messages/read', { method: 'POST' });
-      messages = [];
     }
 
     // Notes
@@ -925,8 +935,8 @@
       if (e.key === 'Enter' && e.shiftKey) { e.preventDefault(); addToScratchpad(true); }
     });
 
-    document.getElementById('cleanModal').addEventListener('click', e => {
-      if (e.target.id === 'cleanModal') closeCleanModal();
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
     });
 
     if (!checkSession()) pinInputs[0].focus();
