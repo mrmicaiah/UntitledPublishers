@@ -70,10 +70,13 @@
     .nav-link.doing:hover { background: #22c55e; color: white; }
     .nav-link.courier { border-color: #a855f7; color: #a855f7; }
     .nav-link.courier:hover { background: #a855f7; color: white; }
+    .nav-link.messages { border-color: #ec4899; color: #ec4899; }
+    .nav-link.messages:hover { background: #ec4899; color: white; }
     .nav-link.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
     .nav-link.primary:hover { background: #2563eb; }
     
     .nav-badge { background: #ef4444; color: white; font-size: 0.6rem; padding: 1px 5px; border-radius: 8px; margin-left: 3px; }
+    .nav-badge.hidden { display: none; }
     
     .nav-toggle {
       padding: 6px 10px; background: transparent; border: 1px solid #334155;
@@ -174,6 +177,25 @@
     .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
     .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
     .modal-footer { padding: 16px 24px; border-top: 1px solid #334155; display: flex; gap: 10px; justify-content: flex-end; }
+    
+    /* Messages Modal */
+    .message-item { padding: 14px; background: #0f172a; border-radius: 8px; margin-bottom: 12px; }
+    .message-item:last-child { margin-bottom: 0; }
+    .message-from { font-size: 0.8rem; color: #ec4899; font-weight: 600; margin-bottom: 4px; }
+    .message-content { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 10px; line-height: 1.4; }
+    .message-footer { display: flex; justify-content: space-between; align-items: center; }
+    .message-time { font-size: 0.7rem; color: #64748b; }
+    .message-actions { display: flex; gap: 6px; }
+    .message-btn {
+      padding: 5px 12px; border-radius: 4px; font-size: 0.75rem;
+      cursor: pointer; border: 1px solid #334155; background: transparent;
+      color: #94a3b8; transition: all 0.15s; font-family: inherit;
+    }
+    .message-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .message-btn.activate { border-color: #22c55e; color: #22c55e; }
+    .message-btn.activate:hover { background: #22c55e; color: white; }
+    .messages-empty { text-align: center; padding: 40px; color: #64748b; }
+    .messages-empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
     
     /* Tabs */
     .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 0; }
@@ -323,6 +345,7 @@
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link planning" href="planning.html">📋 Planning</a>
         <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
+        <button class="nav-link messages" id="msgBtn" onclick="openMessagesModal()">💬<span class="nav-badge hidden" id="msgBadge">0</span></button>
         <button class="nav-link primary" onclick="openAddVenture()">+ Venture</button>
         <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
         <button class="nav-icon-btn" onclick="loadData()">↻</button>
@@ -334,6 +357,7 @@
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link planning" href="planning.html">📋 Planning</a>
         <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
+        <button class="nav-link messages" id="msgBtnMobile" onclick="openMessagesModal()">💬 Messages <span class="nav-badge hidden" id="msgBadgeMobile">0</span></button>
         <button class="nav-link primary" onclick="openAddVenture()">+ Venture</button>
         <button class="nav-toggle" onclick="toggleNotifications()">🔔 Notifications <span id="notifStatusMobile">On</span></button>
         <button class="nav-link" onclick="loadData()">↻ Refresh</button>
@@ -350,6 +374,17 @@
         <div class="back-btn" onclick="showPortfolio()">← Back to Portfolio</div>
         <div id="ventureDetailContent"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Messages Modal -->
+  <div class="modal-overlay" id="messagesModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">💬 Messages</div>
+        <button class="modal-close" onclick="closeMessagesModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="messagesModalBody"></div>
     </div>
   </div>
 
@@ -522,7 +557,7 @@ Newsletter every Sunday
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '';
-    let ventures = [], activeBuilds = [], runningEngines = [];
+    let ventures = [], activeBuilds = [], runningEngines = [], messages = [];
     let currentVenture = null, currentBuild = null, currentEngine = null;
     let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
 
@@ -555,6 +590,69 @@ Newsletter every Sunday
       const toggle = document.getElementById('notifToggle');
       toggle.classList.toggle('on', notificationsEnabled);
       toggle.classList.toggle('off', !notificationsEnabled);
+    }
+
+    // Messages
+    async function loadMessages() {
+      const data = await api('/messages');
+      messages = data?.messages || [];
+      renderMessagesButton();
+    }
+
+    function renderMessagesButton() {
+      const badges = [document.getElementById('msgBadge'), document.getElementById('msgBadgeMobile')];
+      badges.forEach(badge => {
+        if (messages.length > 0) {
+          badge.textContent = messages.length;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      });
+    }
+
+    function openMessagesModal() {
+      const body = document.getElementById('messagesModalBody');
+      if (messages.length === 0) {
+        body.innerHTML = '<div class="messages-empty"><div class="messages-empty-icon">📭</div><div>No messages</div></div>';
+      } else {
+        body.innerHTML = messages.map(m => `
+          <div class="message-item">
+            <div class="message-from">${esc(m.from_user)}</div>
+            <div class="message-content">${esc(m.content)}</div>
+            <div class="message-footer">
+              <span class="message-time">${formatTime(m.created_at)}</span>
+              <div class="message-actions">
+                <button class="message-btn activate" onclick="messageToTask('${esc(m.content.replace(/'/g, "\\'"))}')">+ Active Task</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('messagesModal').classList.add('active');
+    }
+
+    function closeMessagesModal() {
+      document.getElementById('messagesModal').classList.remove('active');
+      api('/messages/read', { method: 'POST' });
+      messages = [];
+      renderMessagesButton();
+    }
+
+    async function messageToTask(content) {
+      const r = await api('/tasks', { method: 'POST', body: JSON.stringify({ text: content, category: 'General', priority: 3 }) });
+      if (r?.id) {
+        await api(`/tasks/${r.id}/activate`, { method: 'POST' });
+        showToast('Message → Active task');
+      }
+    }
+
+    function formatTime(ts) {
+      const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 60000);
+      if (diff < 1) return 'just now';
+      if (diff < 60) return diff + 'm ago';
+      if (diff < 1440) return Math.floor(diff/60) + 'h ago';
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
     function renderMarkdown(md) {
@@ -632,12 +730,12 @@ Newsletter every Sunday
 
     async function loadData() {
       document.getElementById('loadingState').style.display = 'flex';
-      const data = await api('/doing');
+      const [doingData] = await Promise.all([api('/doing'), loadMessages()]);
       document.getElementById('loadingState').style.display = 'none';
-      if (data) {
-        ventures = data.ventures || [];
-        activeBuilds = data.activeBuilds || [];
-        runningEngines = data.runningEngines || [];
+      if (doingData) {
+        ventures = doingData.ventures || [];
+        activeBuilds = doingData.activeBuilds || [];
+        runningEngines = doingData.runningEngines || [];
         renderPortfolio();
       }
     }
