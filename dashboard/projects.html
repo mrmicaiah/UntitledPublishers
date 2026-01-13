@@ -57,6 +57,25 @@
     .tab.active { background: #1e293b; color: #e2e8f0; }
     .tab:hover { color: #e2e8f0; }
     
+    .owner-section { margin-bottom: 30px; }
+    .owner-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #334155;
+    }
+    .owner-icon { font-size: 1.2rem; }
+    .owner-name { font-size: 1.1rem; font-weight: 600; }
+    .owner-count {
+      background: #334155;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -305,6 +324,7 @@
       color: #64748b;
     }
     .empty-icon { font-size: 3rem; margin-bottom: 15px; }
+    .section-empty { text-align: center; padding: 20px; color: #64748b; font-size: 0.875rem; }
     
     /* Loading */
     .loading {
@@ -417,15 +437,26 @@
   </div>
 
   <script>
-    const API_BASE = 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api';
-    let currentProjects = [];
+    const APIS = {
+      micaiah: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api',
+      irene: 'https://productivity-irene.micaiah-tasks.workers.dev/api'
+    };
+    
+    let micaiahProjects = [];
+    let ireneProjects = [];
     let templates = [];
+    let currentModalOwner = null;
 
     async function fetchProjects(status = 'active') {
       try {
-        const res = await fetch(`${API_BASE}/projects?status=${status}`);
-        const data = await res.json();
-        currentProjects = data.projects || [];
+        const [micaiahRes, ireneRes] = await Promise.allSettled([
+          fetch(`${APIS.micaiah}/projects?status=${status}`).then(r => r.json()),
+          fetch(`${APIS.irene}/projects?status=${status}`).then(r => r.json())
+        ]);
+        
+        micaiahProjects = micaiahRes.status === 'fulfilled' ? (micaiahRes.value.projects || []) : [];
+        ireneProjects = ireneRes.status === 'fulfilled' ? (ireneRes.value.projects || []) : [];
+        
         renderProjects();
       } catch (e) {
         console.error('Failed to fetch projects:', e);
@@ -436,13 +467,34 @@
     function renderProjects() {
       const container = document.getElementById('projects-view');
       
-      if (currentProjects.length === 0) {
+      if (micaiahProjects.length === 0 && ireneProjects.length === 0) {
         container.innerHTML = '<div class="empty"><div class="empty-icon">📁</div><p>No projects yet</p></div>';
         return;
       }
 
-      container.innerHTML = `<div class="grid">${currentProjects.map(p => `
-        <div class="card" onclick="openProject('${p.id}')">
+      container.innerHTML = `
+        <div class="owner-section">
+          <div class="owner-header">
+            <span class="owner-icon">👨‍💻</span>
+            <span class="owner-name">Micaiah</span>
+            <span class="owner-count">${micaiahProjects.length}</span>
+          </div>
+          ${micaiahProjects.length > 0 ? `<div class="grid">${micaiahProjects.map(p => projectCard(p, 'micaiah')).join('')}</div>` : '<div class="section-empty">No projects</div>'}
+        </div>
+        <div class="owner-section">
+          <div class="owner-header">
+            <span class="owner-icon">👩‍💻</span>
+            <span class="owner-name">Irene</span>
+            <span class="owner-count">${ireneProjects.length}</span>
+          </div>
+          ${ireneProjects.length > 0 ? `<div class="grid">${ireneProjects.map(p => projectCard(p, 'irene')).join('')}</div>` : '<div class="section-empty">No projects</div>'}
+        </div>
+      `;
+    }
+
+    function projectCard(p, owner) {
+      return `
+        <div class="card" onclick="openProject('${p.id}', '${owner}')">
           <div class="card-header">
             <div class="card-title">${escapeHtml(p.title)}</div>
             <div class="health ${p.health}" title="${p.health}"></div>
@@ -459,23 +511,24 @@
             </div>
           ` : ''}
         </div>
-      `).join('')}</div>`;
+      `;
     }
 
-    async function openProject(id) {
+    async function openProject(id, owner) {
+      currentModalOwner = owner;
       document.getElementById('project-modal').classList.add('active');
       document.getElementById('modal-body').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
       
       try {
-        const res = await fetch(`${API_BASE}/projects/${id}`);
+        const res = await fetch(`${APIS[owner]}/projects/${id}`);
         const data = await res.json();
-        renderProjectDetail(data);
+        renderProjectDetail(data, owner);
       } catch (e) {
         document.getElementById('modal-body').innerHTML = '<div class="empty">Failed to load project</div>';
       }
     }
 
-    function renderProjectDetail(data) {
+    function renderProjectDetail(data, owner) {
       const { project, phases, milestones, blockers, updates, checkins } = data;
       document.getElementById('modal-title').textContent = project.title;
       
@@ -540,7 +593,7 @@
 
         <div class="section">
           <div class="section-title">Quick Check-in</div>
-          <form class="checkin-form" onsubmit="submitCheckin(event, '${project.id}')">
+          <form class="checkin-form" onsubmit="submitCheckin(event, '${project.id}', '${owner}')">
             <div class="form-group">
               <label>Wins</label>
               <textarea id="checkin-wins" rows="2" placeholder="What went well?"></textarea>
@@ -573,7 +626,7 @@
       `;
     }
 
-    async function submitCheckin(e, projectId) {
+    async function submitCheckin(e, projectId, owner) {
       e.preventDefault();
       const wins = document.getElementById('checkin-wins').value;
       const struggles = document.getElementById('checkin-struggles').value;
@@ -585,13 +638,13 @@
       }
       
       try {
-        await fetch(`${API_BASE}/projects/${projectId}/checkin`, {
+        await fetch(`${APIS[owner]}/projects/${projectId}/checkin`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ wins, struggles, next_focus })
         });
         alert('Check-in saved!');
-        openProject(projectId);
+        openProject(projectId, owner);
       } catch (e) {
         alert('Failed to save check-in');
       }
@@ -599,6 +652,7 @@
 
     function closeModal() {
       document.getElementById('project-modal').classList.remove('active');
+      currentModalOwner = null;
     }
 
     function filterProjects(status) {
@@ -611,7 +665,7 @@
     // Ideas
     async function fetchIdeas() {
       try {
-        const res = await fetch(`${API_BASE}/ideas`);
+        const res = await fetch(`${APIS.micaiah}/ideas`);
         const data = await res.json();
         renderIdeas(data);
       } catch (e) {
@@ -674,7 +728,7 @@
     // Create Project
     async function fetchTemplates() {
       try {
-        const res = await fetch(`${API_BASE}/templates`);
+        const res = await fetch(`${APIS.micaiah}/templates`);
         const data = await res.json();
         templates = data.templates || [];
         const select = document.getElementById('create-template');
@@ -702,7 +756,7 @@
       const template_id = document.getElementById('create-template').value;
       
       try {
-        await fetch(`${API_BASE}/projects`, {
+        await fetch(`${APIS.micaiah}/projects`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, goal, target_date, template_id })
