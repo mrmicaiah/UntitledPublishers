@@ -61,6 +61,8 @@
     .header-btn.planning:hover { background: #3b82f6; color: white; }
     .header-btn.messages { border-color: #a855f7; color: #a855f7; }
     .header-btn.messages:hover { background: #a855f7; color: white; }
+    .header-btn.claude { border-color: #f97316; color: #f97316; }
+    .header-btn.claude:hover { background: #f97316; color: white; }
     .msg-badge { background: #ef4444; color: white; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; }
     
     /* Layout - Three Columns */
@@ -189,7 +191,7 @@
       overflow-y: auto;
     }
     .section-body.collapsed { display: none; }
-    .section-body.short { max-height: 140px; } /* ~2 tasks */
+    .section-body.short { max-height: 140px; }
     
     /* Task Row */
     .task-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0f172a; border-radius: 8px; transition: all 0.15s; flex-shrink: 0; }
@@ -281,6 +283,32 @@
     .scratchpad-zero-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
     .scratchpad-zero-subtitle { color: #64748b; }
     
+    /* Completed Tasks Row */
+    .completed-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0f172a; border-radius: 8px; margin-bottom: 8px; }
+    .completed-row .task-text { color: #64748b; text-decoration: line-through; }
+    .completed-row .task-time { font-size: 0.65rem; color: #475569; }
+    .restore-btn {
+      padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;
+      border: 1px solid #3b82f6; background: transparent; color: #3b82f6;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .restore-btn:hover { background: #3b82f6; color: white; }
+    
+    /* Footer */
+    .footer {
+      padding: 10px 24px;
+      background: #1e293b;
+      border-top: 1px solid #334155;
+      display: flex;
+      justify-content: center;
+    }
+    .footer-btn {
+      padding: 6px 16px; background: transparent; border: 1px solid #475569;
+      border-radius: 6px; color: #64748b; font-size: 0.75rem;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .footer-btn:hover { border-color: #64748b; color: #94a3b8; }
+    
     /* Toast */
     .toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -327,6 +355,7 @@
         <div class="header-title">Helm</div>
       </div>
       <div class="header-actions">
+        <a class="header-btn claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
         <a class="header-btn planning" href="planning.html">📋 Planning</a>
         <a class="header-btn doing" href="doing.html">🎯 Doing</a>
         <button class="header-btn messages" id="msgBtn" onclick="openMessagesModal()" style="display:none;">💬 Messages<span class="msg-badge" id="msgBadge">0</span></button>
@@ -449,6 +478,10 @@
         </div>
       </div>
     </div>
+
+    <div class="footer">
+      <button class="footer-btn" onclick="openCompletedModal()">✓ View Completed Tasks</button>
+    </div>
   </div>
 
   <!-- Messages Modal -->
@@ -473,6 +506,19 @@
     </div>
   </div>
 
+  <!-- Completed Tasks Modal -->
+  <div class="modal-overlay" id="completedModal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title">✓ Completed Tasks</div>
+        <button class="modal-close" onclick="closeCompletedModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="completedModalBody">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -481,7 +527,7 @@
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '';
-    let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], notes = [], sprintData = null;
+    let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], notes = [], sprintData = null, completedTasks = [];
 
     function checkSession() {
       const s = localStorage.getItem('dashboardSession');
@@ -584,7 +630,6 @@
 
     function closeMessagesModal() {
       document.getElementById('messagesModal').classList.remove('active');
-      // Mark as read
       api('/messages/read', { method: 'POST' });
       messages = [];
       renderMessagesButton();
@@ -875,6 +920,47 @@
     function toggleSection(name) {
       document.getElementById(name + 'Body').classList.toggle('collapsed');
       document.getElementById(name + 'Toggle').classList.toggle('collapsed');
+    }
+
+    // Completed Tasks Modal
+    async function openCompletedModal() {
+      document.getElementById('completedModal').classList.add('active');
+      document.getElementById('completedModalBody').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+      const data = await api('/tasks?status=done');
+      completedTasks = (data?.tasks || []).slice(0, 50); // Last 50
+      renderCompletedModal();
+    }
+
+    function renderCompletedModal() {
+      const body = document.getElementById('completedModalBody');
+      if (completedTasks.length === 0) {
+        body.innerHTML = '<div class="messages-empty"><div class="messages-empty-icon">🎉</div><div>No completed tasks yet</div></div>';
+        return;
+      }
+      body.innerHTML = completedTasks.map(t => `
+        <div class="completed-row">
+          <div class="task-content">
+            <div class="task-text">${esc(t.text)}</div>
+            <div class="task-meta">
+              <span class="task-time">${t.completed_at ? formatTime(t.completed_at) : ''}</span>
+              ${t.category ? `<span class="task-tag">${esc(t.category)}</span>` : ''}
+            </div>
+          </div>
+          <button class="restore-btn" onclick="restoreTask('${t.id}')">Restore</button>
+        </div>
+      `).join('');
+    }
+
+    async function restoreTask(id) {
+      await api(`/tasks/${id}/restore`, { method: 'POST' });
+      showToast('Task restored');
+      completedTasks = completedTasks.filter(t => t.id !== id);
+      renderCompletedModal();
+      loadMorning();
+    }
+
+    function closeCompletedModal() {
+      document.getElementById('completedModal').classList.remove('active');
     }
 
     function openCleanModal() {
