@@ -69,31 +69,20 @@
     }
     
     /* Status Sections */
-    .status-section {
-      margin-bottom: 32px;
-    }
+    .status-section { margin-bottom: 32px; }
     .status-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px; padding-bottom: 8px;
       border-bottom: 1px solid #334155;
     }
     .status-icon { font-size: 1.3rem; }
     .status-title { font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .status-count { 
-      background: #334155; 
-      padding: 2px 10px; 
-      border-radius: 10px; 
-      font-size: 0.75rem;
-      color: #94a3b8;
-    }
+    .status-count { background: #334155; padding: 2px 10px; border-radius: 10px; font-size: 0.75rem; color: #94a3b8; }
     
     /* Venture Grid */
     .venture-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
     }
     
@@ -117,158 +106,97 @@
     .venture-card.idea { border-left: 4px solid #a855f7; }
     .venture-card.paused { border-left: 4px solid #64748b; }
     
-    .venture-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    .venture-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #f1f5f9;
-    }
-    .venture-type {
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 4px;
-      background: #334155;
-      color: #94a3b8;
-      text-transform: uppercase;
-    }
-    .venture-description {
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-    .venture-meta {
-      display: flex;
-      gap: 12px;
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-    .venture-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .venture-build-active {
-      background: rgba(249, 115, 22, 0.2);
-      color: #f97316;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    .venture-engine-running {
-      background: rgba(34, 197, 94, 0.2);
-      color: #22c55e;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
+    .venture-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .venture-name { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
+    .venture-type { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; background: #334155; color: #94a3b8; text-transform: uppercase; }
+    .venture-description { font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; }
+    .venture-meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.75rem; color: #64748b; }
+    .venture-meta-item { display: flex; align-items: center; gap: 4px; }
+    .venture-build-active { background: rgba(249, 115, 22, 0.2); color: #f97316; padding: 2px 8px; border-radius: 4px; }
+    .venture-engine-running { background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 2px 8px; border-radius: 4px; }
+    .venture-folder-link { background: rgba(59, 130, 246, 0.2); color: #3b82f6; padding: 2px 8px; border-radius: 4px; text-decoration: none; }
+    .venture-folder-link:hover { background: rgba(59, 130, 246, 0.4); }
     
     /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #64748b;
-    }
+    .empty-state { text-align: center; padding: 60px 20px; color: #64748b; }
     .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
     .empty-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 8px; }
     .empty-subtitle { font-size: 0.9rem; margin-bottom: 20px; }
     
     /* Modal */
     .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000; padding: 20px;
     }
     .modal-overlay.active { display: flex; }
     .modal {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+      width: 100%; max-width: 600px; max-height: 90vh;
+      display: flex; flex-direction: column; overflow: hidden;
     }
+    .modal.large { max-width: 900px; }
     .modal-header {
-      padding: 18px 24px;
-      border-bottom: 1px solid #334155;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 18px 24px; border-bottom: 1px solid #334155;
+      display: flex; justify-content: space-between; align-items: center;
     }
     .modal-title { font-weight: 600; font-size: 1.1rem; }
-    .modal-close {
-      background: none;
-      border: none;
-      color: #64748b;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .modal-body {
-      padding: 24px;
-      overflow-y: auto;
-      flex: 1;
-    }
-    .modal-footer {
-      padding: 16px 24px;
-      border-top: 1px solid #334155;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
+    .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid #334155; display: flex; gap: 10px; justify-content: flex-end; }
     
-    /* Form Elements */
-    .form-group {
-      margin-bottom: 18px;
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 0; }
+    .tab {
+      padding: 10px 20px; background: transparent; border: none; color: #64748b;
+      font-size: 0.9rem; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: all 0.15s;
     }
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 10px 14px;
+    .tab:hover { color: #94a3b8; }
+    .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    /* Document Viewer */
+    .doc-viewer {
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 8px;
-      color: #e2e8f0;
+      padding: 20px;
+      max-height: 60vh;
+      overflow-y: auto;
       font-size: 0.9rem;
-      font-family: inherit;
+      line-height: 1.7;
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
+    .doc-viewer h1 { font-size: 1.4rem; color: #f1f5f9; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid #334155; }
+    .doc-viewer h2 { font-size: 1.1rem; color: #e2e8f0; margin: 20px 0 10px 0; }
+    .doc-viewer h3 { font-size: 1rem; color: #cbd5e1; margin: 16px 0 8px 0; }
+    .doc-viewer p { margin: 0 0 12px 0; color: #94a3b8; }
+    .doc-viewer ul, .doc-viewer ol { margin: 0 0 12px 20px; color: #94a3b8; }
+    .doc-viewer li { margin-bottom: 4px; }
+    .doc-viewer code { background: #334155; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+    .doc-viewer pre { background: #334155; padding: 12px; border-radius: 6px; overflow-x: auto; margin: 12px 0; }
+    .doc-viewer pre code { background: none; padding: 0; }
+    .doc-viewer strong { color: #e2e8f0; }
+    .doc-viewer hr { border: none; border-top: 1px solid #334155; margin: 20px 0; }
+    .doc-empty { color: #64748b; font-style: italic; text-align: center; padding: 40px; }
+    
+    /* Form Elements */
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 10px 14px; background: #0f172a; border: 1px solid #334155;
+      border-radius: 8px; color: #e2e8f0; font-size: 0.9rem; font-family: inherit;
     }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #3b82f6; }
     .form-textarea { resize: vertical; min-height: 100px; }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     
     /* Buttons */
     .btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid #334155;
-      background: transparent;
-      color: #94a3b8;
+      padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; border: 1px solid #334155; background: transparent; color: #94a3b8;
       transition: all 0.15s;
     }
     .btn:hover { border-color: #64748b; color: #e2e8f0; }
@@ -284,130 +212,46 @@
     .venture-detail { display: none; }
     .venture-detail.active { display: block; }
     
-    .detail-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #334155;
-    }
+    .detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #334155; }
     .detail-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
     .detail-subtitle { color: #94a3b8; font-size: 0.9rem; }
-    .detail-status {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
+    .detail-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .detail-status { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
     .detail-status.generating { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
     .detail-status.building { background: rgba(249, 115, 22, 0.2); color: #f97316; }
     .detail-status.active { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
     .detail-status.idea { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
     .detail-status.paused { background: rgba(100, 116, 139, 0.2); color: #64748b; }
     
-    .detail-section {
-      margin-bottom: 28px;
-    }
-    .detail-section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-    .detail-section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .detail-section { margin-bottom: 28px; }
+    .detail-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .detail-section-title { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
     
     /* Build Card */
-    .build-card {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
+    .build-card { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
     .build-card.active { border-left: 3px solid #f97316; }
     .build-card.complete { border-left: 3px solid #22c55e; opacity: 0.7; }
-    .build-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
+    .build-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .build-name { font-weight: 600; }
-    .build-status {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
+    .build-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; }
     .build-status.active { background: rgba(249, 115, 22, 0.2); color: #f97316; }
     .build-status.complete { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
-    .build-progress-preview {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid #334155;
-      white-space: pre-wrap;
-      max-height: 80px;
-      overflow: hidden;
-    }
-    .build-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
+    .build-progress-preview { font-size: 0.8rem; color: #64748b; margin-top: 8px; padding-top: 8px; border-top: 1px solid #334155; white-space: pre-wrap; max-height: 60px; overflow: hidden; }
+    .build-actions { display: flex; gap: 8px; margin-top: 12px; }
     
     /* Engine Card */
-    .engine-card {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
+    .engine-card { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
     .engine-card.running { border-left: 3px solid #22c55e; }
     .engine-card.paused { border-left: 3px solid #64748b; opacity: 0.7; }
-    .engine-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
+    .engine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .engine-name { font-weight: 600; }
-    .engine-cadence {
-      font-size: 0.75rem;
-      color: #94a3b8;
-    }
-    .engine-status {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
+    .engine-cadence { font-size: 0.75rem; color: #94a3b8; }
+    .engine-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; }
     .engine-status.running { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
     .engine-status.paused { background: rgba(100, 116, 139, 0.2); color: #64748b; }
     
     /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #22c55e;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 500;
-      z-index: 2000;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 500; z-index: 2000; opacity: 0; transition: opacity 0.3s; }
     .toast.show { opacity: 1; }
     .toast.error { background: #ef4444; }
     
@@ -416,17 +260,7 @@
     .spinner { width: 24px; height: 24px; border: 3px solid #334155; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     
-    /* Back button */
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #94a3b8;
-      font-size: 0.85rem;
-      cursor: pointer;
-      margin-bottom: 16px;
-      padding: 6px 0;
-    }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; color: #94a3b8; font-size: 0.85rem; cursor: pointer; margin-bottom: 16px; padding: 6px 0; }
     .back-btn:hover { color: #e2e8f0; }
   </style>
 </head>
@@ -461,13 +295,11 @@
     </div>
 
     <div class="content">
-      <!-- Portfolio View -->
       <div id="portfolioView">
         <div class="loading" id="loadingState"><div class="spinner"></div> Loading ventures...</div>
         <div id="venturesList"></div>
       </div>
       
-      <!-- Venture Detail View -->
       <div class="venture-detail" id="ventureDetail">
         <div class="back-btn" onclick="showPortfolio()">← Back to Portfolio</div>
         <div id="ventureDetailContent"></div>
@@ -475,7 +307,7 @@
     </div>
   </div>
 
-  <!-- Add Venture Modal -->
+  <!-- Venture Modal -->
   <div class="modal-overlay" id="ventureModal">
     <div class="modal">
       <div class="modal-header">
@@ -532,7 +364,7 @@
     </div>
   </div>
 
-  <!-- Add Build Modal -->
+  <!-- Build Modal -->
   <div class="modal-overlay" id="buildModal">
     <div class="modal">
       <div class="modal-header">
@@ -558,7 +390,7 @@
     </div>
   </div>
 
-  <!-- Add Engine Modal -->
+  <!-- Engine Modal -->
   <div class="modal-overlay" id="engineModal">
     <div class="modal">
       <div class="modal-header">
@@ -594,7 +426,7 @@
     </div>
   </div>
 
-  <!-- Progress Update Modal -->
+  <!-- Progress Modal -->
   <div class="modal-overlay" id="progressModal">
     <div class="modal">
       <div class="modal-header">
@@ -615,6 +447,48 @@
     </div>
   </div>
 
+  <!-- Document Viewer Modal -->
+  <div class="modal-overlay" id="docModal">
+    <div class="modal large">
+      <div class="modal-header">
+        <div class="modal-title" id="docModalTitle">Document</div>
+        <button class="modal-close" onclick="closeModal('docModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <button class="tab active" onclick="switchDocTab('plan')">📋 Plan</button>
+          <button class="tab" onclick="switchDocTab('progress')">📝 Progress</button>
+        </div>
+        <div class="tab-content active" id="docPlanTab">
+          <div class="doc-viewer" id="docPlanContent"></div>
+        </div>
+        <div class="tab-content" id="docProgressTab">
+          <div class="doc-viewer" id="docProgressContent"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('docModal')">Close</button>
+        <button class="btn primary" id="docEditBtn" onclick="editCurrentDoc()">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOP Viewer Modal -->
+  <div class="modal-overlay" id="sopModal">
+    <div class="modal large">
+      <div class="modal-header">
+        <div class="modal-title" id="sopModalTitle">SOP</div>
+        <button class="modal-close" onclick="closeModal('sopModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="doc-viewer" id="sopContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('sopModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -623,12 +497,9 @@
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '';
-    let ventures = [];
-    let activeBuilds = [];
-    let runningEngines = [];
-    let currentVenture = null;
+    let ventures = [], activeBuilds = [], runningEngines = [];
+    let currentVenture = null, currentBuild = null;
 
-    // Status config
     const STATUS_CONFIG = {
       generating: { icon: '💰', label: 'Generating', order: 1 },
       building: { icon: '🏗️', label: 'Building', order: 2 },
@@ -637,10 +508,24 @@
       paused: { icon: '💤', label: 'Paused', order: 5 }
     };
 
-    const TYPE_ICONS = {
-      book: '📚', blog: '📝', app: '🛠️', tool: '🔧',
-      website: '🌐', business: '💼', idea: '💡'
-    };
+    const TYPE_ICONS = { book: '📚', blog: '📝', app: '🛠️', tool: '🔧', website: '🌐', business: '💼', idea: '💡' };
+
+    // Simple markdown to HTML
+    function renderMarkdown(md) {
+      if (!md || !md.trim()) return '<div class="doc-empty">No content yet</div>';
+      return md
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+        .replace(/^(?!<[hul]|<li)(.+)$/gm, '<p>$1</p>')
+        .replace(/\n{2,}/g, '')
+        .replace(/<\/ul>\s*<ul>/g, '');
+    }
 
     // Login
     function checkSession() {
@@ -648,8 +533,7 @@
       if (s) {
         const { pin, timestamp } = JSON.parse(s);
         if (Date.now() - timestamp < 7*24*60*60*1000 && USER_CONFIG[pin]) {
-          API_KEY = pin;
-          API_URL = USER_CONFIG[pin].api;
+          API_KEY = pin; API_URL = USER_CONFIG[pin].api;
           showMainApp();
           return true;
         }
@@ -671,8 +555,7 @@
     function attemptLogin() {
       const pin = Array.from(pinInputs).map(i => i.value).join('');
       if (USER_CONFIG[pin]) {
-        API_KEY = pin;
-        API_URL = USER_CONFIG[pin].api;
+        API_KEY = pin; API_URL = USER_CONFIG[pin].api;
         localStorage.setItem('dashboardSession', JSON.stringify({ pin, timestamp: Date.now() }));
         showMainApp();
       } else {
@@ -692,25 +575,19 @@
       loadData();
     }
 
-    // API
     async function api(endpoint, options = {}) {
       const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY };
       try {
         const r = await fetch(API_URL + endpoint, { ...options, headers });
         if (!r.ok) throw new Error(r.status);
         return await r.json();
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
+      } catch (e) { console.error(e); return null; }
     }
 
-    // Load data
     async function loadData() {
       document.getElementById('loadingState').style.display = 'flex';
       const data = await api('/doing');
       document.getElementById('loadingState').style.display = 'none';
-      
       if (data) {
         ventures = data.ventures || [];
         activeBuilds = data.activeBuilds || [];
@@ -719,23 +596,13 @@
       }
     }
 
-    // Render portfolio
     function renderPortfolio() {
       const container = document.getElementById('venturesList');
-      
       if (ventures.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <div class="empty-title">No ventures yet</div>
-            <div class="empty-subtitle">Start tracking what you're building</div>
-            <button class="btn primary" onclick="openAddVenture()">+ Add First Venture</button>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎯</div><div class="empty-title">No ventures yet</div><div class="empty-subtitle">Start tracking what you're building</div><button class="btn primary" onclick="openAddVenture()">+ Add First Venture</button></div>`;
         return;
       }
 
-      // Group by status
       const grouped = {};
       ventures.forEach(v => {
         const status = v.status || 'idea';
@@ -743,7 +610,6 @@
         grouped[status].push(v);
       });
 
-      // Sort by status order
       const sortedStatuses = Object.keys(grouped).sort((a, b) => 
         (STATUS_CONFIG[a]?.order || 99) - (STATUS_CONFIG[b]?.order || 99)
       );
@@ -752,21 +618,8 @@
       sortedStatuses.forEach(status => {
         const config = STATUS_CONFIG[status] || { icon: '❓', label: status };
         const items = grouped[status];
-        
-        html += `
-          <div class="status-section">
-            <div class="status-header">
-              <span class="status-icon">${config.icon}</span>
-              <span class="status-title">${config.label}</span>
-              <span class="status-count">${items.length}</span>
-            </div>
-            <div class="venture-grid">
-              ${items.map(v => ventureCard(v)).join('')}
-            </div>
-          </div>
-        `;
+        html += `<div class="status-section"><div class="status-header"><span class="status-icon">${config.icon}</span><span class="status-title">${config.label}</span><span class="status-count">${items.length}</span></div><div class="venture-grid">${items.map(v => ventureCard(v)).join('')}</div></div>`;
       });
-
       container.innerHTML = html;
     }
 
@@ -776,29 +629,14 @@
       const engine = runningEngines.find(e => e.venture_id === venture.id);
       
       let metaHtml = '';
-      if (activeBuild) {
-        metaHtml += `<span class="venture-meta-item venture-build-active">🔨 ${esc(activeBuild.name)}</span>`;
-      }
-      if (engine) {
-        metaHtml += `<span class="venture-meta-item venture-engine-running">⚡ ${esc(engine.name)}</span>`;
-      }
-      if (venture.owner) {
-        metaHtml += `<span class="venture-meta-item">👤 ${esc(venture.owner)}</span>`;
-      }
+      if (activeBuild) metaHtml += `<span class="venture-meta-item venture-build-active">🔨 ${esc(activeBuild.name)}</span>`;
+      if (engine) metaHtml += `<span class="venture-meta-item venture-engine-running">⚡ ${esc(engine.name)}</span>`;
+      if (venture.drive_folder_id) metaHtml += `<a class="venture-meta-item venture-folder-link" href="https://drive.google.com/drive/folders/${venture.drive_folder_id}" target="_blank" onclick="event.stopPropagation();">📁 Files</a>`;
+      if (venture.owner) metaHtml += `<span class="venture-meta-item">👤 ${esc(venture.owner)}</span>`;
 
-      return `
-        <div class="venture-card ${venture.status}" onclick="openVenture('${venture.id}')">
-          <div class="venture-header">
-            <div class="venture-name">${typeIcon} ${esc(venture.name)}</div>
-            <div class="venture-type">${esc(venture.type)}</div>
-          </div>
-          ${venture.description ? `<div class="venture-description">${esc(venture.description)}</div>` : ''}
-          <div class="venture-meta">${metaHtml}</div>
-        </div>
-      `;
+      return `<div class="venture-card ${venture.status}" onclick="openVenture('${venture.id}')"><div class="venture-header"><div class="venture-name">${typeIcon} ${esc(venture.name)}</div><div class="venture-type">${esc(venture.type)}</div></div>${venture.description ? `<div class="venture-description">${esc(venture.description)}</div>` : ''}<div class="venture-meta">${metaHtml}</div></div>`;
     }
 
-    // Open venture detail
     async function openVenture(id) {
       const data = await api('/ventures/' + id);
       if (!data || !data.venture) return;
@@ -813,14 +651,20 @@
       const config = STATUS_CONFIG[currentVenture.status] || { icon: '❓', label: currentVenture.status };
       const typeIcon = TYPE_ICONS[currentVenture.type] || '📦';
       
+      let folderLink = '';
+      if (currentVenture.drive_folder_id) {
+        folderLink = `<a class="btn small" href="https://drive.google.com/drive/folders/${currentVenture.drive_folder_id}" target="_blank">📁 Open Folder</a>`;
+      }
+      
       document.getElementById('ventureDetailContent').innerHTML = `
         <div class="detail-header">
           <div>
             <div class="detail-title">${typeIcon} ${esc(currentVenture.name)}</div>
             <div class="detail-subtitle">${esc(currentVenture.description || 'No description')}</div>
           </div>
-          <div style="display: flex; gap: 10px; align-items: center;">
+          <div class="detail-actions">
             <span class="detail-status ${currentVenture.status}">${config.icon} ${config.label}</span>
+            ${folderLink}
             <button class="btn small" onclick="openEditVenture()">Edit</button>
             <button class="btn small danger" onclick="deleteVenture()">Delete</button>
           </div>
@@ -848,44 +692,15 @@
 
     function buildCard(build) {
       const isActive = build.status === 'active';
-      const progressPreview = build.progress ? build.progress.split('\n').slice(-5).join('\n') : '';
+      const progressLines = build.progress ? build.progress.split('\n').filter(l => l.trim()).slice(-3) : [];
+      const preview = progressLines.join('\n');
       
-      return `
-        <div class="build-card ${build.status}">
-          <div class="build-header">
-            <div class="build-name">${esc(build.name)}</div>
-            <span class="build-status ${build.status}">${isActive ? '🔨 Active' : '✅ Complete'}</span>
-          </div>
-          ${progressPreview ? `<div class="build-progress-preview">${esc(progressPreview)}</div>` : ''}
-          <div class="build-actions">
-            ${isActive ? `
-              <button class="btn small" onclick="openProgress('${build.id}')">Update Progress</button>
-              <button class="btn small success" onclick="completeBuild('${build.id}')">Complete</button>
-            ` : ''}
-            <button class="btn small" onclick="viewBuild('${build.id}')">View</button>
-          </div>
-        </div>
-      `;
+      return `<div class="build-card ${build.status}"><div class="build-header"><div class="build-name">${esc(build.name)}</div><span class="build-status ${build.status}">${isActive ? '🔨 Active' : '✅ Complete'}</span></div>${preview ? `<div class="build-progress-preview">${esc(preview)}</div>` : ''}<div class="build-actions">${isActive ? `<button class="btn small" onclick="openProgress('${build.id}')">Update Progress</button><button class="btn small success" onclick="completeBuild('${build.id}')">Complete</button>` : ''}<button class="btn small" onclick="viewBuild('${build.id}')">View Docs</button></div></div>`;
     }
 
     function engineCard(engine) {
       const isRunning = engine.status === 'running';
-      
-      return `
-        <div class="engine-card ${engine.status}">
-          <div class="engine-header">
-            <div>
-              <div class="engine-name">${esc(engine.name)}</div>
-              ${engine.cadence ? `<div class="engine-cadence">${esc(engine.cadence)}</div>` : ''}
-            </div>
-            <span class="engine-status ${engine.status}">${isRunning ? '🟢 Running' : '⏸️ Paused'}</span>
-          </div>
-          <div class="build-actions">
-            <button class="btn small" onclick="toggleEngine('${engine.id}', '${isRunning ? 'paused' : 'running'}')">${isRunning ? 'Pause' : 'Resume'}</button>
-            <button class="btn small" onclick="viewEngine('${engine.id}')">View SOP</button>
-          </div>
-        </div>
-      `;
+      return `<div class="engine-card ${engine.status}"><div class="engine-header"><div><div class="engine-name">${esc(engine.name)}</div>${engine.cadence ? `<div class="engine-cadence">${esc(engine.cadence)}</div>` : ''}</div><span class="engine-status ${engine.status}">${isRunning ? '🟢 Running' : '⏸️ Paused'}</span></div><div class="build-actions"><button class="btn small" onclick="toggleEngine('${engine.id}', '${isRunning ? 'paused' : 'running'}')">${isRunning ? 'Pause' : 'Resume'}</button><button class="btn small" onclick="viewEngine('${engine.id}')">View SOP</button></div></div>`;
     }
 
     function showPortfolio() {
@@ -895,7 +710,6 @@
       loadData();
     }
 
-    // Modal functions
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -931,7 +745,6 @@
         description: document.getElementById('ventureDescription').value,
         owner: document.getElementById('ventureOwner').value
       };
-      
       if (!data.name) { showToast('Name is required', 'error'); return; }
       
       const result = id 
@@ -941,23 +754,16 @@
       if (result?.success) {
         showToast(id ? 'Venture updated' : 'Venture created');
         closeModal('ventureModal');
-        if (id && currentVenture) {
-          openVenture(id);
-        } else {
-          loadData();
-        }
+        if (id && currentVenture) openVenture(id);
+        else loadData();
       }
     }
 
     async function deleteVenture() {
       if (!currentVenture) return;
       if (!confirm('Delete this venture and all its builds/engines?')) return;
-      
       const result = await api('/ventures/' + currentVenture.id, { method: 'DELETE' });
-      if (result?.success) {
-        showToast('Venture deleted');
-        showPortfolio();
-      }
+      if (result?.success) { showToast('Venture deleted'); showPortfolio(); }
     }
 
     function openAddBuild(ventureId) {
@@ -975,15 +781,9 @@
         name: document.getElementById('buildName').value,
         plan: document.getElementById('buildPlan').value
       };
-      
       if (!data.name) { showToast('Build name is required', 'error'); return; }
-      
       const result = await api('/builds', { method: 'POST', body: JSON.stringify(data) });
-      if (result?.success) {
-        showToast('Build started');
-        closeModal('buildModal');
-        openVenture(ventureId);
-      }
+      if (result?.success) { showToast('Build started'); closeModal('buildModal'); openVenture(ventureId); }
     }
 
     function openProgress(buildId) {
@@ -995,38 +795,40 @@
     async function saveProgress() {
       const buildId = document.getElementById('progressBuildId').value;
       const entry = document.getElementById('progressEntry').value;
-      
       if (!entry) { showToast('Enter progress update', 'error'); return; }
-      
-      const result = await api('/builds/' + buildId + '/progress', { 
-        method: 'POST', 
-        body: JSON.stringify({ entry }) 
-      });
-      
-      if (result?.success) {
-        showToast('Progress saved');
-        closeModal('progressModal');
-        if (currentVenture) openVenture(currentVenture.id);
-      }
+      const result = await api('/builds/' + buildId + '/progress', { method: 'POST', body: JSON.stringify({ entry }) });
+      if (result?.success) { showToast('Progress saved'); closeModal('progressModal'); if (currentVenture) openVenture(currentVenture.id); }
     }
 
     async function completeBuild(buildId) {
       if (!confirm('Mark this build as complete?')) return;
-      const result = await api('/builds/' + buildId, { 
-        method: 'PUT', 
-        body: JSON.stringify({ status: 'complete' }) 
-      });
-      if (result?.success) {
-        showToast('Build completed! 🎉');
-        if (currentVenture) openVenture(currentVenture.id);
-      }
+      const result = await api('/builds/' + buildId, { method: 'PUT', body: JSON.stringify({ status: 'complete' }) });
+      if (result?.success) { showToast('Build completed! 🎉'); if (currentVenture) openVenture(currentVenture.id); }
     }
 
     async function viewBuild(buildId) {
       const data = await api('/builds/' + buildId);
       if (data?.build) {
-        alert(`📋 PLAN:\n${data.build.plan || 'No plan'}\n\n📝 PROGRESS:\n${data.build.progress || 'No progress yet'}`);
+        currentBuild = data.build;
+        document.getElementById('docModalTitle').textContent = data.build.name;
+        document.getElementById('docPlanContent').innerHTML = renderMarkdown(data.build.plan);
+        document.getElementById('docProgressContent').innerHTML = renderMarkdown(data.build.progress);
+        switchDocTab('plan');
+        openModal('docModal');
       }
+    }
+
+    function switchDocTab(tab) {
+      document.querySelectorAll('#docModal .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#docModal .tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelector(`#docModal .tab[onclick*="${tab}"]`).classList.add('active');
+      document.getElementById(`doc${tab.charAt(0).toUpperCase() + tab.slice(1)}Tab`).classList.add('active');
+    }
+
+    function editCurrentDoc() {
+      if (!currentBuild) return;
+      closeModal('docModal');
+      openProgress(currentBuild.id);
     }
 
     function openAddEngine(ventureId) {
@@ -1046,38 +848,26 @@
         cadence: document.getElementById('engineCadence').value,
         sop: document.getElementById('engineSop').value
       };
-      
       if (!data.name) { showToast('Engine name is required', 'error'); return; }
-      
       const result = await api('/engines', { method: 'POST', body: JSON.stringify(data) });
-      if (result?.success) {
-        showToast('Engine created');
-        closeModal('engineModal');
-        openVenture(ventureId);
-      }
+      if (result?.success) { showToast('Engine created'); closeModal('engineModal'); openVenture(ventureId); }
     }
 
     async function toggleEngine(engineId, newStatus) {
-      const result = await api('/engines/' + engineId, { 
-        method: 'PUT', 
-        body: JSON.stringify({ status: newStatus }) 
-      });
-      if (result?.success) {
-        showToast(`Engine ${newStatus === 'running' ? 'resumed' : 'paused'}`);
-        if (currentVenture) openVenture(currentVenture.id);
-      }
+      const result = await api('/engines/' + engineId, { method: 'PUT', body: JSON.stringify({ status: newStatus }) });
+      if (result?.success) { showToast(`Engine ${newStatus === 'running' ? 'resumed' : 'paused'}`); if (currentVenture) openVenture(currentVenture.id); }
     }
 
     async function viewEngine(engineId) {
       const data = await api('/engines/' + engineId);
       if (data?.engine) {
-        alert(`⚡ ${data.engine.name}\n\nCadence: ${data.engine.cadence || 'None'}\n\n📋 SOP:\n${data.engine.sop || 'No SOP defined'}`);
+        document.getElementById('sopModalTitle').textContent = data.engine.name + ' SOP';
+        document.getElementById('sopContent').innerHTML = renderMarkdown(data.engine.sop);
+        openModal('sopModal');
       }
     }
 
-    // Helpers
     function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
-    
     function showToast(msg, type = 'success') {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -1085,14 +875,10 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // Close modals on overlay click
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', e => {
-        if (e.target === overlay) closeModal(overlay.id);
-      });
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(overlay.id); });
     });
 
-    // Init
     if (!checkSession()) pinInputs[0].focus();
   </script>
 </body>
