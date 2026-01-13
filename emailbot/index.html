@@ -17,18 +17,87 @@
     .pin-input input { width: 56px; height: 64px; text-align: center; font-size: 1.5rem; font-weight: 600; border: 2px solid var(--gray-500); border-radius: 10px; }
     .pin-input input:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 3px var(--blue-100); }
     .error-msg { color: var(--red-600); font-size: 0.875rem; font-weight: 500; margin-top: 12px; display: none; }
-    header { background: var(--white); border-bottom: 2px solid var(--gray-400); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-icon { width: 40px; height: 40px; background: var(--blue-600); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; border: 2px solid var(--blue-700); }
-    .logo-text { font-weight: 700; font-size: 1.2rem; }
-    .logo-text span { font-weight: 500; color: var(--gray-500); font-size: 0.85rem; margin-left: 8px; }
-    .header-stats { display: flex; gap: 16px; font-size: 0.875rem; color: var(--gray-600); align-items: center; }
-    .header-stats strong { color: var(--gray-900); font-weight: 700; }
+    
+    /* ========== SHARED NAV BAR (Dark Theme) ========== */
+    .nav-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 8px; }
+    .nav-logo { font-size: 1.2rem; }
+    .nav-title { font-size: 0.95rem; font-weight: 600; color: #e2e8f0; }
+    
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      padding: 6px 10px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; font-size: 0.75rem;
+      cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: all 0.2s; font-family: inherit; white-space: nowrap;
+    }
+    .nav-link:hover { border-color: #64748b; color: #e2e8f0; }
+    .nav-link.claude { border-color: #f97316; color: #f97316; }
+    .nav-link.claude:hover { background: #f97316; color: white; }
+    .nav-link.helm { border-color: #f97316; color: #f97316; }
+    .nav-link.helm:hover { background: #f97316; color: white; }
+    .nav-link.projects { border-color: #14b8a6; color: #14b8a6; }
+    .nav-link.projects:hover { background: #14b8a6; color: white; }
+    .nav-link.planning { border-color: #3b82f6; color: #3b82f6; }
+    .nav-link.planning:hover { background: #3b82f6; color: white; }
+    .nav-link.doing { border-color: #22c55e; color: #22c55e; }
+    .nav-link.doing:hover { background: #22c55e; color: white; }
+    .nav-link.courier { border-color: #a855f7; color: #a855f7; }
+    .nav-link.courier:hover { background: #a855f7; color: white; }
+    
+    .nav-toggle {
+      padding: 6px 10px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; font-size: 0.75rem; cursor: pointer;
+      display: flex; align-items: center; gap: 4px; font-family: inherit;
+    }
+    .nav-toggle:hover { border-color: #64748b; color: #e2e8f0; }
+    .nav-toggle.on { border-color: #22c55e; color: #22c55e; }
+    .nav-toggle.off { border-color: #64748b; color: #64748b; }
+    
+    .nav-icon-btn {
+      padding: 6px 8px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-icon-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    
+    .nav-hamburger {
+      display: none; padding: 8px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 1.2rem;
+    }
+    .nav-hamburger:hover { border-color: #64748b; color: #e2e8f0; }
+    
+    .nav-mobile {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: #1e293b; border-bottom: 1px solid #334155;
+      padding: 12px; z-index: 100; flex-direction: column; gap: 8px;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile .nav-link { justify-content: center; padding: 10px; }
+    
+    .nav-stats { display: flex; gap: 12px; font-size: 0.75rem; color: #94a3b8; }
+    .nav-stats strong { color: #e2e8f0; }
+    
+    @media (max-width: 900px) {
+      .nav-stats { display: none; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+    /* ========== END SHARED NAV BAR ========== */
+    
+    .app { display: none; } .app.active { display: block; }
     .tabs { background: var(--white); border-bottom: 2px solid var(--gray-400); display: flex; padding: 0 24px; gap: 4px; overflow-x: auto; }
     .tab { padding: 14px 20px; border: none; background: none; color: var(--gray-600); font-size: 0.9rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; font-family: inherit; }
     .tab:hover { color: var(--gray-900); background: var(--gray-50); }
     .tab.active { color: var(--blue-700); border-bottom-color: var(--blue-600); }
-    .app { display: none; } .app.active { display: block; }
     .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
     .panel { display: none; } .panel.active { display: block; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
@@ -103,7 +172,7 @@
     .help-table th { background: var(--gray-100); font-weight: 700; }
     .help-table code { background: var(--gray-100); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
     .help-tip { background: var(--blue-50); border: 2px solid var(--blue-100); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 0.85rem; color: var(--blue-700); }
-    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .header-stats { display: none; } }
+    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -117,16 +186,38 @@
     </div>
   </div>
   <div class="app" id="app">
-    <header>
-      <div class="logo"><div class="logo-icon">📧</div><div class="logo-text">Courier <span>Email Platform</span></div></div>
-      <div class="header-stats">
-        <button class="btn btn-sm btn-help" onclick="showHelp()">❓ Help</button>
-        <button class="btn btn-sm" onclick="window.location.href='/dashboard/'">⚙️ Helm</button>
-        <button class="btn btn-sm" onclick="window.location.href='/dashboard/bots.html'">🤖 Bots</button>
+    <!-- Shared Nav Bar -->
+    <nav class="nav-bar">
+      <div class="nav-brand">
+        <span class="nav-logo">📧</span>
+        <span class="nav-title">Courier</span>
+      </div>
+      <div class="nav-links">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="/dashboard/">🚀 Helm</a>
+        <a class="nav-link projects" href="/dashboard/projects.html">📊 Projects</a>
+        <a class="nav-link planning" href="/dashboard/planning.html">📋 Planning</a>
+        <a class="nav-link doing" href="/dashboard/doing.html">🎯 Doing</a>
+        <button class="nav-link" onclick="showHelp()">❓ Help</button>
+        <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
+        <button class="nav-icon-btn" onclick="initApp()">↻</button>
+      </div>
+      <div class="nav-stats">
         <span>Lists: <strong id="statLists">-</strong></span>
         <span>Subscribers: <strong id="statSubscribers">-</strong></span>
       </div>
-    </header>
+      <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
+      <div class="nav-mobile" id="navMobile">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="/dashboard/">🚀 Helm</a>
+        <a class="nav-link projects" href="/dashboard/projects.html">📊 Projects</a>
+        <a class="nav-link planning" href="/dashboard/planning.html">📋 Planning</a>
+        <a class="nav-link doing" href="/dashboard/doing.html">🎯 Doing</a>
+        <button class="nav-link" onclick="showHelp()">❓ Help</button>
+        <button class="nav-toggle" onclick="toggleNotifications()">🔔 Notifications <span id="notifStatusMobile">On</span></button>
+        <button class="nav-link" onclick="initApp()">↻ Refresh</button>
+      </div>
+    </nav>
     <div class="tabs">
       <button class="tab active" data-tab="stats">📊 Stats</button>
       <button class="tab" data-tab="lists">📋 Lists</button>
@@ -177,11 +268,32 @@
   <script>
 const API_BASE='https://email-bot-server.micaiah-tasks.workers.dev',VALID_PINS=['1987','1976'];
 let API_KEY='',currentLists=[],listsById={},searchTimeout=null,selectedSubscribers=new Set(),currentSubscribers=[];
+let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
+
+function toggleMobileMenu() {
+  document.getElementById('navMobile').classList.toggle('open');
+}
+
+function toggleNotifications() {
+  notificationsEnabled = !notificationsEnabled;
+  localStorage.setItem('notificationsEnabled', notificationsEnabled);
+  updateNotificationUI();
+}
+
+function updateNotificationUI() {
+  const status = notificationsEnabled ? 'On' : 'Off';
+  document.getElementById('notifStatus').textContent = status;
+  document.getElementById('notifStatusMobile').textContent = status;
+  const toggle = document.getElementById('notifToggle');
+  toggle.classList.toggle('on', notificationsEnabled);
+  toggle.classList.toggle('off', !notificationsEnabled);
+}
+
 function showHelp(){document.getElementById('helpOverlay').classList.add('show')}
 function closeHelp(){document.getElementById('helpOverlay').classList.remove('show')}
 const pinInputs=document.querySelectorAll('.pin-input input');
 pinInputs.forEach((input,index)=>{input.addEventListener('input',e=>{if(e.target.value.length===1&&index<pinInputs.length-1)pinInputs[index+1].focus();checkPin()});input.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!e.target.value&&index>0)pinInputs[index-1].focus()})});
-function checkPin(){const pin=Array.from(pinInputs).map(i=>i.value).join('');if(pin.length===4){if(VALID_PINS.includes(pin)){API_KEY='abc123';document.getElementById('loginScreen').style.display='none';document.getElementById('app').classList.add('active');initApp()}else{document.getElementById('pinError').style.display='block';pinInputs.forEach(i=>i.value='');pinInputs[0].focus()}}}
+function checkPin(){const pin=Array.from(pinInputs).map(i=>i.value).join('');if(pin.length===4){if(VALID_PINS.includes(pin)){API_KEY='abc123';document.getElementById('loginScreen').style.display='none';document.getElementById('app').classList.add('active');updateNotificationUI();initApp()}else{document.getElementById('pinError').style.display='block';pinInputs.forEach(i=>i.value='');pinInputs[0].focus()}}}
 async function api(endpoint,method,body){method=method||'GET';const options={method,headers:{'Authorization':'Bearer '+API_KEY,'Content-Type':'application/json'}};if(body)options.body=JSON.stringify(body);const res=await fetch(API_BASE+endpoint,options);return res.json()}
 function showToast(message,type){type=type||'success';const toast=document.getElementById('toast');toast.textContent=message;toast.className='toast show '+type;setTimeout(()=>toast.classList.remove('show'),3000)}
 document.querySelectorAll('.tab').forEach(tab=>{tab.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('panel-'+tab.dataset.tab).classList.add('active')})});
@@ -212,6 +324,15 @@ async function saveSequenceStep(e,sequenceId){e.preventDefault();const form=e.ta
 async function viewSubscriber(id){const data=await api('/api/subscribers/'+id);document.getElementById('modalTitle').textContent=data.subscriber.email;document.getElementById('modalContent').innerHTML='<div style="margin-bottom:16px"><p style="margin-bottom:8px"><strong>Name:</strong> '+(data.subscriber.name||'-')+'</p><p style="margin-bottom:8px"><strong>Source:</strong> '+(data.subscriber.source||'-')+'</p><p style="margin-bottom:8px"><strong>Segment:</strong> '+(data.subscriber.segment||'-')+'</p><p><strong>Created:</strong> '+formatDate(data.subscriber.created_at)+'</p></div><hr style="border:none;border-top:2px solid var(--gray-300);margin:20px 0"><h4 style="margin-bottom:12px;font-size:0.9rem;font-weight:700">Subscriptions</h4>'+(data.subscriptions?.length?data.subscriptions.map(s=>'<p style="margin-bottom:4px">'+s.list_name+' - <span class="badge badge-'+s.status+'">'+s.status+'</span></p>').join(''):'<p style="color:var(--gray-600)">No subscriptions</p>')+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>';document.getElementById('modalOverlay').classList.add('active')}
 function formatDate(dateStr){if(!dateStr)return'-';return new Date(dateStr).toLocaleDateString()}
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', e => {
+  const nav = document.getElementById('navMobile');
+  const hamburger = document.querySelector('.nav-hamburger');
+  if (nav.classList.contains('open') && !nav.contains(e.target) && !hamburger.contains(e.target)) {
+    nav.classList.remove('open');
+  }
+});
   </script>
 </body>
 </html>
