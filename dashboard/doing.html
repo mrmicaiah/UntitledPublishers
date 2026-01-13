@@ -43,9 +43,7 @@
       padding: 16px 24px;
       background: rgba(15, 23, 42, 0.95);
       border-bottom: 1px solid #1e293b;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
     }
     .header-left { display: flex; align-items: center; gap: 12px; }
     .header-logo { font-size: 1.5rem; }
@@ -55,51 +53,38 @@
       padding: 8px 14px; background: transparent; border: 1px solid #334155;
       border-radius: 6px; color: #94a3b8; font-size: 0.85rem;
       cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 5px;
-      transition: all 0.2s;
+      transition: all 0.2s; font-family: inherit;
     }
     .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .header-btn.helm { border-color: #f97316; color: #f97316; }
+    .header-btn.helm:hover { background: #f97316; color: white; }
+    .header-btn.planning { border-color: #3b82f6; color: #3b82f6; }
+    .header-btn.planning:hover { background: #3b82f6; color: white; }
     .header-btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
     .header-btn.primary:hover { background: #2563eb; }
     
     /* Content */
-    .content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
+    .content { max-width: 1200px; margin: 0 auto; padding: 24px; }
     
     /* Status Sections */
     .status-section { margin-bottom: 32px; }
     .status-header {
       display: flex; align-items: center; gap: 12px;
-      margin-bottom: 16px; padding-bottom: 8px;
-      border-bottom: 1px solid #334155;
+      margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #334155;
     }
     .status-icon { font-size: 1.3rem; }
     .status-title { font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
     .status-count { background: #334155; padding: 2px 10px; border-radius: 10px; font-size: 0.75rem; color: #94a3b8; }
     
     /* Venture Grid */
-    .venture-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
+    .venture-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
     
     /* Venture Card */
     .venture-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 18px;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 18px; cursor: pointer; transition: all 0.2s;
     }
-    .venture-card:hover {
-      border-color: #475569;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
+    .venture-card:hover { border-color: #475569; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
     .venture-card.generating { border-left: 4px solid #22c55e; }
     .venture-card.building { border-left: 4px solid #f97316; }
     .venture-card.active { border-left: 4px solid #3b82f6; }
@@ -126,8 +111,7 @@
     /* Modal */
     .modal-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
       z-index: 1000; padding: 20px;
     }
     .modal-overlay.active { display: flex; }
@@ -137,10 +121,7 @@
       display: flex; flex-direction: column; overflow: hidden;
     }
     .modal.large { max-width: 900px; }
-    .modal-header {
-      padding: 18px 24px; border-bottom: 1px solid #334155;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .modal-header { padding: 18px 24px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
     .modal-title { font-weight: 600; font-size: 1.1rem; }
     .modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
     .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
@@ -151,7 +132,7 @@
     .tab {
       padding: 10px 20px; background: transparent; border: none; color: #64748b;
       font-size: 0.9rem; cursor: pointer; border-bottom: 2px solid transparent;
-      margin-bottom: -1px; transition: all 0.15s;
+      margin-bottom: -1px; transition: all 0.15s; font-family: inherit;
     }
     .tab:hover { color: #94a3b8; }
     .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
@@ -160,14 +141,8 @@
     
     /* Document Viewer */
     .doc-viewer {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 20px;
-      max-height: 60vh;
-      overflow-y: auto;
-      font-size: 0.9rem;
-      line-height: 1.7;
+      background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+      padding: 20px; max-height: 60vh; overflow-y: auto; font-size: 0.9rem; line-height: 1.7;
     }
     .doc-viewer h1 { font-size: 1.4rem; color: #f1f5f9; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid #334155; }
     .doc-viewer h2 { font-size: 1.1rem; color: #e2e8f0; margin: 20px 0 10px 0; }
@@ -197,7 +172,7 @@
     .btn {
       padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
       cursor: pointer; border: 1px solid #334155; background: transparent; color: #94a3b8;
-      transition: all 0.15s;
+      transition: all 0.15s; font-family: inherit;
     }
     .btn:hover { border-color: #64748b; color: #e2e8f0; }
     .btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
@@ -287,8 +262,8 @@
         <div class="header-title">Doing</div>
       </div>
       <div class="header-actions">
-        <a class="header-btn" href="dashboard-2.html">📋 Helm</a>
-        <a class="header-btn" href="index.html">📊 Planning</a>
+        <a class="header-btn helm" href="index.html">🚀 Helm</a>
+        <a class="header-btn planning" href="planning.html">📋 Planning</a>
         <button class="header-btn primary" onclick="openAddVenture()">+ Venture</button>
         <button class="header-btn" onclick="loadData()">↻</button>
       </div>
@@ -510,7 +485,6 @@
 
     const TYPE_ICONS = { book: '📚', blog: '📝', app: '🛠️', tool: '🔧', website: '🌐', business: '💼', idea: '💡' };
 
-    // Simple markdown to HTML
     function renderMarkdown(md) {
       if (!md || !md.trim()) return '<div class="doc-empty">No content yet</div>';
       return md
@@ -527,7 +501,6 @@
         .replace(/<\/ul>\s*<ul>/g, '');
     }
 
-    // Login
     function checkSession() {
       const s = localStorage.getItem('dashboardSession');
       if (s) {
