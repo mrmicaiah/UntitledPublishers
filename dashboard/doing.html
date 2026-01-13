@@ -37,31 +37,77 @@
     .main-app { display: none; min-height: 100vh; }
     .main-app.visible { display: block; }
     
-    /* Header */
-    .header {
+    /* ========== SHARED NAV BAR ========== */
+    .nav-bar {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 24px;
-      background: rgba(15, 23, 42, 0.95);
-      border-bottom: 1px solid #1e293b;
+      padding: 10px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
       position: sticky; top: 0; z-index: 100;
     }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo { font-size: 1.5rem; }
-    .header-title { font-size: 1.2rem; font-weight: 700; }
-    .header-actions { display: flex; gap: 8px; }
-    .header-btn {
-      padding: 8px 14px; background: transparent; border: 1px solid #334155;
-      border-radius: 6px; color: #94a3b8; font-size: 0.85rem;
-      cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 5px;
-      transition: all 0.2s; font-family: inherit;
+    .nav-brand { display: flex; align-items: center; gap: 8px; }
+    .nav-logo { font-size: 1.2rem; }
+    .nav-title { font-size: 0.95rem; font-weight: 600; }
+    
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      padding: 6px 10px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; font-size: 0.75rem;
+      cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: all 0.2s; font-family: inherit; white-space: nowrap;
     }
-    .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
-    .header-btn.helm { border-color: #f97316; color: #f97316; }
-    .header-btn.helm:hover { background: #f97316; color: white; }
-    .header-btn.planning { border-color: #3b82f6; color: #3b82f6; }
-    .header-btn.planning:hover { background: #3b82f6; color: white; }
-    .header-btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
-    .header-btn.primary:hover { background: #2563eb; }
+    .nav-link:hover { border-color: #64748b; color: #e2e8f0; }
+    .nav-link.active { background: #334155; color: #e2e8f0; border-color: #475569; }
+    .nav-link.claude { border-color: #f97316; color: #f97316; }
+    .nav-link.claude:hover { background: #f97316; color: white; }
+    .nav-link.helm { border-color: #f97316; color: #f97316; }
+    .nav-link.helm:hover { background: #f97316; color: white; }
+    .nav-link.projects { border-color: #14b8a6; color: #14b8a6; }
+    .nav-link.projects:hover { background: #14b8a6; color: white; }
+    .nav-link.planning { border-color: #3b82f6; color: #3b82f6; }
+    .nav-link.planning:hover { background: #3b82f6; color: white; }
+    .nav-link.doing { border-color: #22c55e; color: #22c55e; }
+    .nav-link.doing:hover { background: #22c55e; color: white; }
+    .nav-link.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
+    .nav-link.primary:hover { background: #2563eb; }
+    
+    .nav-badge { background: #ef4444; color: white; font-size: 0.6rem; padding: 1px 5px; border-radius: 8px; margin-left: 3px; }
+    
+    .nav-toggle {
+      padding: 6px 10px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; font-size: 0.75rem; cursor: pointer;
+      display: flex; align-items: center; gap: 4px; font-family: inherit;
+    }
+    .nav-toggle:hover { border-color: #64748b; color: #e2e8f0; }
+    .nav-toggle.on { border-color: #22c55e; color: #22c55e; }
+    .nav-toggle.off { border-color: #64748b; color: #64748b; }
+    
+    .nav-icon-btn {
+      padding: 6px 8px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-icon-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    
+    .nav-hamburger {
+      display: none; padding: 8px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 1.2rem;
+    }
+    .nav-hamburger:hover { border-color: #64748b; color: #e2e8f0; }
+    
+    .nav-mobile {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: #1e293b; border-bottom: 1px solid #334155;
+      padding: 12px; z-index: 100; flex-direction: column; gap: 8px;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile .nav-link { justify-content: center; padding: 10px; }
+    
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+    /* ========== END SHARED NAV BAR ========== */
     
     /* Content */
     .content { max-width: 1200px; margin: 0 auto; padding: 24px; }
@@ -215,7 +261,7 @@
     .build-progress-preview { font-size: 0.8rem; color: #64748b; margin-top: 8px; padding-top: 8px; border-top: 1px solid #334155; white-space: pre-wrap; max-height: 60px; overflow: hidden; }
     .build-actions { display: flex; gap: 8px; margin-top: 12px; }
     
-    /* Engine Card - Simplified as Commitment List */
+    /* Engine Card */
     .engine-card { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s; }
     .engine-card:hover { border-color: #475569; }
     .engine-card.running { border-left: 3px solid #22c55e; }
@@ -263,18 +309,32 @@
   </div>
 
   <div class="main-app" id="mainApp">
-    <div class="header">
-      <div class="header-left">
-        <div class="header-logo">🎯</div>
-        <div class="header-title">Doing</div>
+    <!-- Shared Nav Bar -->
+    <nav class="nav-bar">
+      <div class="nav-brand">
+        <span class="nav-logo">🎯</span>
+        <span class="nav-title">Doing</span>
       </div>
-      <div class="header-actions">
-        <a class="header-btn helm" href="index.html">🚀 Helm</a>
-        <a class="header-btn planning" href="planning.html">📋 Planning</a>
-        <button class="header-btn primary" onclick="openAddVenture()">+ Venture</button>
-        <button class="header-btn" onclick="loadData()">↻</button>
+      <div class="nav-links">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="index.html">🚀 Helm</a>
+        <a class="nav-link projects" href="projects.html">📊 Projects</a>
+        <a class="nav-link planning" href="planning.html">📋 Planning</a>
+        <button class="nav-link primary" onclick="openAddVenture()">+ Venture</button>
+        <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
+        <button class="nav-icon-btn" onclick="loadData()">↻</button>
       </div>
-    </div>
+      <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
+      <div class="nav-mobile" id="navMobile">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="index.html">🚀 Helm</a>
+        <a class="nav-link projects" href="projects.html">📊 Projects</a>
+        <a class="nav-link planning" href="planning.html">📋 Planning</a>
+        <button class="nav-link primary" onclick="openAddVenture()">+ Venture</button>
+        <button class="nav-toggle" onclick="toggleNotifications()">🔔 Notifications <span id="notifStatusMobile">On</span></button>
+        <button class="nav-link" onclick="loadData()">↻ Refresh</button>
+      </div>
+    </nav>
 
     <div class="content">
       <div id="portfolioView">
@@ -372,7 +432,7 @@
     </div>
   </div>
 
-  <!-- Engine Modal - Simplified -->
+  <!-- Engine Modal -->
   <div class="modal-overlay" id="engineModal">
     <div class="modal">
       <div class="modal-header">
@@ -460,6 +520,7 @@ Newsletter every Sunday
     let API_URL = '', API_KEY = '';
     let ventures = [], activeBuilds = [], runningEngines = [];
     let currentVenture = null, currentBuild = null, currentEngine = null;
+    let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
 
     const STATUS_CONFIG = {
       generating: { icon: '💰', label: 'Generating', order: 1 },
@@ -470,6 +531,27 @@ Newsletter every Sunday
     };
 
     const TYPE_ICONS = { book: '📚', blog: '📝', app: '🛠️', tool: '🔧', website: '🌐', business: '💼', idea: '💡' };
+
+    // Mobile menu & notifications
+    function toggleMobileMenu() {
+      document.getElementById('navMobile').classList.toggle('open');
+    }
+
+    function toggleNotifications() {
+      notificationsEnabled = !notificationsEnabled;
+      localStorage.setItem('notificationsEnabled', notificationsEnabled);
+      updateNotificationUI();
+      showToast(notificationsEnabled ? 'Notifications enabled' : 'Notifications disabled');
+    }
+
+    function updateNotificationUI() {
+      const status = notificationsEnabled ? 'On' : 'Off';
+      document.getElementById('notifStatus').textContent = status;
+      document.getElementById('notifStatusMobile').textContent = status;
+      const toggle = document.getElementById('notifToggle');
+      toggle.classList.toggle('on', notificationsEnabled);
+      toggle.classList.toggle('off', !notificationsEnabled);
+    }
 
     function renderMarkdown(md) {
       if (!md || !md.trim()) return '<div class="doc-empty">No content yet</div>';
@@ -531,6 +613,7 @@ Newsletter every Sunday
     function showMainApp() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.add('visible');
+      updateNotificationUI();
       loadData();
     }
 
@@ -883,6 +966,15 @@ Newsletter every Sunday
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(overlay.id); });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', e => {
+      const nav = document.getElementById('navMobile');
+      const hamburger = document.querySelector('.nav-hamburger');
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !hamburger.contains(e.target)) {
+        nav.classList.remove('open');
+      }
     });
 
     if (!checkSession()) pinInputs[0].focus();
