@@ -68,6 +68,8 @@
     .nav-link.planning:hover { background: #3b82f6; color: white; }
     .nav-link.doing { border-color: #22c55e; color: #22c55e; }
     .nav-link.doing:hover { background: #22c55e; color: white; }
+    .nav-link.courier { border-color: #a855f7; color: #a855f7; }
+    .nav-link.courier:hover { background: #a855f7; color: white; }
     .nav-link.messages { border-color: #a855f7; color: #a855f7; }
     .nav-link.messages:hover { background: #a855f7; color: white; }
     
@@ -331,6 +333,7 @@
         <a class="nav-link helm" href="index.html">🚀 Helm</a>
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
         <button class="nav-link messages" id="msgBtn" onclick="showMessages()" style="display:none;">💬<span class="nav-badge" id="msgBadge">0</span></button>
         <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
         <button class="nav-icon-btn" onclick="loadData()">↻</button>
@@ -341,6 +344,7 @@
         <a class="nav-link helm" href="index.html">🚀 Helm</a>
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
         <button class="nav-link messages" id="msgBtnMobile" onclick="showMessages()" style="display:none;">💬 Messages <span class="nav-badge" id="msgBadgeMobile">0</span></button>
         <button class="nav-toggle" onclick="toggleNotifications()">🔔 Notifications <span id="notifStatusMobile">On</span></button>
         <button class="nav-link" onclick="loadData()">↻ Refresh</button>
@@ -656,7 +660,7 @@
       if (reason === 'incoming') {
         actions = `<button class="action-btn claim" onclick="claimTask('${task.id}')">Claim</button>`;
       } else if (isActive) {
-        actions = `<button class="action-btn deactivate" onclick="deactivate('${task.id}')">−</button>`;
+        actions = `<button class="action-btn deactivate" onclick="deactivate('${task.id}')">-</button>`;
       } else {
         actions = `<button class="action-btn activate" onclick="activate('${task.id}')">★</button>`;
       }
