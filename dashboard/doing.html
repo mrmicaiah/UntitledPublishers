@@ -160,6 +160,7 @@
     /* Form Elements */
     .form-group { margin-bottom: 18px; }
     .form-label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+    .form-hint { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
     .form-input, .form-select, .form-textarea {
       width: 100%; padding: 10px 14px; background: #0f172a; border: 1px solid #334155;
       border-radius: 8px; color: #e2e8f0; font-size: 0.9rem; font-family: inherit;
@@ -214,16 +215,22 @@
     .build-progress-preview { font-size: 0.8rem; color: #64748b; margin-top: 8px; padding-top: 8px; border-top: 1px solid #334155; white-space: pre-wrap; max-height: 60px; overflow: hidden; }
     .build-actions { display: flex; gap: 8px; margin-top: 12px; }
     
-    /* Engine Card */
-    .engine-card { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    /* Engine Card - Simplified as Commitment List */
+    .engine-card { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s; }
+    .engine-card:hover { border-color: #475569; }
     .engine-card.running { border-left: 3px solid #22c55e; }
     .engine-card.paused { border-left: 3px solid #64748b; opacity: 0.7; }
-    .engine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .engine-name { font-weight: 600; }
-    .engine-cadence { font-size: 0.75rem; color: #94a3b8; }
+    .engine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .engine-name { font-weight: 600; display: flex; align-items: center; gap: 8px; }
     .engine-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; }
     .engine-status.running { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
     .engine-status.paused { background: rgba(100, 116, 139, 0.2); color: #64748b; }
+    .engine-commitments { list-style: none; padding: 0; margin: 0; }
+    .engine-commitments li { font-size: 0.85rem; color: #94a3b8; padding: 6px 0; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 8px; }
+    .engine-commitments li:last-child { border-bottom: none; }
+    .engine-commitments li::before { content: '•'; color: #22c55e; font-weight: bold; }
+    .engine-empty { font-size: 0.85rem; color: #64748b; font-style: italic; }
+    .engine-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155; }
     
     /* Toast */
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 500; z-index: 2000; opacity: 0; transition: opacity 0.3s; }
@@ -365,11 +372,11 @@
     </div>
   </div>
 
-  <!-- Engine Modal -->
+  <!-- Engine Modal - Simplified -->
   <div class="modal-overlay" id="engineModal">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title">Add Engine</div>
+        <div class="modal-title" id="engineModalTitle">Add Engine</div>
         <button class="modal-close" onclick="closeModal('engineModal')">&times;</button>
       </div>
       <div class="modal-body">
@@ -380,21 +387,16 @@
           <input type="text" class="form-input" id="engineName" placeholder="e.g., Content Engine, Marketing Engine">
         </div>
         <div class="form-group">
-          <label class="form-label">Cadence</label>
-          <select class="form-select" id="engineCadence">
-            <option value="">No set cadence</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Biweekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">SOP (Standard Operating Procedures)</label>
-          <textarea class="form-textarea" id="engineSop" placeholder="How does this engine run? What are the recurring tasks?" style="min-height: 150px;"></textarea>
+          <label class="form-label">Commitments</label>
+          <textarea class="form-textarea" id="engineCommitments" placeholder="Post daily @ 7:00am
+Content marketing Mon/Wed/Fri
+Newsletter every Sunday
+..." style="min-height: 180px; font-family: inherit; line-height: 1.6;"></textarea>
+          <div class="form-hint">One commitment per line. What are you promising to do regularly?</div>
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn danger" id="engineDeleteBtn" onclick="deleteEngine()" style="margin-right: auto; display: none;">Delete</button>
         <button class="btn" onclick="closeModal('engineModal')">Cancel</button>
         <button class="btn primary" onclick="saveEngine()">Save Engine</button>
       </div>
@@ -448,22 +450,6 @@
     </div>
   </div>
 
-  <!-- SOP Viewer Modal -->
-  <div class="modal-overlay" id="sopModal">
-    <div class="modal large">
-      <div class="modal-header">
-        <div class="modal-title" id="sopModalTitle">SOP</div>
-        <button class="modal-close" onclick="closeModal('sopModal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="doc-viewer" id="sopContent"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn" onclick="closeModal('sopModal')">Close</button>
-      </div>
-    </div>
-  </div>
-
   <div class="toast" id="toast"></div>
 
   <script>
@@ -473,7 +459,7 @@
     };
     let API_URL = '', API_KEY = '';
     let ventures = [], activeBuilds = [], runningEngines = [];
-    let currentVenture = null, currentBuild = null;
+    let currentVenture = null, currentBuild = null, currentEngine = null;
 
     const STATUS_CONFIG = {
       generating: { icon: '💰', label: 'Generating', order: 1 },
@@ -657,7 +643,7 @@
             <div class="detail-section-title">⚡ Engines</div>
             <button class="btn small primary" onclick="openAddEngine('${currentVenture.id}')">+ New Engine</button>
           </div>
-          ${engines.length === 0 ? '<div style="color: #64748b; font-size: 0.9rem;">No engines yet. Add one for ongoing operations.</div>' : ''}
+          ${engines.length === 0 ? '<div style="color: #64748b; font-size: 0.9rem;">No engines yet. Add one to track your commitments.</div>' : ''}
           ${engines.map(e => engineCard(e)).join('')}
         </div>
       `;
@@ -673,7 +659,27 @@
 
     function engineCard(engine) {
       const isRunning = engine.status === 'running';
-      return `<div class="engine-card ${engine.status}"><div class="engine-header"><div><div class="engine-name">${esc(engine.name)}</div>${engine.cadence ? `<div class="engine-cadence">${esc(engine.cadence)}</div>` : ''}</div><span class="engine-status ${engine.status}">${isRunning ? '🟢 Running' : '⏸️ Paused'}</span></div><div class="build-actions"><button class="btn small" onclick="toggleEngine('${engine.id}', '${isRunning ? 'paused' : 'running'}')">${isRunning ? 'Pause' : 'Resume'}</button><button class="btn small" onclick="viewEngine('${engine.id}')">View SOP</button></div></div>`;
+      const commitments = engine.sop ? engine.sop.split('\n').filter(l => l.trim()) : [];
+      
+      let commitmentsHtml = '';
+      if (commitments.length > 0) {
+        commitmentsHtml = `<ul class="engine-commitments">${commitments.map(c => `<li>${esc(c)}</li>`).join('')}</ul>`;
+      } else {
+        commitmentsHtml = '<div class="engine-empty">No commitments defined yet</div>';
+      }
+      
+      return `
+        <div class="engine-card ${engine.status}" onclick="openEditEngine('${engine.id}')">
+          <div class="engine-header">
+            <div class="engine-name">⚡ ${esc(engine.name)}</div>
+            <span class="engine-status ${engine.status}">${isRunning ? '🟢 Running' : '⏸️ Paused'}</span>
+          </div>
+          ${commitmentsHtml}
+          <div class="engine-actions" onclick="event.stopPropagation()">
+            <button class="btn small" onclick="toggleEngine('${engine.id}', '${isRunning ? 'paused' : 'running'}')">${isRunning ? 'Pause' : 'Resume'}</button>
+          </div>
+        </div>
+      `;
     }
 
     function showPortfolio() {
@@ -805,39 +811,66 @@
     }
 
     function openAddEngine(ventureId) {
+      document.getElementById('engineModalTitle').textContent = 'Add Engine';
       document.getElementById('engineVentureId').value = ventureId;
       document.getElementById('engineId').value = '';
       document.getElementById('engineName').value = '';
-      document.getElementById('engineCadence').value = '';
-      document.getElementById('engineSop').value = '';
+      document.getElementById('engineCommitments').value = '';
+      document.getElementById('engineDeleteBtn').style.display = 'none';
+      currentEngine = null;
       openModal('engineModal');
+    }
+
+    async function openEditEngine(engineId) {
+      const data = await api('/engines/' + engineId);
+      if (data?.engine) {
+        currentEngine = data.engine;
+        document.getElementById('engineModalTitle').textContent = 'Edit Engine';
+        document.getElementById('engineVentureId').value = currentEngine.venture_id;
+        document.getElementById('engineId').value = currentEngine.id;
+        document.getElementById('engineName').value = currentEngine.name;
+        document.getElementById('engineCommitments').value = currentEngine.sop || '';
+        document.getElementById('engineDeleteBtn').style.display = 'block';
+        openModal('engineModal');
+      }
     }
 
     async function saveEngine() {
       const ventureId = document.getElementById('engineVentureId').value;
+      const engineId = document.getElementById('engineId').value;
       const data = {
         venture_id: ventureId,
         name: document.getElementById('engineName').value,
-        cadence: document.getElementById('engineCadence').value,
-        sop: document.getElementById('engineSop').value
+        sop: document.getElementById('engineCommitments').value
       };
       if (!data.name) { showToast('Engine name is required', 'error'); return; }
-      const result = await api('/engines', { method: 'POST', body: JSON.stringify(data) });
-      if (result?.success) { showToast('Engine created'); closeModal('engineModal'); openVenture(ventureId); }
+      
+      const result = engineId
+        ? await api('/engines/' + engineId, { method: 'PUT', body: JSON.stringify(data) })
+        : await api('/engines', { method: 'POST', body: JSON.stringify(data) });
+      
+      if (result?.success) { 
+        showToast(engineId ? 'Engine updated' : 'Engine created'); 
+        closeModal('engineModal'); 
+        openVenture(ventureId); 
+      }
+    }
+
+    async function deleteEngine() {
+      if (!currentEngine) return;
+      if (!confirm('Delete this engine?')) return;
+      const ventureId = currentEngine.venture_id;
+      const result = await api('/engines/' + currentEngine.id, { method: 'DELETE' });
+      if (result?.success) { 
+        showToast('Engine deleted'); 
+        closeModal('engineModal'); 
+        openVenture(ventureId); 
+      }
     }
 
     async function toggleEngine(engineId, newStatus) {
       const result = await api('/engines/' + engineId, { method: 'PUT', body: JSON.stringify({ status: newStatus }) });
       if (result?.success) { showToast(`Engine ${newStatus === 'running' ? 'resumed' : 'paused'}`); if (currentVenture) openVenture(currentVenture.id); }
-    }
-
-    async function viewEngine(engineId) {
-      const data = await api('/engines/' + engineId);
-      if (data?.engine) {
-        document.getElementById('sopModalTitle').textContent = data.engine.name + ' SOP';
-        document.getElementById('sopContent').innerHTML = renderMarkdown(data.engine.sop);
-        openModal('sopModal');
-      }
     }
 
     function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
