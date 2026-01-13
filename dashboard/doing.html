@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doing</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    
+    /* Login */
+    .login-screen {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .login-screen.hidden { display: none; }
+    .login-logo { font-size: 3rem; margin-bottom: 20px; }
+    .login-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; }
+    .login-box { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; }
+    .login-label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px; display: block; text-align: center; }
+    .pin-container { display: flex; gap: 10px; justify-content: center; }
+    .pin-digit { width: 50px; height: 60px; background: #0f172a; border: 2px solid #334155; border-radius: 10px; font-size: 1.5rem; font-weight: 700; color: #e2e8f0; text-align: center; }
+    .pin-digit:focus { outline: none; border-color: #3b82f6; }
+    .pin-digit.error { border-color: #ef4444; animation: shake 0.3s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    .login-error { color: #ef4444; font-size: 0.85rem; text-align: center; margin-top: 15px; opacity: 0; }
+    .login-error.show { opacity: 1; }
+    
+    /* Main App */
+    .main-app { display: none; min-height: 100vh; }
+    .main-app.visible { display: block; }
+    
+    /* Header */
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 24px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid #1e293b;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo { font-size: 1.5rem; }
+    .header-title { font-size: 1.2rem; font-weight: 700; }
+    .header-actions { display: flex; gap: 8px; }
+    .header-btn {
+      padding: 8px 14px; background: transparent; border: 1px solid #334155;
+      border-radius: 6px; color: #94a3b8; font-size: 0.85rem;
+      cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 5px;
+      transition: all 0.2s;
+    }
+    .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .header-btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
+    .header-btn.primary:hover { background: #2563eb; }
+    
+    /* Content */
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    
+    /* Status Sections */
+    .status-section {
+      margin-bottom: 32px;
+    }
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #334155;
+    }
+    .status-icon { font-size: 1.3rem; }
+    .status-title { font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .status-count { 
+      background: #334155; 
+      padding: 2px 10px; 
+      border-radius: 10px; 
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    
+    /* Venture Grid */
+    .venture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    
+    /* Venture Card */
+    .venture-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .venture-card:hover {
+      border-color: #475569;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .venture-card.generating { border-left: 4px solid #22c55e; }
+    .venture-card.building { border-left: 4px solid #f97316; }
+    .venture-card.active { border-left: 4px solid #3b82f6; }
+    .venture-card.idea { border-left: 4px solid #a855f7; }
+    .venture-card.paused { border-left: 4px solid #64748b; }
+    
+    .venture-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .venture-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+    .venture-type {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #334155;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .venture-description {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .venture-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .venture-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .venture-build-active {
+      background: rgba(249, 115, 22, 0.2);
+      color: #f97316;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .venture-engine-running {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748b;
+    }
+    .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+    .empty-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 8px; }
+    .empty-subtitle { font-size: 0.9rem; margin-bottom: 20px; }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title { font-weight: 600; font-size: 1.1rem; }
+    .modal-close {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #334155;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #94a3b8;
+      transition: all 0.15s;
+    }
+    .btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .btn.primary { background: #3b82f6; border-color: #3b82f6; color: white; }
+    .btn.primary:hover { background: #2563eb; }
+    .btn.success { background: #22c55e; border-color: #22c55e; color: white; }
+    .btn.success:hover { background: #16a34a; }
+    .btn.danger { border-color: #ef4444; color: #ef4444; }
+    .btn.danger:hover { background: #ef4444; color: white; }
+    .btn.small { padding: 6px 12px; font-size: 0.8rem; }
+    
+    /* Venture Detail View */
+    .venture-detail { display: none; }
+    .venture-detail.active { display: block; }
+    
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #334155;
+    }
+    .detail-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .detail-subtitle { color: #94a3b8; font-size: 0.9rem; }
+    .detail-status {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .detail-status.generating { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .detail-status.building { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+    .detail-status.active { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .detail-status.idea { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+    .detail-status.paused { background: rgba(100, 116, 139, 0.2); color: #64748b; }
+    
+    .detail-section {
+      margin-bottom: 28px;
+    }
+    .detail-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .detail-section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Build Card */
+    .build-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .build-card.active { border-left: 3px solid #f97316; }
+    .build-card.complete { border-left: 3px solid #22c55e; opacity: 0.7; }
+    .build-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .build-name { font-weight: 600; }
+    .build-status {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .build-status.active { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+    .build-status.complete { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .build-progress-preview {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #334155;
+      white-space: pre-wrap;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    .build-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    /* Engine Card */
+    .engine-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .engine-card.running { border-left: 3px solid #22c55e; }
+    .engine-card.paused { border-left: 3px solid #64748b; opacity: 0.7; }
+    .engine-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .engine-name { font-weight: 600; }
+    .engine-cadence {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .engine-status {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .engine-status.running { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .engine-status.paused { background: rgba(100, 116, 139, 0.2); color: #64748b; }
+    
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toast.show { opacity: 1; }
+    .toast.error { background: #ef4444; }
+    
+    /* Loading */
+    .loading { display: flex; align-items: center; justify-content: center; padding: 40px; color: #64748b; }
+    .spinner { width: 24px; height: 24px; border: 3px solid #334155; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    /* Back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 16px;
+      padding: 6px 0;
+    }
+    .back-btn:hover { color: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <div class="login-screen" id="loginScreen">
+    <div class="login-logo">🎯</div>
+    <div class="login-title">Doing</div>
+    <div class="login-box">
+      <label class="login-label">Enter your PIN</label>
+      <div class="pin-container">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+      </div>
+      <div class="login-error" id="loginError">Invalid PIN</div>
+    </div>
+  </div>
+
+  <div class="main-app" id="mainApp">
+    <div class="header">
+      <div class="header-left">
+        <div class="header-logo">🎯</div>
+        <div class="header-title">Doing</div>
+      </div>
+      <div class="header-actions">
+        <a class="header-btn" href="dashboard-2.html">📋 Helm</a>
+        <a class="header-btn" href="index.html">📊 Planning</a>
+        <button class="header-btn primary" onclick="openAddVenture()">+ Venture</button>
+        <button class="header-btn" onclick="loadData()">↻</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Portfolio View -->
+      <div id="portfolioView">
+        <div class="loading" id="loadingState"><div class="spinner"></div> Loading ventures...</div>
+        <div id="venturesList"></div>
+      </div>
+      
+      <!-- Venture Detail View -->
+      <div class="venture-detail" id="ventureDetail">
+        <div class="back-btn" onclick="showPortfolio()">← Back to Portfolio</div>
+        <div id="ventureDetailContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Venture Modal -->
+  <div class="modal-overlay" id="ventureModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="ventureModalTitle">Add Venture</div>
+        <button class="modal-close" onclick="closeModal('ventureModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="ventureId">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" id="ventureName" placeholder="e.g., Proverbs Blog">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-select" id="ventureType">
+              <option value="book">📚 Book</option>
+              <option value="blog">📝 Blog</option>
+              <option value="app">🛠️ App</option>
+              <option value="tool">🔧 Tool</option>
+              <option value="website">🌐 Website</option>
+              <option value="business">💼 Business</option>
+              <option value="idea">💡 Idea</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="ventureStatus">
+              <option value="idea">💡 Idea</option>
+              <option value="building">🏗️ Building</option>
+              <option value="active">🟢 Active</option>
+              <option value="generating">💰 Generating</option>
+              <option value="paused">💤 Paused</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="ventureDescription" placeholder="What is this venture about?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Owner</label>
+          <select class="form-select" id="ventureOwner">
+            <option value="both">Both</option>
+            <option value="micaiah">Micaiah</option>
+            <option value="irene">Irene</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('ventureModal')">Cancel</button>
+        <button class="btn primary" onclick="saveVenture()">Save Venture</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Build Modal -->
+  <div class="modal-overlay" id="buildModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Start Build</div>
+        <button class="modal-close" onclick="closeModal('buildModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="buildVentureId">
+        <input type="hidden" id="buildId">
+        <div class="form-group">
+          <label class="form-label">Build Name</label>
+          <input type="text" class="form-input" id="buildName" placeholder="e.g., Launch Blog, SEO Optimization">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Plan (Instructions)</label>
+          <textarea class="form-textarea" id="buildPlan" placeholder="What's the plan? Phases, steps, goals..." style="min-height: 150px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('buildModal')">Cancel</button>
+        <button class="btn primary" onclick="saveBuild()">Start Build</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Engine Modal -->
+  <div class="modal-overlay" id="engineModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add Engine</div>
+        <button class="modal-close" onclick="closeModal('engineModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="engineVentureId">
+        <input type="hidden" id="engineId">
+        <div class="form-group">
+          <label class="form-label">Engine Name</label>
+          <input type="text" class="form-input" id="engineName" placeholder="e.g., Content Engine, Marketing Engine">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cadence</label>
+          <select class="form-select" id="engineCadence">
+            <option value="">No set cadence</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Biweekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">SOP (Standard Operating Procedures)</label>
+          <textarea class="form-textarea" id="engineSop" placeholder="How does this engine run? What are the recurring tasks?" style="min-height: 150px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('engineModal')">Cancel</button>
+        <button class="btn primary" onclick="saveEngine()">Save Engine</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Update Modal -->
+  <div class="modal-overlay" id="progressModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Update Progress</div>
+        <button class="modal-close" onclick="closeModal('progressModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="progressBuildId">
+        <div class="form-group">
+          <label class="form-label">What did you do?</label>
+          <textarea class="form-textarea" id="progressEntry" placeholder="Document what was accomplished, decisions made, next steps..." style="min-height: 200px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('progressModal')">Cancel</button>
+        <button class="btn primary" onclick="saveProgress()">Save Progress</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const USER_CONFIG = {
+      '1987': { name: 'Micaiah', api: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api' },
+      '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
+    };
+    let API_URL = '', API_KEY = '';
+    let ventures = [];
+    let activeBuilds = [];
+    let runningEngines = [];
+    let currentVenture = null;
+
+    // Status config
+    const STATUS_CONFIG = {
+      generating: { icon: '💰', label: 'Generating', order: 1 },
+      building: { icon: '🏗️', label: 'Building', order: 2 },
+      active: { icon: '🟢', label: 'Active', order: 3 },
+      idea: { icon: '💡', label: 'Ideas', order: 4 },
+      paused: { icon: '💤', label: 'Paused', order: 5 }
+    };
+
+    const TYPE_ICONS = {
+      book: '📚', blog: '📝', app: '🛠️', tool: '🔧',
+      website: '🌐', business: '💼', idea: '💡'
+    };
+
+    // Login
+    function checkSession() {
+      const s = localStorage.getItem('dashboardSession');
+      if (s) {
+        const { pin, timestamp } = JSON.parse(s);
+        if (Date.now() - timestamp < 7*24*60*60*1000 && USER_CONFIG[pin]) {
+          API_KEY = pin;
+          API_URL = USER_CONFIG[pin].api;
+          showMainApp();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    const pinInputs = document.querySelectorAll('.pin-digit');
+    pinInputs.forEach((input, i) => {
+      input.addEventListener('input', e => {
+        if (e.target.value && i < 3) pinInputs[i+1].focus();
+        if (i === 3 && e.target.value) attemptLogin();
+      });
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !e.target.value && i > 0) pinInputs[i-1].focus();
+      });
+    });
+
+    function attemptLogin() {
+      const pin = Array.from(pinInputs).map(i => i.value).join('');
+      if (USER_CONFIG[pin]) {
+        API_KEY = pin;
+        API_URL = USER_CONFIG[pin].api;
+        localStorage.setItem('dashboardSession', JSON.stringify({ pin, timestamp: Date.now() }));
+        showMainApp();
+      } else {
+        document.getElementById('loginError').classList.add('show');
+        pinInputs.forEach(input => { input.classList.add('error'); input.value = ''; });
+        pinInputs[0].focus();
+        setTimeout(() => {
+          document.getElementById('loginError').classList.remove('show');
+          pinInputs.forEach(input => input.classList.remove('error'));
+        }, 2000);
+      }
+    }
+
+    function showMainApp() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.add('visible');
+      loadData();
+    }
+
+    // API
+    async function api(endpoint, options = {}) {
+      const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY };
+      try {
+        const r = await fetch(API_URL + endpoint, { ...options, headers });
+        if (!r.ok) throw new Error(r.status);
+        return await r.json();
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
+
+    // Load data
+    async function loadData() {
+      document.getElementById('loadingState').style.display = 'flex';
+      const data = await api('/doing');
+      document.getElementById('loadingState').style.display = 'none';
+      
+      if (data) {
+        ventures = data.ventures || [];
+        activeBuilds = data.activeBuilds || [];
+        runningEngines = data.runningEngines || [];
+        renderPortfolio();
+      }
+    }
+
+    // Render portfolio
+    function renderPortfolio() {
+      const container = document.getElementById('venturesList');
+      
+      if (ventures.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <div class="empty-title">No ventures yet</div>
+            <div class="empty-subtitle">Start tracking what you're building</div>
+            <button class="btn primary" onclick="openAddVenture()">+ Add First Venture</button>
+          </div>
+        `;
+        return;
+      }
+
+      // Group by status
+      const grouped = {};
+      ventures.forEach(v => {
+        const status = v.status || 'idea';
+        if (!grouped[status]) grouped[status] = [];
+        grouped[status].push(v);
+      });
+
+      // Sort by status order
+      const sortedStatuses = Object.keys(grouped).sort((a, b) => 
+        (STATUS_CONFIG[a]?.order || 99) - (STATUS_CONFIG[b]?.order || 99)
+      );
+
+      let html = '';
+      sortedStatuses.forEach(status => {
+        const config = STATUS_CONFIG[status] || { icon: '❓', label: status };
+        const items = grouped[status];
+        
+        html += `
+          <div class="status-section">
+            <div class="status-header">
+              <span class="status-icon">${config.icon}</span>
+              <span class="status-title">${config.label}</span>
+              <span class="status-count">${items.length}</span>
+            </div>
+            <div class="venture-grid">
+              ${items.map(v => ventureCard(v)).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function ventureCard(venture) {
+      const typeIcon = TYPE_ICONS[venture.type] || '📦';
+      const activeBuild = activeBuilds.find(b => b.venture_id === venture.id);
+      const engine = runningEngines.find(e => e.venture_id === venture.id);
+      
+      let metaHtml = '';
+      if (activeBuild) {
+        metaHtml += `<span class="venture-meta-item venture-build-active">🔨 ${esc(activeBuild.name)}</span>`;
+      }
+      if (engine) {
+        metaHtml += `<span class="venture-meta-item venture-engine-running">⚡ ${esc(engine.name)}</span>`;
+      }
+      if (venture.owner) {
+        metaHtml += `<span class="venture-meta-item">👤 ${esc(venture.owner)}</span>`;
+      }
+
+      return `
+        <div class="venture-card ${venture.status}" onclick="openVenture('${venture.id}')">
+          <div class="venture-header">
+            <div class="venture-name">${typeIcon} ${esc(venture.name)}</div>
+            <div class="venture-type">${esc(venture.type)}</div>
+          </div>
+          ${venture.description ? `<div class="venture-description">${esc(venture.description)}</div>` : ''}
+          <div class="venture-meta">${metaHtml}</div>
+        </div>
+      `;
+    }
+
+    // Open venture detail
+    async function openVenture(id) {
+      const data = await api('/ventures/' + id);
+      if (!data || !data.venture) return;
+      
+      currentVenture = data.venture;
+      const builds = data.builds || [];
+      const engines = data.engines || [];
+      
+      document.getElementById('portfolioView').style.display = 'none';
+      document.getElementById('ventureDetail').classList.add('active');
+      
+      const config = STATUS_CONFIG[currentVenture.status] || { icon: '❓', label: currentVenture.status };
+      const typeIcon = TYPE_ICONS[currentVenture.type] || '📦';
+      
+      document.getElementById('ventureDetailContent').innerHTML = `
+        <div class="detail-header">
+          <div>
+            <div class="detail-title">${typeIcon} ${esc(currentVenture.name)}</div>
+            <div class="detail-subtitle">${esc(currentVenture.description || 'No description')}</div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span class="detail-status ${currentVenture.status}">${config.icon} ${config.label}</span>
+            <button class="btn small" onclick="openEditVenture()">Edit</button>
+            <button class="btn small danger" onclick="deleteVenture()">Delete</button>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <div class="detail-section-title">🔨 Builds</div>
+            <button class="btn small primary" onclick="openAddBuild('${currentVenture.id}')">+ New Build</button>
+          </div>
+          ${builds.length === 0 ? '<div style="color: #64748b; font-size: 0.9rem;">No builds yet. Start one to track progress.</div>' : ''}
+          ${builds.map(b => buildCard(b)).join('')}
+        </div>
+        
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <div class="detail-section-title">⚡ Engines</div>
+            <button class="btn small primary" onclick="openAddEngine('${currentVenture.id}')">+ New Engine</button>
+          </div>
+          ${engines.length === 0 ? '<div style="color: #64748b; font-size: 0.9rem;">No engines yet. Add one for ongoing operations.</div>' : ''}
+          ${engines.map(e => engineCard(e)).join('')}
+        </div>
+      `;
+    }
+
+    function buildCard(build) {
+      const isActive = build.status === 'active';
+      const progressPreview = build.progress ? build.progress.split('\n').slice(-5).join('\n') : '';
+      
+      return `
+        <div class="build-card ${build.status}">
+          <div class="build-header">
+            <div class="build-name">${esc(build.name)}</div>
+            <span class="build-status ${build.status}">${isActive ? '🔨 Active' : '✅ Complete'}</span>
+          </div>
+          ${progressPreview ? `<div class="build-progress-preview">${esc(progressPreview)}</div>` : ''}
+          <div class="build-actions">
+            ${isActive ? `
+              <button class="btn small" onclick="openProgress('${build.id}')">Update Progress</button>
+              <button class="btn small success" onclick="completeBuild('${build.id}')">Complete</button>
+            ` : ''}
+            <button class="btn small" onclick="viewBuild('${build.id}')">View</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function engineCard(engine) {
+      const isRunning = engine.status === 'running';
+      
+      return `
+        <div class="engine-card ${engine.status}">
+          <div class="engine-header">
+            <div>
+              <div class="engine-name">${esc(engine.name)}</div>
+              ${engine.cadence ? `<div class="engine-cadence">${esc(engine.cadence)}</div>` : ''}
+            </div>
+            <span class="engine-status ${engine.status}">${isRunning ? '🟢 Running' : '⏸️ Paused'}</span>
+          </div>
+          <div class="build-actions">
+            <button class="btn small" onclick="toggleEngine('${engine.id}', '${isRunning ? 'paused' : 'running'}')">${isRunning ? 'Pause' : 'Resume'}</button>
+            <button class="btn small" onclick="viewEngine('${engine.id}')">View SOP</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function showPortfolio() {
+      document.getElementById('portfolioView').style.display = 'block';
+      document.getElementById('ventureDetail').classList.remove('active');
+      currentVenture = null;
+      loadData();
+    }
+
+    // Modal functions
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function openAddVenture() {
+      document.getElementById('ventureModalTitle').textContent = 'Add Venture';
+      document.getElementById('ventureId').value = '';
+      document.getElementById('ventureName').value = '';
+      document.getElementById('ventureType').value = 'blog';
+      document.getElementById('ventureStatus').value = 'idea';
+      document.getElementById('ventureDescription').value = '';
+      document.getElementById('ventureOwner').value = 'both';
+      openModal('ventureModal');
+    }
+
+    function openEditVenture() {
+      if (!currentVenture) return;
+      document.getElementById('ventureModalTitle').textContent = 'Edit Venture';
+      document.getElementById('ventureId').value = currentVenture.id;
+      document.getElementById('ventureName').value = currentVenture.name;
+      document.getElementById('ventureType').value = currentVenture.type;
+      document.getElementById('ventureStatus').value = currentVenture.status;
+      document.getElementById('ventureDescription').value = currentVenture.description || '';
+      document.getElementById('ventureOwner').value = currentVenture.owner || 'both';
+      openModal('ventureModal');
+    }
+
+    async function saveVenture() {
+      const id = document.getElementById('ventureId').value;
+      const data = {
+        name: document.getElementById('ventureName').value,
+        type: document.getElementById('ventureType').value,
+        status: document.getElementById('ventureStatus').value,
+        description: document.getElementById('ventureDescription').value,
+        owner: document.getElementById('ventureOwner').value
+      };
+      
+      if (!data.name) { showToast('Name is required', 'error'); return; }
+      
+      const result = id 
+        ? await api('/ventures/' + id, { method: 'PUT', body: JSON.stringify(data) })
+        : await api('/ventures', { method: 'POST', body: JSON.stringify(data) });
+      
+      if (result?.success) {
+        showToast(id ? 'Venture updated' : 'Venture created');
+        closeModal('ventureModal');
+        if (id && currentVenture) {
+          openVenture(id);
+        } else {
+          loadData();
+        }
+      }
+    }
+
+    async function deleteVenture() {
+      if (!currentVenture) return;
+      if (!confirm('Delete this venture and all its builds/engines?')) return;
+      
+      const result = await api('/ventures/' + currentVenture.id, { method: 'DELETE' });
+      if (result?.success) {
+        showToast('Venture deleted');
+        showPortfolio();
+      }
+    }
+
+    function openAddBuild(ventureId) {
+      document.getElementById('buildVentureId').value = ventureId;
+      document.getElementById('buildId').value = '';
+      document.getElementById('buildName').value = '';
+      document.getElementById('buildPlan').value = '';
+      openModal('buildModal');
+    }
+
+    async function saveBuild() {
+      const ventureId = document.getElementById('buildVentureId').value;
+      const data = {
+        venture_id: ventureId,
+        name: document.getElementById('buildName').value,
+        plan: document.getElementById('buildPlan').value
+      };
+      
+      if (!data.name) { showToast('Build name is required', 'error'); return; }
+      
+      const result = await api('/builds', { method: 'POST', body: JSON.stringify(data) });
+      if (result?.success) {
+        showToast('Build started');
+        closeModal('buildModal');
+        openVenture(ventureId);
+      }
+    }
+
+    function openProgress(buildId) {
+      document.getElementById('progressBuildId').value = buildId;
+      document.getElementById('progressEntry').value = '';
+      openModal('progressModal');
+    }
+
+    async function saveProgress() {
+      const buildId = document.getElementById('progressBuildId').value;
+      const entry = document.getElementById('progressEntry').value;
+      
+      if (!entry) { showToast('Enter progress update', 'error'); return; }
+      
+      const result = await api('/builds/' + buildId + '/progress', { 
+        method: 'POST', 
+        body: JSON.stringify({ entry }) 
+      });
+      
+      if (result?.success) {
+        showToast('Progress saved');
+        closeModal('progressModal');
+        if (currentVenture) openVenture(currentVenture.id);
+      }
+    }
+
+    async function completeBuild(buildId) {
+      if (!confirm('Mark this build as complete?')) return;
+      const result = await api('/builds/' + buildId, { 
+        method: 'PUT', 
+        body: JSON.stringify({ status: 'complete' }) 
+      });
+      if (result?.success) {
+        showToast('Build completed! 🎉');
+        if (currentVenture) openVenture(currentVenture.id);
+      }
+    }
+
+    async function viewBuild(buildId) {
+      const data = await api('/builds/' + buildId);
+      if (data?.build) {
+        alert(`📋 PLAN:\n${data.build.plan || 'No plan'}\n\n📝 PROGRESS:\n${data.build.progress || 'No progress yet'}`);
+      }
+    }
+
+    function openAddEngine(ventureId) {
+      document.getElementById('engineVentureId').value = ventureId;
+      document.getElementById('engineId').value = '';
+      document.getElementById('engineName').value = '';
+      document.getElementById('engineCadence').value = '';
+      document.getElementById('engineSop').value = '';
+      openModal('engineModal');
+    }
+
+    async function saveEngine() {
+      const ventureId = document.getElementById('engineVentureId').value;
+      const data = {
+        venture_id: ventureId,
+        name: document.getElementById('engineName').value,
+        cadence: document.getElementById('engineCadence').value,
+        sop: document.getElementById('engineSop').value
+      };
+      
+      if (!data.name) { showToast('Engine name is required', 'error'); return; }
+      
+      const result = await api('/engines', { method: 'POST', body: JSON.stringify(data) });
+      if (result?.success) {
+        showToast('Engine created');
+        closeModal('engineModal');
+        openVenture(ventureId);
+      }
+    }
+
+    async function toggleEngine(engineId, newStatus) {
+      const result = await api('/engines/' + engineId, { 
+        method: 'PUT', 
+        body: JSON.stringify({ status: newStatus }) 
+      });
+      if (result?.success) {
+        showToast(`Engine ${newStatus === 'running' ? 'resumed' : 'paused'}`);
+        if (currentVenture) openVenture(currentVenture.id);
+      }
+    }
+
+    async function viewEngine(engineId) {
+      const data = await api('/engines/' + engineId);
+      if (data?.engine) {
+        alert(`⚡ ${data.engine.name}\n\nCadence: ${data.engine.cadence || 'None'}\n\n📋 SOP:\n${data.engine.sop || 'No SOP defined'}`);
+      }
+    }
+
+    // Helpers
+    function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
+    
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show' + (type === 'error' ? ' error' : '');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) closeModal(overlay.id);
+      });
+    });
+
+    // Init
+    if (!checkSession()) pinInputs[0].focus();
+  </script>
+</body>
+</html>
