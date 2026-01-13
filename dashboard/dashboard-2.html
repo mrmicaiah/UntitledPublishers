@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Helm</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -55,6 +55,10 @@
       transition: all 0.2s;
     }
     .header-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .header-btn.doing { border-color: #22c55e; color: #22c55e; }
+    .header-btn.doing:hover { background: #22c55e; color: white; }
+    .header-btn.planning { border-color: #3b82f6; color: #3b82f6; }
+    .header-btn.planning:hover { background: #3b82f6; color: white; }
     .msg-badge { background: #ef4444; color: white; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; }
     
     /* Layout */
@@ -565,8 +569,8 @@
 </head>
 <body>
   <div class="login-screen" id="loginScreen">
-    <div class="login-logo">📋</div>
-    <div class="login-title">Dashboard</div>
+    <div class="login-logo">🚀</div>
+    <div class="login-title">Helm</div>
     <div class="login-box">
       <label class="login-label">Enter your PIN</label>
       <div class="pin-container">
@@ -582,13 +586,13 @@
   <div class="main-app" id="mainApp">
     <div class="header">
       <div class="header-left">
-        <div class="header-logo">📋</div>
-        <div class="header-title">Dashboard</div>
+        <div class="header-logo">🚀</div>
+        <div class="header-title">Helm</div>
       </div>
       <div class="header-actions">
+        <a class="header-btn doing" href="doing.html" title="Ventures & Projects">🎯 Doing</a>
+        <a class="header-btn planning" href="index.html" title="Planning & Triage">📋 Planning</a>
         <a class="header-btn" href="focus.html">🎯 Focus</a>
-        <a class="header-btn" href="projects.html">📁 Projects</a>
-        <a class="header-btn" href="index.html">⚙️ Helm</a>
         <button class="header-btn" id="msgBtn" onclick="showMessageBanner()" style="display:none;">💬<span class="msg-badge" id="msgBadge">0</span></button>
         <button class="header-btn" onclick="loadData()">↻</button>
       </div>
