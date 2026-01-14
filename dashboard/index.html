@@ -72,6 +72,8 @@
     .nav-link.courier:hover { background: #a855f7; color: white; }
     .nav-link.messages { border-color: #a855f7; color: #a855f7; }
     .nav-link.messages:hover { background: #a855f7; color: white; }
+    .nav-link.thread { border-color: #06b6d4; color: #06b6d4; }
+    .nav-link.thread:hover { background: #06b6d4; color: white; }
     
     .nav-badge { background: #ef4444; color: white; font-size: 0.6rem; padding: 1px 5px; border-radius: 8px; margin-left: 3px; }
     
@@ -226,6 +228,7 @@
     .section-badge.muted { background: #475569; }
     .section-badge.orange { background: #f97316; }
     .section-badge.purple { background: #a855f7; }
+    .section-badge.cyan { background: #06b6d4; }
     .section-toggle { color: #64748b; transition: transform 0.2s; }
     .section-toggle.collapsed { transform: rotate(-90deg); }
     
@@ -301,6 +304,20 @@
     }
     .orphan-btn:hover { border-color: #64748b; color: #e2e8f0; }
     
+    /* Check-in Row */
+    .checkin-row { 
+      display: flex; flex-direction: column; gap: 6px; 
+      padding: 12px; background: #0f172a; border-radius: 8px; 
+      flex-shrink: 0; cursor: pointer; transition: all 0.15s;
+    }
+    .checkin-row:hover { background: #1a2744; }
+    .checkin-header { display: flex; justify-content: space-between; align-items: center; }
+    .checkin-user { font-size: 0.75rem; font-weight: 600; color: #06b6d4; }
+    .checkin-user.irene { color: #f472b6; }
+    .checkin-time { font-size: 0.65rem; color: #64748b; }
+    .checkin-summary { font-size: 0.8rem; color: #cbd5e1; line-height: 1.4; }
+    .checkin-project { font-size: 0.6rem; color: #64748b; background: #334155; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-top: 4px; }
+    
     /* Empty State */
     .empty-state { text-align: center; padding: 25px; color: #64748b; }
     .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.5; }
@@ -349,6 +366,7 @@
       border-top: 1px solid #334155;
       display: flex;
       justify-content: center;
+      gap: 12px;
     }
     .footer-btn {
       padding: 6px 16px; background: transparent; border: 1px solid #475569;
@@ -408,6 +426,7 @@
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link planning" href="planning.html">📋 Planning</a>
         <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link thread" href="thread.html">📜 Thread</a>
         <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
         <button class="nav-link messages" id="msgBtn" onclick="openMessagesModal()" style="display:none;">💬<span class="nav-badge" id="msgBadge">0</span></button>
         <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
@@ -419,6 +438,7 @@
         <a class="nav-link projects" href="projects.html">📊 Projects</a>
         <a class="nav-link planning" href="planning.html">📋 Planning</a>
         <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link thread" href="thread.html">📜 Thread</a>
         <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
         <button class="nav-link messages" id="msgBtnMobile" onclick="openMessagesModal()" style="display:none;">💬 Messages <span class="nav-badge" id="msgBadgeMobile">0</span></button>
         <button class="nav-toggle" onclick="toggleNotifications()">🔔 Notifications <span id="notifStatusMobile">On</span></button>
@@ -522,6 +542,21 @@
             <div id="orphansList"></div>
           </div>
         </div>
+
+        <!-- Activity Thread Section -->
+        <div class="section-box" id="activitySection">
+          <div class="section-header" onclick="toggleSection('activity')">
+            <div class="section-title">
+              <span class="icon">📜</span>
+              <span>Activity Thread</span>
+              <span class="section-badge cyan" id="activityCount">0</span>
+            </div>
+            <span class="section-toggle collapsed" id="activityToggle">▼</span>
+          </div>
+          <div class="section-body collapsed" id="activityBody">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
       </div>
 
       <!-- Right: Notes -->
@@ -544,6 +579,7 @@
 
     <div class="footer">
       <button class="footer-btn" onclick="openCompletedModal()">✓ View Completed Tasks</button>
+      <a class="footer-btn" href="thread.html">📜 Full Thread</a>
     </div>
   </div>
 
@@ -590,7 +626,7 @@
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '';
-    let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], notes = [], sprintData = null, completedTasks = [];
+    let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], notes = [], sprintData = null, completedTasks = [], checkins = [];
     let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
 
     // Mobile menu toggle
@@ -673,7 +709,33 @@
     }
 
     async function loadData() {
-      await Promise.all([loadScratchpad(), loadMorning(), loadOrphans(), loadMessages(), loadNotes()]);
+      await Promise.all([loadScratchpad(), loadMorning(), loadOrphans(), loadMessages(), loadNotes(), loadCheckins()]);
+    }
+
+    // Check-ins / Activity Thread
+    async function loadCheckins() {
+      const data = await api('/checkins?limit=8');
+      checkins = data?.checkins || [];
+      renderCheckins();
+    }
+
+    function renderCheckins() {
+      document.getElementById('activityCount').textContent = checkins.length;
+      const body = document.getElementById('activityBody');
+      if (checkins.length === 0) {
+        body.innerHTML = '<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-title">No check-ins yet</div><div class="empty-subtitle">Say "recap" in Claude to log a session</div></div>';
+        return;
+      }
+      body.innerHTML = checkins.map(c => `
+        <div class="checkin-row" onclick="window.location='thread.html?id=${c.id}'">
+          <div class="checkin-header">
+            <span class="checkin-user ${c.user_id === 'irene' ? 'irene' : ''}">${esc(c.user_id)}</span>
+            <span class="checkin-time">${formatTime(c.created_at)}</span>
+          </div>
+          <div class="checkin-summary">${esc(c.thread_summary)}</div>
+          ${c.project_name ? `<span class="checkin-project">${esc(c.project_name)}</span>` : ''}
+        </div>
+      `).join('');
     }
 
     // Messages
