@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects</title>
-  <!-- Updated: Jan 13, 2026 - Added shared nav bar -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -13,6 +12,30 @@
       color: #e2e8f0;
       min-height: 100vh;
     }
+    
+    /* Login */
+    .login-screen {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .login-screen.hidden { display: none; }
+    .login-logo { font-size: 3rem; margin-bottom: 20px; }
+    .login-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; }
+    .login-box { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; }
+    .login-label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px; display: block; text-align: center; }
+    .pin-container { display: flex; gap: 10px; justify-content: center; }
+    .pin-digit { width: 50px; height: 60px; background: #0f172a; border: 2px solid #334155; border-radius: 10px; font-size: 1.5rem; font-weight: 700; color: #e2e8f0; text-align: center; }
+    .pin-digit:focus { outline: none; border-color: #3b82f6; }
+    .pin-digit.error { border-color: #ef4444; animation: shake 0.3s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    .login-error { color: #ef4444; font-size: 0.85rem; text-align: center; margin-top: 15px; opacity: 0; }
+    .login-error.show { opacity: 1; }
+    
+    /* Main App */
+    .main-app { display: none; min-height: 100vh; }
+    .main-app.visible { display: block; }
     
     /* ========== SHARED NAV BAR ========== */
     .nav-bar {
@@ -456,54 +479,73 @@
   </style>
 </head>
 <body>
-  <!-- Shared Nav Bar -->
-  <nav class="nav-bar">
-    <div class="nav-brand">
-      <span class="nav-logo">📊</span>
-      <span class="nav-title">Projects</span>
-    </div>
-    <div class="nav-links">
-      <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
-      <a class="nav-link helm" href="index.html">🚀 Helm</a>
-      <a class="nav-link planning" href="planning.html">📋 Planning</a>
-      <a class="nav-link doing" href="doing.html">🎯 Doing</a>
-      <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
-      <button class="nav-link messages" id="msgBtn" onclick="openMessagesModal()">💬<span class="nav-badge hidden" id="msgBadge">0</span></button>
-      <button class="nav-link primary" onclick="showCreateModal()">+ Project</button>
-      <button class="nav-icon-btn" onclick="fetchProjects('active')">↻</button>
-    </div>
-    <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
-    <div class="nav-mobile" id="navMobile">
-      <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
-      <a class="nav-link helm" href="index.html">🚀 Helm</a>
-      <a class="nav-link planning" href="planning.html">📋 Planning</a>
-      <a class="nav-link doing" href="doing.html">🎯 Doing</a>
-      <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
-      <button class="nav-link messages" id="msgBtnMobile" onclick="openMessagesModal()">💬 Messages <span class="nav-badge hidden" id="msgBadgeMobile">0</span></button>
-      <button class="nav-link primary" onclick="showCreateModal()">+ Project</button>
-      <button class="nav-link" onclick="fetchProjects('active')">↻ Refresh</button>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div class="page-header">
-      <div class="tabs">
-        <button class="tab active" data-tab="active" onclick="filterProjects('active')">Active</button>
-        <button class="tab" data-tab="completed" onclick="filterProjects('completed')">Completed</button>
-        <button class="tab" data-tab="all" onclick="filterProjects('all')">All</button>
+  <!-- Login Screen (shared session with other dashboard pages) -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-logo">📊</div>
+    <div class="login-title">Projects</div>
+    <div class="login-box">
+      <label class="login-label">Enter your PIN</label>
+      <div class="pin-container">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
       </div>
-      <div class="header-actions">
-        <button class="btn btn-secondary" onclick="showTab('ideas')">Ideas Pipeline</button>
+      <div class="login-error" id="loginError">Invalid PIN</div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div class="main-app" id="mainApp">
+    <!-- Shared Nav Bar -->
+    <nav class="nav-bar">
+      <div class="nav-brand">
+        <span class="nav-logo">📊</span>
+        <span class="nav-title">Projects</span>
       </div>
-    </div>
+      <div class="nav-links">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="index.html">🚀 Helm</a>
+        <a class="nav-link planning" href="planning.html">📋 Planning</a>
+        <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
+        <button class="nav-link messages" id="msgBtn" onclick="openMessagesModal()">💬<span class="nav-badge hidden" id="msgBadge">0</span></button>
+        <button class="nav-link primary" onclick="showCreateModal()">+ Project</button>
+        <button class="nav-icon-btn" onclick="fetchProjects('active')">↻</button>
+      </div>
+      <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
+      <div class="nav-mobile" id="navMobile">
+        <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
+        <a class="nav-link helm" href="index.html">🚀 Helm</a>
+        <a class="nav-link planning" href="planning.html">📋 Planning</a>
+        <a class="nav-link doing" href="doing.html">🎯 Doing</a>
+        <a class="nav-link courier" href="/emailbot/">📧 Courier</a>
+        <button class="nav-link messages" id="msgBtnMobile" onclick="openMessagesModal()">💬 Messages <span class="nav-badge hidden" id="msgBadgeMobile">0</span></button>
+        <button class="nav-link primary" onclick="showCreateModal()">+ Project</button>
+        <button class="nav-link" onclick="fetchProjects('active')">↻ Refresh</button>
+      </div>
+    </nav>
 
-    <div id="projects-view">
-      <div class="loading"><div class="spinner"></div></div>
-    </div>
+    <div class="container">
+      <div class="page-header">
+        <div class="tabs">
+          <button class="tab active" data-tab="active" onclick="filterProjects('active')">Active</button>
+          <button class="tab" data-tab="completed" onclick="filterProjects('completed')">Completed</button>
+          <button class="tab" data-tab="all" onclick="filterProjects('all')">All</button>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="showTab('ideas')">Ideas Pipeline</button>
+        </div>
+      </div>
 
-    <div id="ideas-view" style="display: none;">
-      <div style="margin-bottom: 15px;"><button class="btn btn-secondary" onclick="showTab('projects')">← Back to Projects</button></div>
-      <div class="loading"><div class="spinner"></div></div>
+      <div id="projects-view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="ideas-view" style="display: none;">
+        <div style="margin-bottom: 15px;"><button class="btn btn-secondary" onclick="showTab('projects')">← Back to Projects</button></div>
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
     </div>
   </div>
 
@@ -567,16 +609,71 @@
   </div>
 
   <script>
-    const APIS = {
-      micaiah: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api',
-      irene: 'https://productivity-irene.micaiah-tasks.workers.dev/api'
+    // Shared login config (same as other dashboard pages)
+    const USER_CONFIG = {
+      '1987': { name: 'Micaiah', api: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api' },
+      '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     
+    let API_URL = '', API_KEY = '';
     let micaiahProjects = [];
     let ireneProjects = [];
     let templates = [];
     let messages = [];
     let currentModalOwner = null;
+
+    // ========== SHARED LOGIN SYSTEM ==========
+    function checkSession() {
+      const s = localStorage.getItem('dashboardSession');
+      if (s) {
+        const { pin, timestamp } = JSON.parse(s);
+        // Session valid for 7 days
+        if (Date.now() - timestamp < 7*24*60*60*1000 && USER_CONFIG[pin]) {
+          API_KEY = pin;
+          API_URL = USER_CONFIG[pin].api;
+          showMainApp();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    const pinInputs = document.querySelectorAll('.pin-digit');
+    pinInputs.forEach((input, i) => {
+      input.addEventListener('input', e => {
+        if (e.target.value && i < 3) pinInputs[i+1].focus();
+        if (i === 3 && e.target.value) attemptLogin();
+      });
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !e.target.value && i > 0) pinInputs[i-1].focus();
+      });
+    });
+
+    function attemptLogin() {
+      const pin = Array.from(pinInputs).map(i => i.value).join('');
+      if (USER_CONFIG[pin]) {
+        API_KEY = pin;
+        API_URL = USER_CONFIG[pin].api;
+        localStorage.setItem('dashboardSession', JSON.stringify({ pin, timestamp: Date.now() }));
+        showMainApp();
+      } else {
+        document.getElementById('loginError').classList.add('show');
+        pinInputs.forEach(input => { input.classList.add('error'); input.value = ''; });
+        pinInputs[0].focus();
+        setTimeout(() => {
+          document.getElementById('loginError').classList.remove('show');
+          pinInputs.forEach(input => input.classList.remove('error'));
+        }, 2000);
+      }
+    }
+
+    function showMainApp() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.add('visible');
+      fetchProjects();
+      loadMessages();
+    }
+    // ========== END SHARED LOGIN SYSTEM ==========
 
     // Mobile menu
     function toggleMobileMenu() {
@@ -595,8 +692,8 @@
     // Messages
     async function loadMessages() {
       try {
-        const res = await fetch(`${APIS.micaiah}/messages`, {
-          headers: { 'Authorization': 'Bearer 1987' }
+        const res = await fetch(`${API_URL}/messages`, {
+          headers: { 'Authorization': 'Bearer ' + API_KEY }
         });
         const data = await res.json();
         messages = data?.messages || [];
@@ -638,9 +735,9 @@
 
     function closeMessagesModal() {
       document.getElementById('messages-modal').classList.remove('active');
-      fetch(`${APIS.micaiah}/messages/read`, { 
+      fetch(`${API_URL}/messages/read`, { 
         method: 'POST',
-        headers: { 'Authorization': 'Bearer 1987' }
+        headers: { 'Authorization': 'Bearer ' + API_KEY }
       });
       messages = [];
       renderMessagesButton();
@@ -656,9 +753,10 @@
 
     async function fetchProjects(status = 'active') {
       try {
+        // Fetch from both APIs to show both users' projects
         const [micaiahRes, ireneRes] = await Promise.allSettled([
-          fetch(`${APIS.micaiah}/projects?status=${status}`).then(r => r.json()),
-          fetch(`${APIS.irene}/projects?status=${status}`).then(r => r.json())
+          fetch(`https://productivity-mcp-server.micaiah-tasks.workers.dev/api/projects?status=${status}`).then(r => r.json()),
+          fetch(`https://productivity-irene.micaiah-tasks.workers.dev/api/projects?status=${status}`).then(r => r.json())
         ]);
         
         micaiahProjects = micaiahRes.status === 'fulfilled' ? (micaiahRes.value.projects || []) : [];
@@ -726,8 +824,12 @@
       document.getElementById('project-modal').classList.add('active');
       document.getElementById('modal-body').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
       
+      const apiUrl = owner === 'micaiah' 
+        ? 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api'
+        : 'https://productivity-irene.micaiah-tasks.workers.dev/api';
+      
       try {
-        const res = await fetch(`${APIS[owner]}/projects/${id}`);
+        const res = await fetch(`${apiUrl}/projects/${id}`);
         const data = await res.json();
         renderProjectDetail(data, owner);
       } catch (e) {
@@ -844,8 +946,12 @@
         return;
       }
       
+      const apiUrl = owner === 'micaiah' 
+        ? 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api'
+        : 'https://productivity-irene.micaiah-tasks.workers.dev/api';
+      
       try {
-        await fetch(`${APIS[owner]}/projects/${projectId}/checkin`, {
+        await fetch(`${apiUrl}/projects/${projectId}/checkin`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ wins, struggles, next_focus })
@@ -872,7 +978,9 @@
     // Ideas
     async function fetchIdeas() {
       try {
-        const res = await fetch(`${APIS.micaiah}/ideas`);
+        const res = await fetch(`${API_URL}/ideas`, {
+          headers: { 'Authorization': 'Bearer ' + API_KEY }
+        });
         const data = await res.json();
         renderIdeas(data);
       } catch (e) {
@@ -936,7 +1044,9 @@
     // Create Project
     async function fetchTemplates() {
       try {
-        const res = await fetch(`${APIS.micaiah}/templates`);
+        const res = await fetch(`${API_URL}/templates`, {
+          headers: { 'Authorization': 'Bearer ' + API_KEY }
+        });
         const data = await res.json();
         templates = data.templates || [];
         const select = document.getElementById('create-template');
@@ -964,9 +1074,12 @@
       const template_id = document.getElementById('create-template').value;
       
       try {
-        await fetch(`${APIS.micaiah}/projects`, {
+        await fetch(`${API_URL}/projects`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + API_KEY
+          },
           body: JSON.stringify({ title, goal, target_date, template_id })
         });
         closeCreateModal();
@@ -990,9 +1103,10 @@
       });
     });
 
-    // Init
-    fetchProjects();
-    loadMessages();
+    // Init - check for existing session
+    if (!checkSession()) {
+      pinInputs[0].focus();
+    }
   </script>
 </body>
 </html>
