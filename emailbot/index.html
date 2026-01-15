@@ -144,6 +144,7 @@
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
     .modal { background: var(--white); border: 2px solid var(--gray-400); border-radius: 14px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal.wide { max-width: 800px; }
     .modal-header { padding: 20px; border-bottom: 2px solid var(--gray-300); display: flex; justify-content: space-between; align-items: center; }
     .modal-header h3 { font-size: 1.1rem; font-weight: 700; }
     .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-500); font-weight: 700; }
@@ -172,6 +173,16 @@
     .help-table th { background: var(--gray-100); font-weight: 700; }
     .help-table code { background: var(--gray-100); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
     .help-tip { background: var(--blue-50); border: 2px solid var(--blue-100); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 0.85rem; color: var(--blue-700); }
+    
+    /* Step cards */
+    .step-card { margin-bottom: 12px; padding: 16px; background: var(--gray-100); border: 2px solid var(--gray-400); border-radius: 10px; cursor: pointer; transition: all 0.15s; }
+    .step-card:hover { border-color: var(--blue-500); background: var(--blue-50); }
+    .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .step-title { font-weight: 600; }
+    .step-delay { color: var(--gray-600); font-size: 0.85rem; }
+    .step-subject { color: var(--blue-700); }
+    .step-preview { font-size: 0.8rem; color: var(--gray-500); margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
     @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -263,11 +274,12 @@
       </div>
     </div>
   </div>
-  <div class="modal-overlay" id="modalOverlay"><div class="modal"><div class="modal-header"><h3 id="modalTitle">Modal</h3><button class="modal-close" onclick="closeModal()">&times;</button></div><div class="modal-body" id="modalContent"></div></div></div>
+  <div class="modal-overlay" id="modalOverlay"><div class="modal" id="modal"><div class="modal-header"><h3 id="modalTitle">Modal</h3><button class="modal-close" onclick="closeModal()">&times;</button></div><div class="modal-body" id="modalContent"></div></div></div>
   <div class="toast" id="toast"></div>
   <script>
 const API_BASE='https://email-bot-server.micaiah-tasks.workers.dev';
 let API_KEY='',currentLists=[],listsById={},searchTimeout=null,selectedSubscribers=new Set(),currentSubscribers=[];
+let currentSequenceId='',currentSequenceSteps=[];
 let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
 
 function toggleMobileMenu() {
@@ -297,7 +309,6 @@ pinInputs.forEach((input,index)=>{input.addEventListener('input',e=>{if(e.target
 async function checkPin(){
   const pin=Array.from(pinInputs).map(i=>i.value).join('');
   if(pin.length===4){
-    // Try to authenticate with the PIN as the bearer token
     try {
       const res = await fetch(API_BASE + '/api/stats', {
         headers: { 'Authorization': 'Bearer ' + pin }
@@ -337,7 +348,7 @@ function debounceSearch(){clearTimeout(searchTimeout);searchTimeout=setTimeout(l
 async function loadSequences(){const data=await api('/api/sequences');const sequences=data.sequences||[];if(!sequences.length){document.getElementById('sequencesTable').innerHTML='<tr><td colspan="6" class="empty-state">No sequences yet</td></tr>';return}document.getElementById('sequencesTable').innerHTML=sequences.map(seq=>'<tr><td><strong>'+seq.name+'</strong></td><td>'+(seq.list_name||'-')+'</td><td>'+(seq.step_count||0)+'</td><td>'+(seq.active_enrollments||0)+'</td><td><span class="badge badge-'+seq.status+'">'+seq.status+'</span></td><td class="actions"><button class="btn btn-sm" onclick="editSequence(\''+seq.id+'\')">Edit</button><button class="btn btn-sm" onclick="viewSequenceSteps(\''+seq.id+'\')">Steps</button></td></tr>').join('')}
 async function loadTemplates(){const data=await api('/api/templates');const templates=data.templates||[];if(!templates.length){document.getElementById('templatesTable').innerHTML='<tr><td colspan="5" class="empty-state">No templates yet - ask Claude to create one</td></tr>';return}document.getElementById('templatesTable').innerHTML=templates.map(tpl=>'<tr><td><strong>'+tpl.name+'</strong></td><td>'+(tpl.subject||'-')+'</td><td>'+(tpl.category||'-')+'</td><td>'+(tpl.list_id&&listsById[tpl.list_id]?listsById[tpl.list_id].name:'-')+'</td><td>'+formatDate(tpl.updated_at)+'</td></tr>').join('')}
 async function loadCampaigns(){const status=document.getElementById('filterCampaignStatus').value;let endpoint='/api/emails';if(status)endpoint+='?status='+status;const data=await api(endpoint);const campaigns=data.emails||[];if(!campaigns.length){document.getElementById('campaignsTable').innerHTML='<tr><td colspan="7" class="empty-state">No campaigns yet</td></tr>';return}document.getElementById('campaignsTable').innerHTML=campaigns.map(email=>'<tr><td><strong>'+email.subject+'</strong></td><td>'+(email.list_name||'All')+'</td><td><span class="badge badge-'+email.status+'">'+email.status+'</span></td><td>'+(email.sent_count||'-')+'</td><td>-</td><td>-</td><td class="actions"><button class="btn btn-sm" onclick="editCampaign(\''+email.id+'\')">Edit</button>'+(email.status==='draft'?'<button class="btn btn-sm btn-primary" onclick="sendCampaign(\''+email.id+'\')">Send</button>':'')+'</td></tr>').join('')}
-function openModal(type,id){id=id||'';document.getElementById('modalOverlay').classList.add('active');if(type==='sequence'){document.getElementById('modalTitle').textContent=id?'Edit Sequence':'New Sequence';document.getElementById('modalContent').innerHTML='<form id="sequenceForm" onsubmit="saveSequence(event,\''+id+'\')"><div class="form-group"><label>Name *</label><input type="text" name="name" required></div><div class="form-group"><label>List *</label><select name="list_id" required><option value="">Select List</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Description</label><textarea name="description" rows="2"></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form>'}else if(type==='subscriber'){document.getElementById('modalTitle').textContent='Add Subscriber';document.getElementById('modalContent').innerHTML='<form id="subscriberForm" onsubmit="saveSubscriber(event)"><div class="form-group"><label>List *</label><select name="list_id" required><option value="">Select List</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Email *</label><input type="email" name="email" required></div><div class="form-group"><label>Name</label><input type="text" name="name"></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Add</button></div></form>'}else if(type==='campaign'){document.getElementById('modalTitle').textContent=id?'Edit Campaign':'New Campaign';document.getElementById('modalContent').innerHTML='<form id="campaignForm" onsubmit="saveCampaign(event,\''+id+'\')"><div class="form-group"><label>List</label><select name="list_id"><option value="">All Subscribers</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required placeholder="Your email content. Will be wrapped in the list template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Save as Draft</button></div></form>'}}
+function openModal(type,id){id=id||'';document.getElementById('modal').classList.remove('wide');document.getElementById('modalOverlay').classList.add('active');if(type==='sequence'){document.getElementById('modalTitle').textContent=id?'Edit Sequence':'New Sequence';document.getElementById('modalContent').innerHTML='<form id="sequenceForm" onsubmit="saveSequence(event,\''+id+'\')"><div class="form-group"><label>Name *</label><input type="text" name="name" required></div><div class="form-group"><label>List *</label><select name="list_id" required><option value="">Select List</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Description</label><textarea name="description" rows="2"></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form>'}else if(type==='subscriber'){document.getElementById('modalTitle').textContent='Add Subscriber';document.getElementById('modalContent').innerHTML='<form id="subscriberForm" onsubmit="saveSubscriber(event)"><div class="form-group"><label>List *</label><select name="list_id" required><option value="">Select List</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Email *</label><input type="email" name="email" required></div><div class="form-group"><label>Name</label><input type="text" name="name"></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Add</button></div></form>'}else if(type==='campaign'){document.getElementById('modalTitle').textContent=id?'Edit Campaign':'New Campaign';document.getElementById('modalContent').innerHTML='<form id="campaignForm" onsubmit="saveCampaign(event,\''+id+'\')"><div class="form-group"><label>List</label><select name="list_id"><option value="">All Subscribers</option>'+currentLists.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('')+'</select></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required placeholder="Your email content. Will be wrapped in the list template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Save as Draft</button></div></form>'}}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('active')}
 async function saveCampaign(e,id){e.preventDefault();const form=e.target;const data={list_id:form.list_id.value||undefined,subject:form.subject.value,body_html:form.body_html.value};const res=await api(id?'/api/emails/'+id:'/api/emails',id?'PUT':'POST',data);if(res.success){showToast('Campaign saved!');closeModal();loadCampaigns()}else{showToast(res.error||'Failed to save','error')}}
 async function saveSequence(e,id){e.preventDefault();const form=e.target;const data={name:form.name.value,list_id:form.list_id.value,description:form.description.value||undefined};const res=await api(id?'/api/sequences/'+id:'/api/sequences',id?'PUT':'POST',data);if(res.success){showToast('Sequence saved!');closeModal();loadSequences()}else{showToast(res.error||'Failed to save','error')}}
@@ -345,9 +356,76 @@ async function saveSubscriber(e){e.preventDefault();const form=e.target;const li
 async function editCampaign(id){const data=await api('/api/emails/'+id);openModal('campaign',id);setTimeout(()=>{const form=document.getElementById('campaignForm');form.list_id.value=data.email.list_id||'';form.subject.value=data.email.subject;form.body_html.value=data.email.body_html},10)}
 async function sendCampaign(id){const preview=await api('/api/emails/'+id+'/preview');if(!confirm('Send to '+preview.recipient_count+' subscribers?'))return;const res=await api('/api/emails/'+id+'/send','POST');if(res.success){showToast('Sent to '+res.sent+' subscribers!'+(res.failed>0?' ('+res.failed+' failed)':''));loadCampaigns()}else{showToast(res.error||'Failed to send','error')}}
 async function editSequence(id){const data=await api('/api/sequences/'+id);openModal('sequence',id);setTimeout(()=>{const form=document.getElementById('sequenceForm');form.name.value=data.sequence.name;form.list_id.value=data.sequence.list_id;form.description.value=data.sequence.description||''},10)}
-async function viewSequenceSteps(id){const data=await api('/api/sequences/'+id);document.getElementById('modalTitle').textContent='Steps: '+data.sequence.name;let stepsHtml=data.steps.length?data.steps.map((s,i)=>'<div style="margin-bottom:12px;padding:16px;background:var(--gray-100);border:2px solid var(--gray-400);border-radius:10px"><strong>Step '+(i+1)+'</strong><span style="color:var(--gray-600);font-size:0.85rem;margin-left:8px">('+s.delay_minutes+' min delay)</span><br><span style="color:var(--blue-700)">'+s.subject+'</span></div>').join(''):'<p class="empty-state">No steps yet</p>';document.getElementById('modalContent').innerHTML=stepsHtml+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep(\''+id+'\')">+ Add Step</button></div>';document.getElementById('modalOverlay').classList.add('active')}
-function addSequenceStep(sequenceId){document.getElementById('modalTitle').textContent='Add Step';document.getElementById('modalContent').innerHTML='<form onsubmit="saveSequenceStep(event,\''+sequenceId+'\')"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="0" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required placeholder="Email content. Will be wrapped in the list sequence template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="viewSequenceSteps(\''+sequenceId+'\')">Back</button><button type="submit" class="btn btn-primary">Add Step</button></div></form>'}
-async function saveSequenceStep(e,sequenceId){e.preventDefault();const form=e.target;const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};const res=await api('/api/sequences/'+sequenceId+'/steps','POST',data);if(res.success){showToast('Step added!');viewSequenceSteps(sequenceId);loadSequences()}else{showToast(res.error||'Failed to add step','error')}}
+
+// ========== SEQUENCE STEPS ==========
+async function viewSequenceSteps(id){
+  currentSequenceId=id;
+  const data=await api('/api/sequences/'+id);
+  currentSequenceSteps=data.steps||[];
+  document.getElementById('modal').classList.add('wide');
+  document.getElementById('modalTitle').textContent='Steps: '+data.sequence.name;
+  renderStepsList();
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function renderStepsList(){
+  let stepsHtml=currentSequenceSteps.length?currentSequenceSteps.map((s,i)=>{
+    const preview=s.body_html?s.body_html.replace(/<[^>]*>/g,'').substring(0,80)+'...':'No content';
+    return '<div class="step-card" onclick="editStep('+i+')"><div class="step-header"><span class="step-title">Step '+(i+1)+'</span><span class="step-delay">'+s.delay_minutes+' min delay</span></div><div class="step-subject">'+escHtml(s.subject)+'</div><div class="step-preview">'+escHtml(preview)+'</div></div>';
+  }).join(''):'<p class="empty-state">No steps yet</p>';
+  document.getElementById('modalContent').innerHTML=stepsHtml+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep()">+ Add Step</button></div>';
+}
+
+function editStep(index){
+  const step=currentSequenceSteps[index];
+  document.getElementById('modalTitle').textContent='Edit Step '+(index+1);
+  document.getElementById('modalContent').innerHTML='<form onsubmit="saveStep(event,\''+step.id+'\','+index+')"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="'+step.delay_minutes+'" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" value="'+escAttr(step.subject)+'" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;">'+escHtml(step.body_html||'')+'</textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="button" class="btn btn-danger" onclick="deleteStep(\''+step.id+'\')">Delete</button><button type="submit" class="btn btn-primary">Save</button></div></form>';
+}
+
+function addSequenceStep(){
+  document.getElementById('modalTitle').textContent='Add Step';
+  document.getElementById('modalContent').innerHTML='<form onsubmit="saveNewStep(event)"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="0" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;" placeholder="Email content. Will be wrapped in the list sequence template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="submit" class="btn btn-primary">Add Step</button></div></form>';
+}
+
+async function saveStep(e,stepId,index){
+  e.preventDefault();
+  const form=e.target;
+  const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};
+  const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'PUT',data);
+  if(res.success){
+    showToast('Step saved!');
+    currentSequenceSteps[index]={...currentSequenceSteps[index],...data};
+    renderStepsList();
+    loadSequences();
+  }else{showToast(res.error||'Failed to save','error')}
+}
+
+async function saveNewStep(e){
+  e.preventDefault();
+  const form=e.target;
+  const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};
+  const res=await api('/api/sequences/'+currentSequenceId+'/steps','POST',data);
+  if(res.success){
+    showToast('Step added!');
+    viewSequenceSteps(currentSequenceId);
+    loadSequences();
+  }else{showToast(res.error||'Failed to add step','error')}
+}
+
+async function deleteStep(stepId){
+  if(!confirm('Delete this step?'))return;
+  const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'DELETE');
+  if(res.success){
+    showToast('Step deleted');
+    viewSequenceSteps(currentSequenceId);
+    loadSequences();
+  }else{showToast(res.error||'Failed to delete','error')}
+}
+
+function escHtml(str){return str?str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
+function escAttr(str){return str?str.replace(/"/g,'&quot;').replace(/'/g,'&#39;'):'';}
+// ========== END SEQUENCE STEPS ==========
+
 async function viewSubscriber(id){const data=await api('/api/subscribers/'+id);document.getElementById('modalTitle').textContent=data.subscriber.email;document.getElementById('modalContent').innerHTML='<div style="margin-bottom:16px"><p style="margin-bottom:8px"><strong>Name:</strong> '+(data.subscriber.name||'-')+'</p><p style="margin-bottom:8px"><strong>Source:</strong> '+(data.subscriber.source||'-')+'</p><p style="margin-bottom:8px"><strong>Segment:</strong> '+(data.subscriber.segment||'-')+'</p><p><strong>Created:</strong> '+formatDate(data.subscriber.created_at)+'</p></div><hr style="border:none;border-top:2px solid var(--gray-300);margin:20px 0"><h4 style="margin-bottom:12px;font-size:0.9rem;font-weight:700">Subscriptions</h4>'+(data.subscriptions?.length?data.subscriptions.map(s=>'<p style="margin-bottom:4px">'+s.list_name+' - <span class="badge badge-'+s.status+'">'+s.status+'</span></p>').join(''):'<p style="color:var(--gray-600)">No subscriptions</p>')+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>';document.getElementById('modalOverlay').classList.add('active')}
 function formatDate(dateStr){if(!dateStr)return'-';return new Date(dateStr).toLocaleDateString()}
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
