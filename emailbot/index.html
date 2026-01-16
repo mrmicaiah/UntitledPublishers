@@ -19,24 +19,12 @@
     .error-msg { color: var(--red-600); font-size: 0.875rem; font-weight: 500; margin-top: 12px; display: none; }
     
     /* ========== SHARED NAV BAR (Dark Theme) ========== */
-    .nav-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 16px;
-      background: #1e293b;
-      border-bottom: 1px solid #334155;
-      position: sticky; top: 0; z-index: 100;
-    }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1e293b; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 100; }
     .nav-brand { display: flex; align-items: center; gap: 8px; }
     .nav-logo { font-size: 1.2rem; }
     .nav-title { font-size: 0.95rem; font-weight: 600; color: #e2e8f0; }
-    
     .nav-links { display: flex; align-items: center; gap: 6px; }
-    .nav-link {
-      padding: 6px 10px; background: transparent; border: 1px solid #334155;
-      border-radius: 6px; color: #94a3b8; font-size: 0.75rem;
-      cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px;
-      transition: all 0.2s; font-family: inherit; white-space: nowrap;
-    }
+    .nav-link { padding: 6px 10px; background: transparent; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; font-size: 0.75rem; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
     .nav-link:hover { border-color: #64748b; color: #e2e8f0; }
     .nav-link.claude { border-color: #f97316; color: #f97316; }
     .nav-link.claude:hover { background: #f97316; color: white; }
@@ -50,48 +38,21 @@
     .nav-link.doing:hover { background: #22c55e; color: white; }
     .nav-link.courier { border-color: #a855f7; color: #a855f7; }
     .nav-link.courier:hover { background: #a855f7; color: white; }
-    
-    .nav-toggle {
-      padding: 6px 10px; background: transparent; border: 1px solid #334155;
-      border-radius: 6px; color: #94a3b8; font-size: 0.75rem; cursor: pointer;
-      display: flex; align-items: center; gap: 4px; font-family: inherit;
-    }
+    .nav-toggle { padding: 6px 10px; background: transparent; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 4px; font-family: inherit; }
     .nav-toggle:hover { border-color: #64748b; color: #e2e8f0; }
     .nav-toggle.on { border-color: #22c55e; color: #22c55e; }
     .nav-toggle.off { border-color: #64748b; color: #64748b; }
-    
-    .nav-icon-btn {
-      padding: 6px 8px; background: transparent; border: 1px solid #334155;
-      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 0.9rem;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .nav-icon-btn { padding: 6px 8px; background: transparent; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .nav-icon-btn:hover { border-color: #64748b; color: #e2e8f0; }
-    
-    .nav-hamburger {
-      display: none; padding: 8px; background: transparent; border: 1px solid #334155;
-      border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 1.2rem;
-    }
+    .nav-hamburger { display: none; padding: 8px; background: transparent; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 1.2rem; }
     .nav-hamburger:hover { border-color: #64748b; color: #e2e8f0; }
-    
-    .nav-mobile {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      background: #1e293b; border-bottom: 1px solid #334155;
-      padding: 12px; z-index: 100; flex-direction: column; gap: 8px;
-    }
+    .nav-mobile { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1e293b; border-bottom: 1px solid #334155; padding: 12px; z-index: 100; flex-direction: column; gap: 8px; }
     .nav-mobile.open { display: flex; }
     .nav-mobile .nav-link { justify-content: center; padding: 10px; }
-    
     .nav-stats { display: flex; gap: 12px; font-size: 0.75rem; color: #94a3b8; }
     .nav-stats strong { color: #e2e8f0; }
-    
-    @media (max-width: 900px) {
-      .nav-stats { display: none; }
-    }
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-    }
-    /* ========== END SHARED NAV BAR ========== */
+    @media (max-width: 900px) { .nav-stats { display: none; } }
+    @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
     
     .app { display: none; } .app.active { display: block; }
     .tabs { background: var(--white); border-bottom: 2px solid var(--gray-400); display: flex; padding: 0 24px; gap: 4px; overflow-x: auto; }
@@ -116,8 +77,6 @@
     .btn-sm { padding: 8px 14px; font-size: 0.8rem; }
     .btn-danger { color: var(--red-600); border-color: var(--red-500); }
     .btn-danger:hover { background: var(--red-500); color: white; }
-    .btn-help { border-color: var(--blue-500); color: var(--blue-600); }
-    .btn-help:hover { background: var(--blue-500); color: white; }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 14px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--gray-600); background: var(--gray-100); border-bottom: 2px solid var(--gray-400); }
     th.checkbox-col { width: 40px; padding: 14px 12px 14px 20px; }
@@ -173,8 +132,6 @@
     .help-table th { background: var(--gray-100); font-weight: 700; }
     .help-table code { background: var(--gray-100); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
     .help-tip { background: var(--blue-50); border: 2px solid var(--blue-100); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 0.85rem; color: var(--blue-700); }
-    
-    /* Step cards */
     .step-card { margin-bottom: 12px; padding: 16px; background: var(--gray-100); border: 2px solid var(--gray-400); border-radius: 10px; cursor: pointer; transition: all 0.15s; }
     .step-card:hover { border-color: var(--blue-500); background: var(--blue-50); }
     .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
@@ -182,7 +139,6 @@
     .step-delay { color: var(--gray-600); font-size: 0.85rem; }
     .step-subject { color: var(--blue-700); }
     .step-preview { font-size: 0.8rem; color: var(--gray-500); margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    
     @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -197,12 +153,8 @@
     </div>
   </div>
   <div class="app" id="app">
-    <!-- Shared Nav Bar -->
     <nav class="nav-bar">
-      <div class="nav-brand">
-        <span class="nav-logo">📧</span>
-        <span class="nav-title">Courier</span>
-      </div>
+      <div class="nav-brand"><span class="nav-logo">📧</span><span class="nav-title">Courier</span></div>
       <div class="nav-links">
         <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
         <a class="nav-link helm" href="/dashboard/">🚀 Helm</a>
@@ -213,10 +165,7 @@
         <button class="nav-toggle" id="notifToggle" onclick="toggleNotifications()">🔔 <span id="notifStatus">On</span></button>
         <button class="nav-icon-btn" onclick="initApp()">↻</button>
       </div>
-      <div class="nav-stats">
-        <span>Lists: <strong id="statLists">-</strong></span>
-        <span>Subscribers: <strong id="statSubscribers">-</strong></span>
-      </div>
+      <div class="nav-stats"><span>Lists: <strong id="statLists">-</strong></span><span>Subscribers: <strong id="statSubscribers">-</strong></span></div>
       <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
       <div class="nav-mobile" id="navMobile">
         <a class="nav-link claude" href="https://claude.ai" target="_blank">🤖 Claude</a>
@@ -243,7 +192,7 @@
         <div class="card"><div class="card-header"><h2>Last 7 Days</h2></div><div class="card-body" style="padding:20px"><div id="recentActivity"><div class="loading">Loading...</div></div></div></div>
       </div>
       <div class="panel" id="panel-lists">
-        <div class="card"><div class="card-header"><h2>Email Lists</h2><span class="mcp-note">Lists are created via Claude</span></div><div class="card-body"><div class="table-container"><table><thead><tr><th>Name</th><th>Slug</th><th>Subscribers</th><th>Template</th><th>Status</th></tr></thead><tbody id="listsTable"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody></table></div></div></div>
+        <div class="card"><div class="card-header"><h2>Email Lists</h2><span class="mcp-note">Lists are created via Claude</span></div><div class="card-body"><table><thead><tr><th>Name</th><th>Slug</th><th>Subscribers</th><th>Template</th><th>Status</th></tr></thead><tbody id="listsTable"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody></table></div></div>
       </div>
       <div class="panel" id="panel-subscribers">
         <div class="card">
@@ -282,27 +231,12 @@ let API_KEY='',currentLists=[],listsById={},searchTimeout=null,selectedSubscribe
 let currentSequenceId='',currentSequenceSteps=[];
 let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
 
-function toggleMobileMenu() {
-  document.getElementById('navMobile').classList.toggle('open');
-}
-
-function toggleNotifications() {
-  notificationsEnabled = !notificationsEnabled;
-  localStorage.setItem('notificationsEnabled', notificationsEnabled);
-  updateNotificationUI();
-}
-
-function updateNotificationUI() {
-  const status = notificationsEnabled ? 'On' : 'Off';
-  document.getElementById('notifStatus').textContent = status;
-  document.getElementById('notifStatusMobile').textContent = status;
-  const toggle = document.getElementById('notifToggle');
-  toggle.classList.toggle('on', notificationsEnabled);
-  toggle.classList.toggle('off', !notificationsEnabled);
-}
-
+function toggleMobileMenu() { document.getElementById('navMobile').classList.toggle('open'); }
+function toggleNotifications() { notificationsEnabled = !notificationsEnabled; localStorage.setItem('notificationsEnabled', notificationsEnabled); updateNotificationUI(); }
+function updateNotificationUI() { const status = notificationsEnabled ? 'On' : 'Off'; document.getElementById('notifStatus').textContent = status; document.getElementById('notifStatusMobile').textContent = status; const toggle = document.getElementById('notifToggle'); toggle.classList.toggle('on', notificationsEnabled); toggle.classList.toggle('off', !notificationsEnabled); }
 function showHelp(){document.getElementById('helpOverlay').classList.add('show')}
 function closeHelp(){document.getElementById('helpOverlay').classList.remove('show')}
+
 const pinInputs=document.querySelectorAll('.pin-input input');
 pinInputs.forEach((input,index)=>{input.addEventListener('input',e=>{if(e.target.value.length===1&&index<pinInputs.length-1)pinInputs[index+1].focus();checkPin()});input.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!e.target.value&&index>0)pinInputs[index-1].focus()})});
 
@@ -310,25 +244,10 @@ async function checkPin(){
   const pin=Array.from(pinInputs).map(i=>i.value).join('');
   if(pin.length===4){
     try {
-      const res = await fetch(API_BASE + '/api/stats', {
-        headers: { 'Authorization': 'Bearer ' + pin }
-      });
-      if (res.ok) {
-        API_KEY = pin;
-        document.getElementById('loginScreen').style.display='none';
-        document.getElementById('app').classList.add('active');
-        updateNotificationUI();
-        initApp();
-      } else {
-        document.getElementById('pinError').style.display='block';
-        pinInputs.forEach(i=>i.value='');
-        pinInputs[0].focus();
-      }
-    } catch (e) {
-      document.getElementById('pinError').style.display='block';
-      pinInputs.forEach(i=>i.value='');
-      pinInputs[0].focus();
-    }
+      const res = await fetch(API_BASE + '/api/stats', { headers: { 'Authorization': 'Bearer ' + pin } });
+      if (res.ok) { API_KEY = pin; document.getElementById('loginScreen').style.display='none'; document.getElementById('app').classList.add('active'); updateNotificationUI(); initApp(); }
+      else { document.getElementById('pinError').style.display='block'; pinInputs.forEach(i=>i.value=''); pinInputs[0].focus(); }
+    } catch (e) { document.getElementById('pinError').style.display='block'; pinInputs.forEach(i=>i.value=''); pinInputs[0].focus(); }
   }
 }
 
@@ -342,7 +261,29 @@ function viewListSubscribers(listId){document.querySelectorAll('.tab').forEach(t
 function updateSelectionUI(){const count=selectedSubscribers.size;const infoEl=document.getElementById('selectionInfo');const btnEl=document.getElementById('deleteSelectedBtn');const selectAllEl=document.getElementById('selectAllCheckbox');if(count>0){infoEl.textContent=count+' selected';btnEl.style.display='inline-block'}else{infoEl.textContent='';btnEl.style.display='none'}if(currentSubscribers.length>0){const allSelected=currentSubscribers.every(sub=>selectedSubscribers.has(sub.subscription_id||sub.id));selectAllEl.checked=allSelected;selectAllEl.indeterminate=count>0&&!allSelected}document.querySelectorAll('#subscribersTable tr').forEach(row=>{const checkbox=row.querySelector('input[type="checkbox"]');if(checkbox&&checkbox.dataset.id){row.classList.toggle('selected',selectedSubscribers.has(checkbox.dataset.id))}})}
 function toggleSelectAll(){const selectAll=document.getElementById('selectAllCheckbox').checked;if(selectAll){currentSubscribers.forEach(sub=>selectedSubscribers.add(sub.subscription_id||sub.id))}else{selectedSubscribers.clear()}document.querySelectorAll('#subscribersTable input[type="checkbox"]').forEach(cb=>{cb.checked=selectAll});updateSelectionUI()}
 function toggleSubscriberSelect(id){if(selectedSubscribers.has(id)){selectedSubscribers.delete(id)}else{selectedSubscribers.add(id)}updateSelectionUI()}
-async function deleteSelectedSubscribers(){const count=selectedSubscribers.size;if(count===0)return;if(!confirm('Delete '+count+' subscriber(s)?\n\nThis will PERMANENTLY delete them and all their data.'))return;if(!confirm('Are you absolutely sure? This cannot be undone.'))return;try{const res=await api('/api/subscribers/delete','POST',{subscription_ids:Array.from(selectedSubscribers),permanent:true});if(res.success){showToast('Deleted '+res.deleted+' subscriber(s)');selectedSubscribers.clear();loadSubscribers();loadLists();loadStats()}else{showToast(res.error||'Failed to delete','error')}}catch(e){showToast('Failed to delete: '+e.message,'error')}}
+
+// FIXED: Now correctly uses lead_ids when viewing "All Lists" vs subscription_ids when viewing a specific list
+async function deleteSelectedSubscribers(){
+  const count=selectedSubscribers.size;
+  if(count===0)return;
+  if(!confirm('Delete '+count+' subscriber(s)?\n\nThis will PERMANENTLY delete them and all their data.'))return;
+  if(!confirm('Are you absolutely sure? This cannot be undone.'))return;
+  try{
+    // Check if we're viewing a specific list (subscription_ids) or all lists (lead_ids)
+    const listId=document.getElementById('filterList').value;
+    const ids=Array.from(selectedSubscribers);
+    const payload = listId 
+      ? { subscription_ids: ids, permanent: true }
+      : { lead_ids: ids, permanent: true };
+    const res=await api('/api/subscribers/delete','POST',payload);
+    if(res.success){
+      showToast('Deleted '+res.deleted+' subscriber(s)');
+      selectedSubscribers.clear();
+      loadSubscribers();loadLists();loadStats();
+    }else{showToast(res.error||'Failed to delete','error')}
+  }catch(e){showToast('Failed to delete: '+e.message,'error')}
+}
+
 async function loadSubscribers(){selectedSubscribers.clear();updateSelectionUI();const listId=document.getElementById('filterList').value;const search=document.getElementById('filterSearch').value;let endpoint=listId?'/api/lists/'+listId+'/subscribers':'/api/subscribers';if(search)endpoint+=(endpoint.includes('?')?'&':'?')+'search='+encodeURIComponent(search);const data=await api(endpoint);currentSubscribers=data.subscribers||[];if(!currentSubscribers.length){document.getElementById('subscribersTable').innerHTML='<tr><td colspan="7" class="empty-state">No subscribers found</td></tr>';return}document.getElementById('subscribersTable').innerHTML=currentSubscribers.map(sub=>{const subId=sub.subscription_id||sub.id;const listName=sub.list_name||(sub.list_id&&listsById[sub.list_id]?listsById[sub.list_id].name:'-');return'<tr><td class="checkbox-col"><input type="checkbox" class="checkbox" data-id="'+subId+'" onchange="toggleSubscriberSelect(\''+subId+'\')"'+(selectedSubscribers.has(subId)?' checked':'')+'></td><td>'+sub.email+'</td><td>'+(sub.name||'-')+'</td><td>'+listName+'</td><td>'+(sub.source||'-')+'</td><td>'+formatDate(sub.subscribed_at||sub.created_at)+'</td><td class="actions"><button class="btn btn-sm" onclick="viewSubscriber(\''+(sub.lead_id||sub.id)+'\')">View</button></td></tr>'}).join('')}
 function debounceSearch(){clearTimeout(searchTimeout);searchTimeout=setTimeout(loadSubscribers,300)}
 async function loadSequences(){const data=await api('/api/sequences');const sequences=data.sequences||[];if(!sequences.length){document.getElementById('sequencesTable').innerHTML='<tr><td colspan="6" class="empty-state">No sequences yet</td></tr>';return}document.getElementById('sequencesTable').innerHTML=sequences.map(seq=>'<tr><td><strong>'+seq.name+'</strong></td><td>'+(seq.list_name||'-')+'</td><td>'+(seq.step_count||0)+'</td><td>'+(seq.active_enrollments||0)+'</td><td><span class="badge badge-'+seq.status+'">'+seq.status+'</span></td><td class="actions"><button class="btn btn-sm" onclick="editSequence(\''+seq.id+'\')">Edit</button><button class="btn btn-sm" onclick="viewSequenceSteps(\''+seq.id+'\')">Steps</button></td></tr>').join('')}
@@ -357,87 +298,20 @@ async function editCampaign(id){const data=await api('/api/emails/'+id);openModa
 async function sendCampaign(id){const preview=await api('/api/emails/'+id+'/preview');if(!confirm('Send to '+preview.recipient_count+' subscribers?'))return;const res=await api('/api/emails/'+id+'/send','POST');if(res.success){showToast('Sent to '+res.sent+' subscribers!'+(res.failed>0?' ('+res.failed+' failed)':''));loadCampaigns()}else{showToast(res.error||'Failed to send','error')}}
 async function editSequence(id){const data=await api('/api/sequences/'+id);openModal('sequence',id);setTimeout(()=>{const form=document.getElementById('sequenceForm');form.name.value=data.sequence.name;form.list_id.value=data.sequence.list_id;form.description.value=data.sequence.description||''},10)}
 
-// ========== SEQUENCE STEPS ==========
-async function viewSequenceSteps(id){
-  currentSequenceId=id;
-  const data=await api('/api/sequences/'+id);
-  currentSequenceSteps=data.steps||[];
-  document.getElementById('modal').classList.add('wide');
-  document.getElementById('modalTitle').textContent='Steps: '+data.sequence.name;
-  renderStepsList();
-  document.getElementById('modalOverlay').classList.add('active');
-}
-
-function renderStepsList(){
-  let stepsHtml=currentSequenceSteps.length?currentSequenceSteps.map((s,i)=>{
-    const preview=s.body_html?s.body_html.replace(/<[^>]*>/g,'').substring(0,80)+'...':'No content';
-    return '<div class="step-card" onclick="editStep('+i+')"><div class="step-header"><span class="step-title">Step '+(i+1)+'</span><span class="step-delay">'+s.delay_minutes+' min delay</span></div><div class="step-subject">'+escHtml(s.subject)+'</div><div class="step-preview">'+escHtml(preview)+'</div></div>';
-  }).join(''):'<p class="empty-state">No steps yet</p>';
-  document.getElementById('modalContent').innerHTML=stepsHtml+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep()">+ Add Step</button></div>';
-}
-
-function editStep(index){
-  const step=currentSequenceSteps[index];
-  document.getElementById('modalTitle').textContent='Edit Step '+(index+1);
-  document.getElementById('modalContent').innerHTML='<form onsubmit="saveStep(event,\''+step.id+'\','+index+')"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="'+step.delay_minutes+'" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" value="'+escAttr(step.subject)+'" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;">'+escHtml(step.body_html||'')+'</textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="button" class="btn btn-danger" onclick="deleteStep(\''+step.id+'\')">Delete</button><button type="submit" class="btn btn-primary">Save</button></div></form>';
-}
-
-function addSequenceStep(){
-  document.getElementById('modalTitle').textContent='Add Step';
-  document.getElementById('modalContent').innerHTML='<form onsubmit="saveNewStep(event)"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="0" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;" placeholder="Email content. Will be wrapped in the list sequence template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="submit" class="btn btn-primary">Add Step</button></div></form>';
-}
-
-async function saveStep(e,stepId,index){
-  e.preventDefault();
-  const form=e.target;
-  const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};
-  const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'PUT',data);
-  if(res.success){
-    showToast('Step saved!');
-    currentSequenceSteps[index]={...currentSequenceSteps[index],...data};
-    renderStepsList();
-    loadSequences();
-  }else{showToast(res.error||'Failed to save','error')}
-}
-
-async function saveNewStep(e){
-  e.preventDefault();
-  const form=e.target;
-  const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};
-  const res=await api('/api/sequences/'+currentSequenceId+'/steps','POST',data);
-  if(res.success){
-    showToast('Step added!');
-    viewSequenceSteps(currentSequenceId);
-    loadSequences();
-  }else{showToast(res.error||'Failed to add step','error')}
-}
-
-async function deleteStep(stepId){
-  if(!confirm('Delete this step?'))return;
-  const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'DELETE');
-  if(res.success){
-    showToast('Step deleted');
-    viewSequenceSteps(currentSequenceId);
-    loadSequences();
-  }else{showToast(res.error||'Failed to delete','error')}
-}
-
+async function viewSequenceSteps(id){currentSequenceId=id;const data=await api('/api/sequences/'+id);currentSequenceSteps=data.steps||[];document.getElementById('modal').classList.add('wide');document.getElementById('modalTitle').textContent='Steps: '+data.sequence.name;renderStepsList();document.getElementById('modalOverlay').classList.add('active')}
+function renderStepsList(){let stepsHtml=currentSequenceSteps.length?currentSequenceSteps.map((s,i)=>{const preview=s.body_html?s.body_html.replace(/<[^>]*>/g,'').substring(0,80)+'...':'No content';return'<div class="step-card" onclick="editStep('+i+')"><div class="step-header"><span class="step-title">Step '+(i+1)+'</span><span class="step-delay">'+s.delay_minutes+' min delay</span></div><div class="step-subject">'+escHtml(s.subject)+'</div><div class="step-preview">'+escHtml(preview)+'</div></div>'}).join(''):'<p class="empty-state">No steps yet</p>';document.getElementById('modalContent').innerHTML=stepsHtml+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="addSequenceStep()">+ Add Step</button></div>'}
+function editStep(index){const step=currentSequenceSteps[index];document.getElementById('modalTitle').textContent='Edit Step '+(index+1);document.getElementById('modalContent').innerHTML='<form onsubmit="saveStep(event,\''+step.id+'\','+index+')"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="'+step.delay_minutes+'" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" value="'+escAttr(step.subject)+'" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;">'+escHtml(step.body_html||'')+'</textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="button" class="btn btn-danger" onclick="deleteStep(\''+step.id+'\')">Delete</button><button type="submit" class="btn btn-primary">Save</button></div></form>'}
+function addSequenceStep(){document.getElementById('modalTitle').textContent='Add Step';document.getElementById('modalContent').innerHTML='<form onsubmit="saveNewStep(event)"><div class="form-group"><label>Delay (minutes)</label><input type="number" name="delay_minutes" value="0" min="0"></div><div class="form-group"><label>Subject *</label><input type="text" name="subject" required></div><div class="form-group"><label>Body HTML *</label><textarea name="body_html" required style="min-height:250px;font-family:monospace;font-size:0.85rem;" placeholder="Email content. Will be wrapped in the list sequence template."></textarea></div><div class="modal-footer"><button type="button" class="btn" onclick="renderStepsList()">← Back</button><button type="submit" class="btn btn-primary">Add Step</button></div></form>'}
+async function saveStep(e,stepId,index){e.preventDefault();const form=e.target;const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'PUT',data);if(res.success){showToast('Step saved!');currentSequenceSteps[index]={...currentSequenceSteps[index],...data};renderStepsList();loadSequences()}else{showToast(res.error||'Failed to save','error')}}
+async function saveNewStep(e){e.preventDefault();const form=e.target;const data={delay_minutes:parseInt(form.delay_minutes.value)||0,subject:form.subject.value,body_html:form.body_html.value};const res=await api('/api/sequences/'+currentSequenceId+'/steps','POST',data);if(res.success){showToast('Step added!');viewSequenceSteps(currentSequenceId);loadSequences()}else{showToast(res.error||'Failed to add step','error')}}
+async function deleteStep(stepId){if(!confirm('Delete this step?'))return;const res=await api('/api/sequences/'+currentSequenceId+'/steps/'+stepId,'DELETE');if(res.success){showToast('Step deleted');viewSequenceSteps(currentSequenceId);loadSequences()}else{showToast(res.error||'Failed to delete','error')}}
 function escHtml(str){return str?str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
 function escAttr(str){return str?str.replace(/"/g,'&quot;').replace(/'/g,'&#39;'):'';}
-// ========== END SEQUENCE STEPS ==========
 
 async function viewSubscriber(id){const data=await api('/api/subscribers/'+id);document.getElementById('modalTitle').textContent=data.subscriber.email;document.getElementById('modalContent').innerHTML='<div style="margin-bottom:16px"><p style="margin-bottom:8px"><strong>Name:</strong> '+(data.subscriber.name||'-')+'</p><p style="margin-bottom:8px"><strong>Source:</strong> '+(data.subscriber.source||'-')+'</p><p style="margin-bottom:8px"><strong>Segment:</strong> '+(data.subscriber.segment||'-')+'</p><p><strong>Created:</strong> '+formatDate(data.subscriber.created_at)+'</p></div><hr style="border:none;border-top:2px solid var(--gray-300);margin:20px 0"><h4 style="margin-bottom:12px;font-size:0.9rem;font-weight:700">Subscriptions</h4>'+(data.subscriptions?.length?data.subscriptions.map(s=>'<p style="margin-bottom:4px">'+s.list_name+' - <span class="badge badge-'+s.status+'">'+s.status+'</span></p>').join(''):'<p style="color:var(--gray-600)">No subscriptions</p>')+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>';document.getElementById('modalOverlay').classList.add('active')}
 function formatDate(dateStr){if(!dateStr)return'-';return new Date(dateStr).toLocaleDateString()}
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', e => {
-  const nav = document.getElementById('navMobile');
-  const hamburger = document.querySelector('.nav-hamburger');
-  if (nav.classList.contains('open') && !nav.contains(e.target) && !hamburger.contains(e.target)) {
-    nav.classList.remove('open');
-  }
-});
+document.addEventListener('click', e => { const nav = document.getElementById('navMobile'); const hamburger = document.querySelector('.nav-hamburger'); if (nav.classList.contains('open') && !nav.contains(e.target) && !hamburger.contains(e.target)) { nav.classList.remove('open'); } });
   </script>
 </body>
 </html>
