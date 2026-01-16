@@ -317,19 +317,20 @@ async function submitEmail(event) {
     loading.classList.add('show');
     
     try {
-        // Submit to Email Bot Server (which also forwards to Beehiiv)
-        const response = await fetch('https://email-bot-server.micaiah-tasks.workers.dev/api/lead', {
+        // Subscribe to proverbs-library list via Courier
+        const response = await fetch('https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: email,
                 name: name,
+                list: 'proverbs-library',
                 source: 'proverbs-library',
                 funnel: 'proverbs-quiz',
                 segment: finalSegment,
-                quiz_result: {
-                    answers: answers,
-                    profile: result.title
+                metadata: {
+                    quiz_answers: answers,
+                    quiz_profile: result.title
                 },
                 tags: ['quiz-taker', finalSegment]
             })
@@ -338,7 +339,7 @@ async function submitEmail(event) {
         if (response.ok) {
             showResults(result);
         } else {
-            throw new Error('Failed to submit');
+            throw new Error('Failed to subscribe');
         }
         
     } catch (error) {
