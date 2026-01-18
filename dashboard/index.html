@@ -628,14 +628,130 @@
     let API_URL = '', API_KEY = '';
     let scratchpadItems = [], activeTasks = [], dueTasks = [], sprintTasks = [], orphanTasks = [], incomingTasks = [], messages = [], notes = [], sprintData = null, completedTasks = [], checkins = [];
     let notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
+    
+    // Notification tracking
+    let checkInterval = null, lastMessageCount = -1, lastIncomingCount = -1, lastOverdueIds = new Set();
 
     function toggleMobileMenu() { document.getElementById('navMobile').classList.toggle('open'); }
-    function toggleNotifications() {
-      notificationsEnabled = !notificationsEnabled;
-      localStorage.setItem('notificationsEnabled', notificationsEnabled);
-      updateNotificationUI();
-      showToast(notificationsEnabled ? 'Notifications enabled' : 'Notifications disabled');
+    
+    // ========== NOTIFICATION SYSTEM ==========
+    async function requestNotificationPermission() {
+      if (!('Notification' in window)) {
+        showToast('Notifications not supported');
+        return false;
+      }
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') {
+        showToast('Notifications blocked - check browser settings');
+        return false;
+      }
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
     }
+
+    function sendNotification(title, body, tag) {
+      if (!notificationsEnabled || Notification.permission !== 'granted') return;
+      try {
+        new Notification(title, {
+          body,
+          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAAAAABWESUoAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAd0SU1FB+oBAxEuHrgy6RIAAAChSURBVDjL5ZChCgJBFEUPi91h/AW7RTBq1CJm8TfET/AnNi4YNQjaZLVYxWo0bFoWzHoNwsrizPTF296bwztvHtQpsT55Fte4HwIkSetm2Y+c4yabst+oPKQZra4BBtPEqRgC9iRJO78iXwB0AjvcAEwAaAMUfsAsAS7uX8xn2J4FWIUPpWPkVwBsxy+3AtDjfk4O37oKjPY/w9yKugF/kjf6XURzvfVXjQAAAABJRU5ErkJggg==',
+          tag,
+          requireInteraction: false
+        });
+      } catch (e) { console.error('Notification error:', e); }
+    }
+
+    async function toggleNotifications() {
+      if (!notificationsEnabled) {
+        const granted = await requestNotificationPermission();
+        if (granted) {
+          notificationsEnabled = true;
+          localStorage.setItem('notificationsEnabled', 'true');
+          startBackgroundCheck();
+          showToast('Notifications enabled');
+        }
+      } else {
+        notificationsEnabled = false;
+        localStorage.setItem('notificationsEnabled', 'false');
+        stopBackgroundCheck();
+        showToast('Notifications disabled');
+      }
+      updateNotificationUI();
+    }
+
+    function startBackgroundCheck() {
+      if (checkInterval) return;
+      checkInterval = setInterval(checkForNotifications, 30000);
+      checkForNotifications();
+    }
+
+    function stopBackgroundCheck() {
+      if (checkInterval) {
+        clearInterval(checkInterval);
+        checkInterval = null;
+      }
+    }
+
+    async function checkForNotifications() {
+      if (!notificationsEnabled || !API_URL) return;
+      try {
+        const data = await api('/morning');
+        if (!data) return;
+
+        // Check for new messages
+        const msgCount = data.unreadMessages || 0;
+        if (lastMessageCount !== -1 && msgCount > lastMessageCount) {
+          sendNotification('💬 New Message', 'You have a new message from your teammate!', 'message-' + Date.now());
+        }
+        lastMessageCount = msgCount;
+
+        // Check for new incoming tasks
+        const incomingCount = data.incomingCount || (data.incoming || []).length;
+        if (lastIncomingCount !== -1 && incomingCount > lastIncomingCount) {
+          const newCount = incomingCount - lastIncomingCount;
+          sendNotification('📥 New Task', `You have ${newCount} new task${newCount > 1 ? 's' : ''} from your teammate!`, 'incoming-' + Date.now());
+        }
+        lastIncomingCount = incomingCount;
+
+        // Check for newly overdue tasks
+        const overdue = data.overdueTasks || [];
+        const currentOverdueIds = new Set(overdue.map(t => t.id));
+        for (const task of overdue) {
+          if (!lastOverdueIds.has(task.id)) {
+            sendNotification('⚠️ Task Overdue', task.text.substring(0, 100), 'overdue-' + task.id);
+          }
+        }
+        lastOverdueIds = currentOverdueIds;
+
+        // Check for tasks due today (once per day per task)
+        const today = new Date().toISOString().split('T')[0];
+        const todayNotified = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
+        if (todayNotified.date !== today) {
+          localStorage.setItem('notifiedToday', JSON.stringify({ date: today, tasks: [] }));
+        }
+        const notifiedData = JSON.parse(localStorage.getItem('notifiedToday') || '{}');
+        
+        const allTasks = [...(data.activeTasks || []), ...(data.sprintTasks || [])];
+        for (const task of allTasks) {
+          if (task.due_date === today && !notifiedData.tasks?.includes(task.id)) {
+            sendNotification('📅 Task Due Today', task.text.substring(0, 100), 'due-' + task.id);
+            notifiedData.tasks = [...(notifiedData.tasks || []), task.id];
+            localStorage.setItem('notifiedToday', JSON.stringify(notifiedData));
+          }
+        }
+      } catch (e) { console.error('Background check error:', e); }
+    }
+
+    function initNotifications() {
+      const saved = localStorage.getItem('notificationsEnabled');
+      if (saved === 'true' && Notification.permission === 'granted') {
+        notificationsEnabled = true;
+        startBackgroundCheck();
+      }
+      updateNotificationUI();
+    }
+    // ========== END NOTIFICATION SYSTEM ==========
+    
     function updateNotificationUI() {
       const status = notificationsEnabled ? 'On' : 'Off';
       document.getElementById('notifStatus').textContent = status;
@@ -685,7 +801,7 @@
     function showMainApp() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.add('visible');
-      updateNotificationUI();
+      initNotifications();
       loadData();
     }
     async function api(endpoint, options = {}) {
