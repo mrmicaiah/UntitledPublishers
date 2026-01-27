@@ -69,11 +69,11 @@
       flex: 1; max-width: 800px; margin: 0 auto; padding: 24px 16px; width: 100%;
       transition: margin-right 0.3s ease;
     }
-    .content.sidebar-open { margin-right: 360px; }
+    .content.sidebar-open { margin-right: 320px; }
     
     /* Right Sidebar */
     .sidebar {
-      position: fixed; right: 0; top: 53px; bottom: 0; width: 340px;
+      position: fixed; right: 0; top: 53px; bottom: 0; width: 300px;
       background: #1e293b; border-left: 1px solid #334155;
       transform: translateX(100%); transition: transform 0.3s ease;
       z-index: 90; display: flex; flex-direction: column; overflow: hidden;
@@ -88,88 +88,76 @@
       font-size: 0.9rem; transition: all 0.3s ease; z-index: 91;
     }
     .sidebar-toggle:hover { background: #334155; color: #e2e8f0; }
-    .sidebar-toggle.open { right: 340px; }
+    .sidebar-toggle.open { right: 300px; }
     .sidebar-toggle .arrow { transition: transform 0.3s; }
     .sidebar-toggle.open .arrow { transform: rotate(180deg); }
     
-    .sidebar-content { flex: 1; overflow-y: auto; padding: 16px; }
+    .sidebar-content { flex: 1; overflow-y: auto; padding: 12px; }
     
     /* Section headers */
-    .sidebar-section-header {
+    .section-header {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #334155;
+      margin: 16px 0 8px 0; padding-bottom: 6px; border-bottom: 1px solid #334155;
     }
-    .sidebar-section-title {
+    .section-header:first-child { margin-top: 0; }
+    .section-title {
       font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.05em; color: #64748b;
     }
-    .sidebar-section-title.micaiah { color: #06b6d4; }
-    .sidebar-section-title.irene { color: #f472b6; }
-    .sidebar-section-count {
-      font-size: 0.65rem; color: #475569; background: #0f172a;
-      padding: 2px 8px; border-radius: 10px;
+    .section-title.micaiah { color: #06b6d4; }
+    .section-title.irene { color: #f472b6; }
+    .section-count {
+      font-size: 0.6rem; color: #475569; background: #0f172a;
+      padding: 2px 6px; border-radius: 8px;
     }
     
-    /* Horizontal scroll container */
-    .log-scroll {
-      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px;
-      margin-bottom: 20px; scrollbar-width: thin; scrollbar-color: #334155 transparent;
+    /* Card grid - 2 columns */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
     }
-    .log-scroll::-webkit-scrollbar { height: 6px; }
-    .log-scroll::-webkit-scrollbar-track { background: transparent; }
-    .log-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    .log-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
     
     /* Compact work log card */
     .log-card {
-      flex: 0 0 140px; height: 90px; background: #0f172a; border: 1px solid #334155;
-      border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.15s;
-      display: flex; flex-direction: column; justify-content: space-between;
+      background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+      padding: 10px; cursor: pointer; transition: all 0.15s;
     }
-    .log-card:hover { border-color: #8b5cf6; transform: translateY(-2px); }
+    .log-card:hover { border-color: #8b5cf6; transform: translateY(-1px); }
     .log-card-dates { font-size: 0.6rem; color: #64748b; margin-bottom: 4px; }
     .log-card-preview {
-      font-size: 0.7rem; color: #94a3b8; line-height: 1.3;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-      overflow: hidden; flex: 1;
+      font-size: 0.68rem; color: #94a3b8; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .log-card-shipped {
-      font-size: 0.6rem; color: #22c55e; margin-top: 4px;
+      font-size: 0.58rem; color: #22c55e; margin-top: 4px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     
-    /* My Check-ins section */
-    .checkin-scroll {
-      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px;
-      scrollbar-width: thin; scrollbar-color: #334155 transparent;
-    }
-    .checkin-scroll::-webkit-scrollbar { height: 6px; }
-    .checkin-scroll::-webkit-scrollbar-track { background: transparent; }
-    .checkin-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    
+    /* Compact check-in card */
     .mini-checkin {
-      flex: 0 0 160px; height: 80px; background: #0f172a; border: 1px solid #334155;
-      border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.15s;
-      display: flex; flex-direction: column;
+      background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+      padding: 10px; cursor: pointer; transition: all 0.15s;
     }
-    .mini-checkin:hover { border-color: #06b6d4; transform: translateY(-2px); }
+    .mini-checkin:hover { border-color: #06b6d4; transform: translateY(-1px); }
     .mini-checkin-time { font-size: 0.6rem; color: #64748b; margin-bottom: 2px; }
     .mini-checkin-project {
       font-size: 0.55rem; color: #475569; background: #1e293b;
-      padding: 1px 5px; border-radius: 3px; display: inline-block;
-      margin-bottom: 4px; max-width: fit-content;
+      padding: 1px 4px; border-radius: 3px; display: inline-block; margin-bottom: 3px;
     }
     .mini-checkin-summary {
-      font-size: 0.7rem; color: #94a3b8; line-height: 1.3;
+      font-size: 0.68rem; color: #94a3b8; line-height: 1.3;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; flex: 1;
+      overflow: hidden;
     }
     
     .sidebar-empty {
+      grid-column: 1 / -1;
       display: flex; align-items: center; justify-content: center;
-      height: 90px; color: #475569; font-size: 0.75rem;
+      padding: 20px; color: #475569; font-size: 0.7rem;
       background: #0f172a; border: 1px dashed #334155; border-radius: 8px;
-      min-width: 140px;
     }
     
     /* Work Log Modal */
@@ -212,8 +200,9 @@
     
     @media (max-width: 900px) {
       .content.sidebar-open { margin-right: 0; }
-      .sidebar { width: 100%; max-width: 340px; }
-      .sidebar-toggle.open { right: min(340px, 100%); }
+      .sidebar { width: 280px; }
+      .sidebar-toggle.open { right: 280px; }
+      .card-grid { grid-template-columns: 1fr; }
     }
     
     .page-header { margin-bottom: 24px; }
@@ -506,31 +495,31 @@
       
       container.innerHTML = `
         <!-- My Work Logs -->
-        <div class="sidebar-section-header">
-          <span class="sidebar-section-title ${currentUser}">📓 My Work Logs</span>
-          <span class="sidebar-section-count">${myLogs.length}</span>
+        <div class="section-header">
+          <span class="section-title ${currentUser}">📓 My Work Logs</span>
+          <span class="section-count">${myLogs.length}</span>
         </div>
-        <div class="log-scroll">
+        <div class="card-grid">
           ${myLogs.length > 0 ? myLogs.map(log => renderLogCard(log)).join('') : 
             '<div class="sidebar-empty">No logs yet</div>'}
         </div>
         
         <!-- Their Work Logs -->
-        <div class="sidebar-section-header">
-          <span class="sidebar-section-title ${otherUser}">📓 ${capitalize(otherUser)}'s Logs</span>
-          <span class="sidebar-section-count">${theirLogs.length}</span>
+        <div class="section-header">
+          <span class="section-title ${otherUser}">📓 ${capitalize(otherUser)}'s Logs</span>
+          <span class="section-count">${theirLogs.length}</span>
         </div>
-        <div class="log-scroll">
+        <div class="card-grid">
           ${theirLogs.length > 0 ? theirLogs.map(log => renderLogCard(log)).join('') : 
             '<div class="sidebar-empty">No logs yet</div>'}
         </div>
         
         <!-- My Recent Check-ins -->
-        <div class="sidebar-section-header">
-          <span class="sidebar-section-title ${currentUser}">👤 My Recent Check-ins</span>
-          <span class="sidebar-section-count">${myCheckins.length}</span>
+        <div class="section-header">
+          <span class="section-title ${currentUser}">👤 My Check-ins</span>
+          <span class="section-count">${myCheckins.length}</span>
         </div>
-        <div class="checkin-scroll">
+        <div class="card-grid">
           ${myCheckins.length > 0 ? myCheckins.map(c => `
             <div class="mini-checkin" onclick="scrollToCheckin('${c.id}')">
               <div class="mini-checkin-time">${formatTime(c.created_at)}</div>
@@ -548,8 +537,8 @@
       return `
         <div class="log-card" onclick="openWorkLog('${log.id}')">
           <div class="log-card-dates">${formatDateRange(log.start_date, log.end_date)}</div>
-          <div class="log-card-preview">${esc(log.narrative?.substring(0, 80) || '')}</div>
-          ${firstShipped ? `<div class="log-card-shipped">🚀 ${esc(firstShipped.substring(0, 30))}${firstShipped.length > 30 ? '...' : ''}</div>` : ''}
+          <div class="log-card-preview">${esc(log.narrative?.substring(0, 60) || '')}</div>
+          ${firstShipped ? `<div class="log-card-shipped">🚀 ${esc(firstShipped.substring(0, 25))}...</div>` : ''}
         </div>
       `;
     }
