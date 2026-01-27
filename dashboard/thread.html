@@ -158,37 +158,93 @@
     .sidebar-section { display: none; }
     .sidebar-section.active { display: block; }
     
-    /* Work Log Cards */
+    /* Work Log Cards - Compact/Collapsed by default */
     .worklog-card {
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
-      cursor: pointer;
+      margin-bottom: 10px;
+      overflow: hidden;
       transition: all 0.15s;
     }
     .worklog-card:hover { border-color: #8b5cf6; }
     .worklog-card.expanded { border-color: #8b5cf6; }
+    
     .worklog-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
+      align-items: center;
+      padding: 12px 14px;
+      cursor: pointer;
+      background: #0f172a;
     }
-    .worklog-meta { display: flex; flex-direction: column; gap: 2px; }
-    .worklog-user { font-size: 0.75rem; font-weight: 600; color: #8b5cf6; }
-    .worklog-user.irene { color: #f472b6; }
-    .worklog-dates { font-size: 0.65rem; color: #64748b; }
-    .worklog-expand { background: none; border: none; color: #64748b; cursor: pointer; font-size: 0.7rem; transition: transform 0.2s; }
+    .worklog-header:hover { background: #1e293b; }
+    .worklog-meta { display: flex; align-items: center; gap: 8px; }
+    .worklog-user { 
+      font-size: 0.7rem; 
+      font-weight: 600; 
+      color: #8b5cf6; 
+      background: rgba(139, 92, 246, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .worklog-user.irene { color: #f472b6; background: rgba(244, 114, 182, 0.15); }
+    .worklog-dates { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
+    .worklog-expand { 
+      background: none; 
+      border: none; 
+      color: #64748b; 
+      cursor: pointer; 
+      font-size: 0.7rem; 
+      transition: transform 0.2s;
+      padding: 4px;
+    }
     .worklog-expand.expanded { transform: rotate(180deg); }
-    .worklog-preview { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .worklog-body { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155; }
+    
+    .worklog-body { 
+      display: none; 
+      padding: 0 14px 14px 14px;
+      border-top: 1px solid #334155;
+    }
     .worklog-body.visible { display: block; }
-    .worklog-narrative { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; white-space: pre-wrap; margin-bottom: 12px; }
-    .worklog-shipped-title { font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-    .worklog-shipped-item { font-size: 0.75rem; color: #22c55e; padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; }
-    .worklog-shipped-item::before { content: '🚀'; font-size: 0.7rem; }
+    
+    .worklog-narrative { 
+      font-size: 0.8rem; 
+      color: #cbd5e1; 
+      line-height: 1.5; 
+      white-space: pre-wrap; 
+      margin: 12px 0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .worklog-shipped-title { 
+      font-size: 0.65rem; 
+      color: #64748b; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+      margin-bottom: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #334155;
+    }
+    .worklog-shipped-item { 
+      font-size: 0.75rem; 
+      color: #22c55e; 
+      padding: 3px 0; 
+      display: flex; 
+      align-items: flex-start; 
+      gap: 6px; 
+    }
+    .worklog-shipped-item::before { content: '🚀'; font-size: 0.65rem; }
+    
+    .worklog-count {
+      font-size: 0.7rem;
+      color: #64748b;
+      text-align: center;
+      padding: 8px;
+      border-top: 1px solid #334155;
+      margin-top: 8px;
+    }
     
     /* My Check-ins (compact) */
     .my-checkin {
@@ -465,14 +521,14 @@
 
     async function loadWorklogs() {
       document.getElementById('sectionLogs').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
-      const data = await api('/worklogs?limit=20');
+      const data = await api('/worklogs?limit=50');
       worklogs = data?.worklogs || [];
       renderWorklogs();
     }
 
     async function loadMyCheckins() {
       document.getElementById('sectionMine').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
-      const data = await api(`/checkins?limit=30&user=${currentUser}`);
+      const data = await api(`/checkins?limit=50&user=${currentUser}`);
       myCheckins = data?.checkins || [];
       renderMyCheckins();
     }
@@ -534,19 +590,21 @@
         container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">📓</div><div class="sidebar-empty-text">No work logs yet.<br>Say "log my work" in Claude.</div></div>';
         return;
       }
-      container.innerHTML = worklogs.map(log => {
+      
+      let html = worklogs.map(log => {
         const isExpanded = expandedLogIds.has(log.id);
         const shipped = log.shipped ? JSON.parse(log.shipped) : [];
+        // Use period_start and period_end (correct field names from DB)
+        const dateRange = formatDateRange(log.period_start, log.period_end);
         return `
-          <div class="worklog-card ${isExpanded ? 'expanded' : ''}" onclick="toggleWorklog('${log.id}')">
-            <div class="worklog-header">
+          <div class="worklog-card ${isExpanded ? 'expanded' : ''}">
+            <div class="worklog-header" onclick="toggleWorklog('${log.id}')">
               <div class="worklog-meta">
                 <span class="worklog-user ${log.user_id === 'irene' ? 'irene' : ''}">${esc(log.user_id)}</span>
-                <span class="worklog-dates">${formatDateRange(log.start_date, log.end_date)}</span>
+                <span class="worklog-dates">${dateRange}</span>
               </div>
               <button class="worklog-expand ${isExpanded ? 'expanded' : ''}">▼</button>
             </div>
-            <div class="worklog-preview">${esc(log.narrative?.substring(0, 120) || '')}...</div>
             <div class="worklog-body ${isExpanded ? 'visible' : ''}" id="logbody-${log.id}">
               <div class="worklog-narrative">${esc(log.narrative || '')}</div>
               ${shipped.length > 0 ? `
@@ -557,6 +615,9 @@
           </div>
         `;
       }).join('');
+      
+      html += `<div class="worklog-count">${worklogs.length} work log${worklogs.length !== 1 ? 's' : ''}</div>`;
+      container.innerHTML = html;
     }
 
     function renderMyCheckins() {
@@ -565,13 +626,15 @@
         container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">👤</div><div class="sidebar-empty-text">No check-ins yet.<br>Say "recap" in Claude.</div></div>';
         return;
       }
-      container.innerHTML = myCheckins.map(c => `
+      let html = myCheckins.map(c => `
         <div class="my-checkin" onclick="scrollToCheckin('${c.id}')">
           <div class="my-checkin-time">${formatTime(c.created_at)}</div>
           ${c.project_name ? `<div class="my-checkin-project">${esc(c.project_name)}</div>` : ''}
           <div class="my-checkin-summary">${esc(c.thread_summary)}</div>
         </div>
       `).join('');
+      html += `<div class="worklog-count">${myCheckins.length} check-in${myCheckins.length !== 1 ? 's' : ''}</div>`;
+      container.innerHTML = html;
     }
 
     function toggleWorklog(id) {
@@ -681,7 +744,10 @@
     }
 
     function formatTime(ts) {
-      const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 60000);
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      const now = new Date(), diff = Math.floor((now - d) / 60000);
       if (diff < 1) return 'just now';
       if (diff < 60) return diff + 'm ago';
       if (diff < 1440) return Math.floor(diff/60) + 'h ago';
@@ -690,8 +756,13 @@
     }
 
     function formatDateRange(start, end) {
-      const s = new Date(start), e = new Date(end);
+      if (!start) return 'Unknown date';
+      const s = new Date(start);
+      if (isNaN(s.getTime())) return 'Unknown date';
       const opts = { month: 'short', day: 'numeric' };
+      if (!end) return s.toLocaleDateString('en-US', opts);
+      const e = new Date(end);
+      if (isNaN(e.getTime())) return s.toLocaleDateString('en-US', opts);
       if (s.toDateString() === e.toDateString()) {
         return s.toLocaleDateString('en-US', opts);
       }
