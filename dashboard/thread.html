@@ -51,7 +51,6 @@
       transition: all 0.2s; font-family: inherit;
     }
     .nav-link:hover { border-color: #64748b; color: #e2e8f0; }
-    .nav-link.active { background: #334155; color: #e2e8f0; border-color: #475569; }
     .nav-link.helm { border-color: #f97316; color: #f97316; }
     .nav-link.helm:hover { background: #f97316; color: white; }
     .nav-icon-btn {
@@ -64,233 +63,157 @@
     .nav-mobile.open { display: flex; }
     @media (max-width: 900px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
     
-    /* Main layout with sidebar */
-    .page-layout {
-      display: flex;
-      flex: 1;
-      position: relative;
-    }
+    .page-layout { display: flex; flex: 1; position: relative; }
     
     .content { 
-      flex: 1; 
-      max-width: 800px; 
-      margin: 0 auto; 
-      padding: 24px 16px; 
-      width: 100%;
+      flex: 1; max-width: 800px; margin: 0 auto; padding: 24px 16px; width: 100%;
       transition: margin-right 0.3s ease;
     }
-    .content.sidebar-open {
-      margin-right: 340px;
-    }
+    .content.sidebar-open { margin-right: 360px; }
     
     /* Right Sidebar */
     .sidebar {
-      position: fixed;
-      right: 0;
-      top: 53px;
-      bottom: 0;
-      width: 320px;
-      background: #1e293b;
-      border-left: 1px solid #334155;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 90;
-      display: flex;
-      flex-direction: column;
+      position: fixed; right: 0; top: 53px; bottom: 0; width: 340px;
+      background: #1e293b; border-left: 1px solid #334155;
+      transform: translateX(100%); transition: transform 0.3s ease;
+      z-index: 90; display: flex; flex-direction: column; overflow: hidden;
     }
     .sidebar.open { transform: translateX(0); }
     
     .sidebar-toggle {
-      position: fixed;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 28px;
-      height: 80px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-right: none;
-      border-radius: 8px 0 0 8px;
-      color: #64748b;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      z-index: 91;
+      position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 80px; background: #1e293b; border: 1px solid #334155;
+      border-right: none; border-radius: 8px 0 0 8px; color: #64748b;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; transition: all 0.3s ease; z-index: 91;
     }
     .sidebar-toggle:hover { background: #334155; color: #e2e8f0; }
-    .sidebar-toggle.open { right: 320px; }
+    .sidebar-toggle.open { right: 340px; }
     .sidebar-toggle .arrow { transition: transform 0.3s; }
     .sidebar-toggle.open .arrow { transform: rotate(180deg); }
     
-    .sidebar-header {
-      padding: 16px;
-      border-bottom: 1px solid #334155;
-      display: flex;
-      gap: 8px;
-    }
-    .sidebar-tab {
-      flex: 1;
-      padding: 8px 12px;
-      background: transparent;
-      border: 1px solid #334155;
-      border-radius: 6px;
-      color: #64748b;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-    .sidebar-tab:hover { border-color: #475569; color: #94a3b8; }
-    .sidebar-tab.active { background: #8b5cf6; border-color: #8b5cf6; color: white; }
-    .sidebar-tab.active.logs { background: #8b5cf6; border-color: #8b5cf6; }
-    .sidebar-tab.active.mine { background: #06b6d4; border-color: #06b6d4; }
+    .sidebar-content { flex: 1; overflow-y: auto; padding: 16px; }
     
-    .sidebar-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
+    /* Section headers */
+    .sidebar-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #334155;
+    }
+    .sidebar-section-title {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; color: #64748b;
+    }
+    .sidebar-section-title.micaiah { color: #06b6d4; }
+    .sidebar-section-title.irene { color: #f472b6; }
+    .sidebar-section-count {
+      font-size: 0.65rem; color: #475569; background: #0f172a;
+      padding: 2px 8px; border-radius: 10px;
     }
     
-    .sidebar-section { display: none; }
-    .sidebar-section.active { display: block; }
+    /* Horizontal scroll container */
+    .log-scroll {
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px;
+      margin-bottom: 20px; scrollbar-width: thin; scrollbar-color: #334155 transparent;
+    }
+    .log-scroll::-webkit-scrollbar { height: 6px; }
+    .log-scroll::-webkit-scrollbar-track { background: transparent; }
+    .log-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    .log-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
     
-    /* Work Log Cards - Compact/Collapsed by default */
-    .worklog-card {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      transition: all 0.15s;
+    /* Compact work log card */
+    .log-card {
+      flex: 0 0 140px; height: 90px; background: #0f172a; border: 1px solid #334155;
+      border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-    .worklog-card:hover { border-color: #8b5cf6; }
-    .worklog-card.expanded { border-color: #8b5cf6; }
-    
-    .worklog-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 14px;
-      cursor: pointer;
-      background: #0f172a;
+    .log-card:hover { border-color: #8b5cf6; transform: translateY(-2px); }
+    .log-card-dates { font-size: 0.6rem; color: #64748b; margin-bottom: 4px; }
+    .log-card-preview {
+      font-size: 0.7rem; color: #94a3b8; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden; flex: 1;
     }
-    .worklog-header:hover { background: #1e293b; }
-    .worklog-meta { display: flex; align-items: center; gap: 8px; }
-    .worklog-user { 
-      font-size: 0.7rem; 
-      font-weight: 600; 
-      color: #8b5cf6; 
-      background: rgba(139, 92, 246, 0.15);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-    .worklog-user.irene { color: #f472b6; background: rgba(244, 114, 182, 0.15); }
-    .worklog-dates { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
-    .worklog-expand { 
-      background: none; 
-      border: none; 
-      color: #64748b; 
-      cursor: pointer; 
-      font-size: 0.7rem; 
-      transition: transform 0.2s;
-      padding: 4px;
-    }
-    .worklog-expand.expanded { transform: rotate(180deg); }
-    
-    .worklog-body { 
-      display: none; 
-      padding: 0 14px 14px 14px;
-      border-top: 1px solid #334155;
-    }
-    .worklog-body.visible { display: block; }
-    
-    .worklog-narrative { 
-      font-size: 0.8rem; 
-      color: #cbd5e1; 
-      line-height: 1.5; 
-      white-space: pre-wrap; 
-      margin: 12px 0;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    .worklog-shipped-title { 
-      font-size: 0.65rem; 
-      color: #64748b; 
-      text-transform: uppercase; 
-      letter-spacing: 0.05em; 
-      margin-bottom: 8px;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #334155;
-    }
-    .worklog-shipped-item { 
-      font-size: 0.75rem; 
-      color: #22c55e; 
-      padding: 3px 0; 
-      display: flex; 
-      align-items: flex-start; 
-      gap: 6px; 
-    }
-    .worklog-shipped-item::before { content: '🚀'; font-size: 0.65rem; }
-    
-    .worklog-count {
-      font-size: 0.7rem;
-      color: #64748b;
-      text-align: center;
-      padding: 8px;
-      border-top: 1px solid #334155;
-      margin-top: 8px;
+    .log-card-shipped {
+      font-size: 0.6rem; color: #22c55e; margin-top: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     
-    /* My Check-ins (compact) */
-    .my-checkin {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.15s;
+    /* My Check-ins section */
+    .checkin-scroll {
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px;
+      scrollbar-width: thin; scrollbar-color: #334155 transparent;
     }
-    .my-checkin:hover { border-color: #06b6d4; }
-    .my-checkin-time { font-size: 0.65rem; color: #64748b; margin-bottom: 4px; }
-    .my-checkin-project { font-size: 0.6rem; color: #64748b; background: #334155; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 6px; }
-    .my-checkin-summary { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .checkin-scroll::-webkit-scrollbar { height: 6px; }
+    .checkin-scroll::-webkit-scrollbar-track { background: transparent; }
+    .checkin-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    
+    .mini-checkin {
+      flex: 0 0 160px; height: 80px; background: #0f172a; border: 1px solid #334155;
+      border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column;
+    }
+    .mini-checkin:hover { border-color: #06b6d4; transform: translateY(-2px); }
+    .mini-checkin-time { font-size: 0.6rem; color: #64748b; margin-bottom: 2px; }
+    .mini-checkin-project {
+      font-size: 0.55rem; color: #475569; background: #1e293b;
+      padding: 1px 5px; border-radius: 3px; display: inline-block;
+      margin-bottom: 4px; max-width: fit-content;
+    }
+    .mini-checkin-summary {
+      font-size: 0.7rem; color: #94a3b8; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; flex: 1;
+    }
     
     .sidebar-empty {
-      text-align: center;
-      padding: 40px 20px;
-      color: #64748b;
+      display: flex; align-items: center; justify-content: center;
+      height: 90px; color: #475569; font-size: 0.75rem;
+      background: #0f172a; border: 1px dashed #334155; border-radius: 8px;
+      min-width: 140px;
     }
-    .sidebar-empty-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
-    .sidebar-empty-text { font-size: 0.8rem; }
     
-    .sidebar-loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      color: #64748b;
-      font-size: 0.8rem;
+    /* Work Log Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 1000; display: none;
+      align-items: center; justify-content: center; padding: 20px;
     }
-    .sidebar-spinner {
-      width: 18px;
-      height: 18px;
-      border: 2px solid #334155;
-      border-top-color: #8b5cf6;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+      max-width: 600px; width: 100%; max-height: 80vh; overflow: hidden;
+      display: flex; flex-direction: column;
     }
+    .modal-header {
+      padding: 16px 20px; border-bottom: 1px solid #334155;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-title { font-size: 1rem; font-weight: 600; color: #e2e8f0; }
+    .modal-meta { font-size: 0.75rem; color: #64748b; }
+    .modal-close {
+      background: none; border: none; color: #64748b; font-size: 1.5rem;
+      cursor: pointer; line-height: 1;
+    }
+    .modal-close:hover { color: #e2e8f0; }
+    .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+    .modal-narrative {
+      font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;
+      white-space: pre-wrap; margin-bottom: 20px;
+    }
+    .modal-shipped-title {
+      font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 10px;
+    }
+    .modal-shipped-item {
+      font-size: 0.85rem; color: #22c55e; padding: 6px 0;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .modal-shipped-item::before { content: '🚀'; }
     
     @media (max-width: 900px) {
       .content.sidebar-open { margin-right: 0; }
-      .sidebar { width: 100%; max-width: 320px; }
-      .sidebar-toggle.open { right: min(320px, 100%); }
+      .sidebar { width: 100%; max-width: 340px; }
+      .sidebar-toggle.open { right: min(340px, 100%); }
     }
     
     .page-header { margin-bottom: 24px; }
@@ -404,28 +327,31 @@
         </div>
       </div>
 
-      <!-- Sidebar Toggle Button -->
       <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
         <span class="arrow">◀</span>
       </button>
 
-      <!-- Right Sidebar -->
       <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <button class="sidebar-tab logs active" id="tabLogs" onclick="setSidebarTab('logs')">📓 Work Logs</button>
-          <button class="sidebar-tab mine" id="tabMine" onclick="setSidebarTab('mine')">👤 My Check-ins</button>
+        <div class="sidebar-content" id="sidebarContent">
+          <!-- Content loaded dynamically -->
         </div>
-        <div class="sidebar-content">
-          <!-- Work Logs Section -->
-          <div class="sidebar-section active" id="sectionLogs">
-            <div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>
-          </div>
-          
-          <!-- My Check-ins Section -->
-          <div class="sidebar-section" id="sectionMine">
-            <div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>
-          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Log Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalTitle">Work Log</div>
+          <div class="modal-meta" id="modalMeta"></div>
         </div>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-narrative" id="modalNarrative"></div>
+        <div id="modalShipped"></div>
       </div>
     </div>
   </div>
@@ -439,8 +365,8 @@
     };
     let API_URL = '', API_KEY = '', currentUser = '';
     let checkins = [], worklogs = [], myCheckins = [];
-    let filter = 'all', expandedIds = new Set(), expandedLogIds = new Set();
-    let sidebarOpen = false, sidebarTab = 'logs';
+    let filter = 'all', expandedIds = new Set();
+    let sidebarOpen = false;
 
     function toggleMobileMenu() { document.getElementById('navMobile').classList.toggle('open'); }
 
@@ -507,8 +433,7 @@
 
     async function loadAll() {
       loadCheckins();
-      loadWorklogs();
-      loadMyCheckins();
+      loadSidebarData();
     }
 
     async function loadCheckins() {
@@ -519,34 +444,21 @@
       renderCheckins();
     }
 
-    async function loadWorklogs() {
-      document.getElementById('sectionLogs').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
-      const data = await api('/worklogs?limit=50');
-      worklogs = data?.worklogs || [];
-      renderWorklogs();
+    async function loadSidebarData() {
+      const [logsData, myData] = await Promise.all([
+        api('/worklogs?limit=30'),
+        api(`/checkins?limit=20&user=${currentUser}`)
+      ]);
+      worklogs = logsData?.worklogs || [];
+      myCheckins = myData?.checkins || [];
+      renderSidebar();
     }
 
-    async function loadMyCheckins() {
-      document.getElementById('sectionMine').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
-      const data = await api(`/checkins?limit=50&user=${currentUser}`);
-      myCheckins = data?.checkins || [];
-      renderMyCheckins();
-    }
-
-    // Sidebar controls
     function toggleSidebar() {
       sidebarOpen = !sidebarOpen;
       document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
       document.getElementById('sidebarToggle').classList.toggle('open', sidebarOpen);
       document.getElementById('mainContent').classList.toggle('sidebar-open', sidebarOpen);
-    }
-
-    function setSidebarTab(tab) {
-      sidebarTab = tab;
-      document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.sidebar-section').forEach(s => s.classList.remove('active'));
-      document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-      document.getElementById('section' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
     }
 
     function setFilter(f) {
@@ -584,76 +496,93 @@
       }).join('');
     }
 
-    function renderWorklogs() {
-      const container = document.getElementById('sectionLogs');
-      if (worklogs.length === 0) {
-        container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">📓</div><div class="sidebar-empty-text">No work logs yet.<br>Say "log my work" in Claude.</div></div>';
-        return;
-      }
+    function renderSidebar() {
+      const container = document.getElementById('sidebarContent');
       
-      let html = worklogs.map(log => {
-        const isExpanded = expandedLogIds.has(log.id);
-        const shipped = log.shipped ? JSON.parse(log.shipped) : [];
-        // Use period_start and period_end (correct field names from DB)
-        const dateRange = formatDateRange(log.period_start, log.period_end);
-        return `
-          <div class="worklog-card ${isExpanded ? 'expanded' : ''}">
-            <div class="worklog-header" onclick="toggleWorklog('${log.id}')">
-              <div class="worklog-meta">
-                <span class="worklog-user ${log.user_id === 'irene' ? 'irene' : ''}">${esc(log.user_id)}</span>
-                <span class="worklog-dates">${dateRange}</span>
-              </div>
-              <button class="worklog-expand ${isExpanded ? 'expanded' : ''}">▼</button>
-            </div>
-            <div class="worklog-body ${isExpanded ? 'visible' : ''}" id="logbody-${log.id}">
-              <div class="worklog-narrative">${esc(log.narrative || '')}</div>
-              ${shipped.length > 0 ? `
-                <div class="worklog-shipped-title">Shipped</div>
-                ${shipped.map(s => `<div class="worklog-shipped-item">${esc(s)}</div>`).join('')}
-              ` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
+      // Split work logs by user
+      const myLogs = worklogs.filter(l => l.user_id === currentUser);
+      const theirLogs = worklogs.filter(l => l.user_id !== currentUser);
+      const otherUser = currentUser === 'micaiah' ? 'irene' : 'micaiah';
       
-      html += `<div class="worklog-count">${worklogs.length} work log${worklogs.length !== 1 ? 's' : ''}</div>`;
-      container.innerHTML = html;
-    }
-
-    function renderMyCheckins() {
-      const container = document.getElementById('sectionMine');
-      if (myCheckins.length === 0) {
-        container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">👤</div><div class="sidebar-empty-text">No check-ins yet.<br>Say "recap" in Claude.</div></div>';
-        return;
-      }
-      let html = myCheckins.map(c => `
-        <div class="my-checkin" onclick="scrollToCheckin('${c.id}')">
-          <div class="my-checkin-time">${formatTime(c.created_at)}</div>
-          ${c.project_name ? `<div class="my-checkin-project">${esc(c.project_name)}</div>` : ''}
-          <div class="my-checkin-summary">${esc(c.thread_summary)}</div>
+      container.innerHTML = `
+        <!-- My Work Logs -->
+        <div class="sidebar-section-header">
+          <span class="sidebar-section-title ${currentUser}">📓 My Work Logs</span>
+          <span class="sidebar-section-count">${myLogs.length}</span>
         </div>
-      `).join('');
-      html += `<div class="worklog-count">${myCheckins.length} check-in${myCheckins.length !== 1 ? 's' : ''}</div>`;
-      container.innerHTML = html;
+        <div class="log-scroll">
+          ${myLogs.length > 0 ? myLogs.map(log => renderLogCard(log)).join('') : 
+            '<div class="sidebar-empty">No logs yet</div>'}
+        </div>
+        
+        <!-- Their Work Logs -->
+        <div class="sidebar-section-header">
+          <span class="sidebar-section-title ${otherUser}">📓 ${capitalize(otherUser)}'s Logs</span>
+          <span class="sidebar-section-count">${theirLogs.length}</span>
+        </div>
+        <div class="log-scroll">
+          ${theirLogs.length > 0 ? theirLogs.map(log => renderLogCard(log)).join('') : 
+            '<div class="sidebar-empty">No logs yet</div>'}
+        </div>
+        
+        <!-- My Recent Check-ins -->
+        <div class="sidebar-section-header">
+          <span class="sidebar-section-title ${currentUser}">👤 My Recent Check-ins</span>
+          <span class="sidebar-section-count">${myCheckins.length}</span>
+        </div>
+        <div class="checkin-scroll">
+          ${myCheckins.length > 0 ? myCheckins.map(c => `
+            <div class="mini-checkin" onclick="scrollToCheckin('${c.id}')">
+              <div class="mini-checkin-time">${formatTime(c.created_at)}</div>
+              ${c.project_name ? `<div class="mini-checkin-project">${esc(c.project_name)}</div>` : ''}
+              <div class="mini-checkin-summary">${esc(c.thread_summary)}</div>
+            </div>
+          `).join('') : '<div class="sidebar-empty">No check-ins</div>'}
+        </div>
+      `;
     }
 
-    function toggleWorklog(id) {
-      if (expandedLogIds.has(id)) {
-        expandedLogIds.delete(id);
-      } else {
-        expandedLogIds.add(id);
+    function renderLogCard(log) {
+      const shipped = log.shipped ? JSON.parse(log.shipped) : [];
+      const firstShipped = shipped[0] || '';
+      return `
+        <div class="log-card" onclick="openWorkLog('${log.id}')">
+          <div class="log-card-dates">${formatDateRange(log.start_date, log.end_date)}</div>
+          <div class="log-card-preview">${esc(log.narrative?.substring(0, 80) || '')}</div>
+          ${firstShipped ? `<div class="log-card-shipped">🚀 ${esc(firstShipped.substring(0, 30))}${firstShipped.length > 30 ? '...' : ''}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function openWorkLog(id) {
+      const log = worklogs.find(l => l.id === id);
+      if (!log) return;
+      
+      const shipped = log.shipped ? JSON.parse(log.shipped) : [];
+      
+      document.getElementById('modalTitle').textContent = `📓 Work Log`;
+      document.getElementById('modalMeta').innerHTML = `<span style="color:${log.user_id === 'irene' ? '#f472b6' : '#06b6d4'}">${esc(log.user_id)}</span> · ${formatDateRange(log.start_date, log.end_date)}`;
+      document.getElementById('modalNarrative').textContent = log.narrative || '';
+      document.getElementById('modalShipped').innerHTML = shipped.length > 0 ? `
+        <div class="modal-shipped-title">Shipped</div>
+        ${shipped.map(s => `<div class="modal-shipped-item">${esc(s)}</div>`).join('')}
+      ` : '';
+      
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (!e || e.target === document.getElementById('modalOverlay')) {
+        document.getElementById('modalOverlay').classList.remove('open');
       }
-      renderWorklogs();
     }
 
     function scrollToCheckin(id) {
-      // If it's in the main list, scroll to it
       const card = document.getElementById('card-' + id);
       if (card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        toggleExpand(id);
+        if (!expandedIds.has(id)) toggleExpand(id);
       } else {
-        // Need to reset filter to 'all' to see it
         filter = 'all';
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById('filterAll').classList.add('active');
@@ -744,10 +673,7 @@
     }
 
     function formatTime(ts) {
-      if (!ts) return '';
-      const d = new Date(ts);
-      if (isNaN(d.getTime())) return '';
-      const now = new Date(), diff = Math.floor((now - d) / 60000);
+      const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 60000);
       if (diff < 1) return 'just now';
       if (diff < 60) return diff + 'm ago';
       if (diff < 1440) return Math.floor(diff/60) + 'h ago';
@@ -756,19 +682,13 @@
     }
 
     function formatDateRange(start, end) {
-      if (!start) return 'Unknown date';
-      const s = new Date(start);
-      if (isNaN(s.getTime())) return 'Unknown date';
+      const s = new Date(start), e = new Date(end);
       const opts = { month: 'short', day: 'numeric' };
-      if (!end) return s.toLocaleDateString('en-US', opts);
-      const e = new Date(end);
-      if (isNaN(e.getTime())) return s.toLocaleDateString('en-US', opts);
-      if (s.toDateString() === e.toDateString()) {
-        return s.toLocaleDateString('en-US', opts);
-      }
+      if (s.toDateString() === e.toDateString()) return s.toLocaleDateString('en-US', opts);
       return s.toLocaleDateString('en-US', opts) + ' → ' + e.toLocaleDateString('en-US', opts);
     }
 
+    function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
     function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
 
     function showToast(msg) {
@@ -784,6 +704,10 @@
       if (nav.classList.contains('open') && !nav.contains(e.target) && !hamburger.contains(e.target)) {
         nav.classList.remove('open');
       }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
     });
 
     if (!checkSession()) pinInputs[0].focus();
