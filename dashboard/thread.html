@@ -62,9 +62,181 @@
     .nav-hamburger { display: none; padding: 8px; background: transparent; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 1.2rem; }
     .nav-mobile { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1e293b; border-bottom: 1px solid #334155; padding: 12px; z-index: 100; flex-direction: column; gap: 8px; }
     .nav-mobile.open { display: flex; }
-    @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+    @media (max-width: 900px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
     
-    .content { flex: 1; max-width: 800px; margin: 0 auto; padding: 24px 16px; width: 100%; }
+    /* Main layout with sidebar */
+    .page-layout {
+      display: flex;
+      flex: 1;
+      position: relative;
+    }
+    
+    .content { 
+      flex: 1; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 24px 16px; 
+      width: 100%;
+      transition: margin-right 0.3s ease;
+    }
+    .content.sidebar-open {
+      margin-right: 340px;
+    }
+    
+    /* Right Sidebar */
+    .sidebar {
+      position: fixed;
+      right: 0;
+      top: 53px;
+      bottom: 0;
+      width: 320px;
+      background: #1e293b;
+      border-left: 1px solid #334155;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar.open { transform: translateX(0); }
+    
+    .sidebar-toggle {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 80px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      z-index: 91;
+    }
+    .sidebar-toggle:hover { background: #334155; color: #e2e8f0; }
+    .sidebar-toggle.open { right: 320px; }
+    .sidebar-toggle .arrow { transition: transform 0.3s; }
+    .sidebar-toggle.open .arrow { transform: rotate(180deg); }
+    
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      gap: 8px;
+    }
+    .sidebar-tab {
+      flex: 1;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .sidebar-tab:hover { border-color: #475569; color: #94a3b8; }
+    .sidebar-tab.active { background: #8b5cf6; border-color: #8b5cf6; color: white; }
+    .sidebar-tab.active.logs { background: #8b5cf6; border-color: #8b5cf6; }
+    .sidebar-tab.active.mine { background: #06b6d4; border-color: #06b6d4; }
+    
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    
+    .sidebar-section { display: none; }
+    .sidebar-section.active { display: block; }
+    
+    /* Work Log Cards */
+    .worklog-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .worklog-card:hover { border-color: #8b5cf6; }
+    .worklog-card.expanded { border-color: #8b5cf6; }
+    .worklog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .worklog-meta { display: flex; flex-direction: column; gap: 2px; }
+    .worklog-user { font-size: 0.75rem; font-weight: 600; color: #8b5cf6; }
+    .worklog-user.irene { color: #f472b6; }
+    .worklog-dates { font-size: 0.65rem; color: #64748b; }
+    .worklog-expand { background: none; border: none; color: #64748b; cursor: pointer; font-size: 0.7rem; transition: transform 0.2s; }
+    .worklog-expand.expanded { transform: rotate(180deg); }
+    .worklog-preview { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .worklog-body { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155; }
+    .worklog-body.visible { display: block; }
+    .worklog-narrative { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; white-space: pre-wrap; margin-bottom: 12px; }
+    .worklog-shipped-title { font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .worklog-shipped-item { font-size: 0.75rem; color: #22c55e; padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; }
+    .worklog-shipped-item::before { content: '🚀'; font-size: 0.7rem; }
+    
+    /* My Check-ins (compact) */
+    .my-checkin {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .my-checkin:hover { border-color: #06b6d4; }
+    .my-checkin-time { font-size: 0.65rem; color: #64748b; margin-bottom: 4px; }
+    .my-checkin-project { font-size: 0.6rem; color: #64748b; background: #334155; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 6px; }
+    .my-checkin-summary { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .sidebar-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #64748b;
+    }
+    .sidebar-empty-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
+    .sidebar-empty-text { font-size: 0.8rem; }
+    
+    .sidebar-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: #64748b;
+      font-size: 0.8rem;
+    }
+    .sidebar-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #334155;
+      border-top-color: #8b5cf6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+    
+    @media (max-width: 900px) {
+      .content.sidebar-open { margin-right: 0; }
+      .sidebar { width: 100%; max-width: 320px; }
+      .sidebar-toggle.open { right: min(320px, 100%); }
+    }
+    
     .page-header { margin-bottom: 24px; }
     .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
     .page-subtitle { font-size: 0.85rem; color: #64748b; }
@@ -149,29 +321,55 @@
       </div>
       <div class="nav-links">
         <a class="nav-link helm" href="index.html">🚀 Helm</a>
-        <button class="nav-icon-btn" onclick="loadCheckins()">↻</button>
+        <button class="nav-icon-btn" onclick="loadAll()">↻</button>
       </div>
       <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
       <div class="nav-mobile" id="navMobile">
         <a class="nav-link helm" href="index.html">🚀 Helm</a>
-        <button class="nav-link" onclick="loadCheckins()">↻ Refresh</button>
+        <button class="nav-link" onclick="loadAll()">↻ Refresh</button>
       </div>
     </nav>
 
-    <div class="content">
-      <div class="page-header">
-        <h1 class="page-title">📜 Activity Thread</h1>
-        <p class="page-subtitle">Session recaps and work history</p>
+    <div class="page-layout">
+      <div class="content" id="mainContent">
+        <div class="page-header">
+          <h1 class="page-title">📜 Activity Thread</h1>
+          <p class="page-subtitle">Session recaps and work history</p>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" id="filterAll" onclick="setFilter('all')">All</button>
+          <button class="filter-btn" id="filterMicaiah" onclick="setFilter('micaiah')">Micaiah</button>
+          <button class="filter-btn irene" id="filterIrene" onclick="setFilter('irene')">Irene</button>
+        </div>
+
+        <div class="thread-list" id="threadList">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
       </div>
 
-      <div class="filters">
-        <button class="filter-btn active" id="filterAll" onclick="setFilter('all')">All</button>
-        <button class="filter-btn" id="filterMicaiah" onclick="setFilter('micaiah')">Micaiah</button>
-        <button class="filter-btn irene" id="filterIrene" onclick="setFilter('irene')">Irene</button>
-      </div>
+      <!-- Sidebar Toggle Button -->
+      <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        <span class="arrow">◀</span>
+      </button>
 
-      <div class="thread-list" id="threadList">
-        <div class="loading"><div class="spinner"></div> Loading...</div>
+      <!-- Right Sidebar -->
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <button class="sidebar-tab logs active" id="tabLogs" onclick="setSidebarTab('logs')">📓 Work Logs</button>
+          <button class="sidebar-tab mine" id="tabMine" onclick="setSidebarTab('mine')">👤 My Check-ins</button>
+        </div>
+        <div class="sidebar-content">
+          <!-- Work Logs Section -->
+          <div class="sidebar-section active" id="sectionLogs">
+            <div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>
+          </div>
+          
+          <!-- My Check-ins Section -->
+          <div class="sidebar-section" id="sectionMine">
+            <div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -184,7 +382,9 @@
       '1976': { name: 'Irene', api: 'https://productivity-irene.micaiah-tasks.workers.dev/api' }
     };
     let API_URL = '', API_KEY = '', currentUser = '';
-    let checkins = [], filter = 'all', expandedIds = new Set();
+    let checkins = [], worklogs = [], myCheckins = [];
+    let filter = 'all', expandedIds = new Set(), expandedLogIds = new Set();
+    let sidebarOpen = false, sidebarTab = 'logs';
 
     function toggleMobileMenu() { document.getElementById('navMobile').classList.toggle('open'); }
 
@@ -234,7 +434,7 @@
     function showMainApp() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.add('visible');
-      loadCheckins();
+      loadAll();
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       if (id) setTimeout(() => toggleExpand(id), 600);
@@ -249,12 +449,48 @@
       } catch (e) { console.error(e); return null; }
     }
 
+    async function loadAll() {
+      loadCheckins();
+      loadWorklogs();
+      loadMyCheckins();
+    }
+
     async function loadCheckins() {
       document.getElementById('threadList').innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
       const userParam = filter !== 'all' ? `&user=${filter}` : '';
       const data = await api(`/checkins?limit=50${userParam}`);
       checkins = data?.checkins || [];
       renderCheckins();
+    }
+
+    async function loadWorklogs() {
+      document.getElementById('sectionLogs').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
+      const data = await api('/worklogs?limit=20');
+      worklogs = data?.worklogs || [];
+      renderWorklogs();
+    }
+
+    async function loadMyCheckins() {
+      document.getElementById('sectionMine').innerHTML = '<div class="sidebar-loading"><div class="sidebar-spinner"></div> Loading...</div>';
+      const data = await api(`/checkins?limit=30&user=${currentUser}`);
+      myCheckins = data?.checkins || [];
+      renderMyCheckins();
+    }
+
+    // Sidebar controls
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
+      document.getElementById('sidebarToggle').classList.toggle('open', sidebarOpen);
+      document.getElementById('mainContent').classList.toggle('sidebar-open', sidebarOpen);
+    }
+
+    function setSidebarTab(tab) {
+      sidebarTab = tab;
+      document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sidebar-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+      document.getElementById('section' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
     }
 
     function setFilter(f) {
@@ -292,6 +528,84 @@
       }).join('');
     }
 
+    function renderWorklogs() {
+      const container = document.getElementById('sectionLogs');
+      if (worklogs.length === 0) {
+        container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">📓</div><div class="sidebar-empty-text">No work logs yet.<br>Say "log my work" in Claude.</div></div>';
+        return;
+      }
+      container.innerHTML = worklogs.map(log => {
+        const isExpanded = expandedLogIds.has(log.id);
+        const shipped = log.shipped ? JSON.parse(log.shipped) : [];
+        return `
+          <div class="worklog-card ${isExpanded ? 'expanded' : ''}" onclick="toggleWorklog('${log.id}')">
+            <div class="worklog-header">
+              <div class="worklog-meta">
+                <span class="worklog-user ${log.user_id === 'irene' ? 'irene' : ''}">${esc(log.user_id)}</span>
+                <span class="worklog-dates">${formatDateRange(log.start_date, log.end_date)}</span>
+              </div>
+              <button class="worklog-expand ${isExpanded ? 'expanded' : ''}">▼</button>
+            </div>
+            <div class="worklog-preview">${esc(log.narrative?.substring(0, 120) || '')}...</div>
+            <div class="worklog-body ${isExpanded ? 'visible' : ''}" id="logbody-${log.id}">
+              <div class="worklog-narrative">${esc(log.narrative || '')}</div>
+              ${shipped.length > 0 ? `
+                <div class="worklog-shipped-title">Shipped</div>
+                ${shipped.map(s => `<div class="worklog-shipped-item">${esc(s)}</div>`).join('')}
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMyCheckins() {
+      const container = document.getElementById('sectionMine');
+      if (myCheckins.length === 0) {
+        container.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">👤</div><div class="sidebar-empty-text">No check-ins yet.<br>Say "recap" in Claude.</div></div>';
+        return;
+      }
+      container.innerHTML = myCheckins.map(c => `
+        <div class="my-checkin" onclick="scrollToCheckin('${c.id}')">
+          <div class="my-checkin-time">${formatTime(c.created_at)}</div>
+          ${c.project_name ? `<div class="my-checkin-project">${esc(c.project_name)}</div>` : ''}
+          <div class="my-checkin-summary">${esc(c.thread_summary)}</div>
+        </div>
+      `).join('');
+    }
+
+    function toggleWorklog(id) {
+      if (expandedLogIds.has(id)) {
+        expandedLogIds.delete(id);
+      } else {
+        expandedLogIds.add(id);
+      }
+      renderWorklogs();
+    }
+
+    function scrollToCheckin(id) {
+      // If it's in the main list, scroll to it
+      const card = document.getElementById('card-' + id);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toggleExpand(id);
+      } else {
+        // Need to reset filter to 'all' to see it
+        filter = 'all';
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('filterAll').classList.add('active');
+        loadCheckins().then(() => {
+          setTimeout(() => {
+            const card = document.getElementById('card-' + id);
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              toggleExpand(id);
+            }
+          }, 300);
+        });
+      }
+    }
+
     async function toggleExpand(id) {
       const card = document.getElementById('card-' + id);
       const body = document.getElementById('body-' + id);
@@ -308,14 +622,12 @@
         body.classList.add('visible');
         btn.classList.add('expanded');
         
-        // Load full details
         const data = await api('/checkins/' + id);
         if (data?.checkin) {
           document.getElementById('recap-' + id).innerHTML = formatMarkdown(data.checkin.full_recap || 'No detailed recap available.');
           renderComments(id, data.comments || []);
         }
         
-        // Scroll into view
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
@@ -353,7 +665,6 @@
       if (r?.success) {
         showToast('Comment added');
         input.value = '';
-        // Reload comments
         const data = await api('/checkins/' + checkinId);
         if (data?.comments) renderComments(checkinId, data.comments);
       }
@@ -376,6 +687,15 @@
       if (diff < 1440) return Math.floor(diff/60) + 'h ago';
       if (diff < 10080) return Math.floor(diff/1440) + 'd ago';
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function formatDateRange(start, end) {
+      const s = new Date(start), e = new Date(end);
+      const opts = { month: 'short', day: 'numeric' };
+      if (s.toDateString() === e.toDateString()) {
+        return s.toLocaleDateString('en-US', opts);
+      }
+      return s.toLocaleDateString('en-US', opts) + ' → ' + e.toLocaleDateString('en-US', opts);
     }
 
     function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
