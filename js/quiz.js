@@ -64,6 +64,30 @@ const questions = [
     }
 ];
 
+// Amazon links for each book
+const amazonLinks = {
+    leader: 'https://www.amazon.com/dp/B0GK72B7F9',
+    servant: 'https://www.amazon.com/dp/B0GK876NWL',
+    father: 'https://www.amazon.com/dp/B0GKFBD1VQ',
+    mother: 'https://www.amazon.com/dp/B0GKG1ST11',
+    husband: 'https://www.amazon.com/dp/B0GK7DZYPG',
+    wife: 'https://www.amazon.com/dp/B0GK7ZZH2V',
+    son: 'https://www.amazon.com/dp/B0GKFNRSFK',
+    daughter: 'https://www.amazon.com/dp/B0GKG2TXMP'
+};
+
+// Book titles for display
+const bookTitles = {
+    leader: 'The Leader',
+    servant: 'The Servant',
+    father: 'The Father',
+    mother: 'The Mother',
+    husband: 'The Husband',
+    wife: 'The Wife',
+    son: 'The Son',
+    daughter: 'The Daughter'
+};
+
 const resultsData = {
     leader: {
         segment: "leader",
@@ -353,6 +377,18 @@ async function submitEmail(event) {
 function showResults(result) {
     document.getElementById('results-profile-name').textContent = result.profileName;
     document.getElementById('results-title').textContent = result.title;
+    
+    // Set Amazon link and book title
+    const amazonLink = document.getElementById('amazon-link');
+    const bookTitleEl = document.getElementById('results-book-title');
+    
+    if (amazonLink && amazonLinks[finalSegment]) {
+        amazonLink.href = amazonLinks[finalSegment];
+    }
+    
+    if (bookTitleEl && bookTitles[finalSegment]) {
+        bookTitleEl.textContent = bookTitles[finalSegment];
+    }
     
     const contentHtml = `
         <div class="results-opening">${result.opening.replace(/\n\n/g, '</p><p style="margin-top:1rem">').replace(/^/, '<p>').replace(/$/, '</p>')}</div>
