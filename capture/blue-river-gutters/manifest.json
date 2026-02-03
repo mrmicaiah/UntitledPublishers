@@ -1,0 +1,10 @@
+{
+  "name": "Blue River Gutters - Photo Capture",
+  "short_name": "Capture",
+  "description": "Upload project photos",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait"
+}
