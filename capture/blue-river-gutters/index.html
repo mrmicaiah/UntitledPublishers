@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1a1a2e">
-  <title>Photo Capture</title>
+  <title>Blue River Gutters - Photo Capture</title>
   <link rel="manifest" href="manifest.json">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
@@ -29,8 +31,6 @@
       --border: rgba(255,255,255,0.08);
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --safe-left: env(safe-area-inset-left, 0px);
-      --safe-right: env(safe-area-inset-right, 0px);
     }
     
     html, body {
@@ -54,113 +54,8 @@
       -webkit-overflow-scrolling: touch;
     }
     
-    #login-screen {
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      padding-top: calc(1rem + var(--safe-top));
-      padding-bottom: calc(1rem + var(--safe-bottom));
-      background: linear-gradient(135deg, var(--bg) 0%, #0f0f23 100%);
-    }
-    
-    .login-card {
-      background: var(--bg-card);
-      border-radius: 24px;
-      padding: 2rem 1.5rem;
-      width: 100%;
-      max-width: 340px;
-      border: 1px solid var(--border);
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    }
-    
-    .login-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--accent);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 8px 32px var(--accent-glow);
-    }
-    
-    .login-icon svg { width: 32px; height: 32px; fill: white; }
-    
-    .login-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-    
-    .login-subtitle {
-      color: var(--text-dim);
-      text-align: center;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .pin-input-wrapper {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .pin-digit {
-      width: 50px;
-      height: 58px;
-      background: var(--bg);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text);
-      text-align: center;
-      transition: all 0.2s;
-    }
-    
-    .pin-digit:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    
-    .pin-digit.filled { border-color: var(--accent); }
-    
-    .login-btn {
-      width: 100%;
-      padding: 1rem;
-      background: var(--accent);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 16px var(--accent-glow);
-    }
-    
-    .login-btn:active { transform: scale(0.98); }
-    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    
-    .login-error {
-      color: var(--accent);
-      text-align: center;
-      font-size: 0.85rem;
-      margin-top: 1rem;
-      min-height: 1.25rem;
-    }
-    
     #app-screen {
-      display: none;
+      display: flex;
       flex-direction: column;
       min-height: 100vh;
       min-height: 100dvh;
@@ -346,27 +241,9 @@
   </style>
 </head>
 <body>
-  <div id="login-screen">
-    <div class="login-card">
-      <div class="login-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-      </div>
-      <h1 class="login-title">Blue River Gutters</h1>
-      <p class="login-subtitle">Enter your 4-digit PIN to continue</p>
-      <div class="pin-input-wrapper">
-        <input type="tel" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-        <input type="tel" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-        <input type="tel" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-        <input type="tel" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-      </div>
-      <button class="login-btn" id="login-btn" disabled>Unlock</button>
-      <p class="login-error" id="login-error"></p>
-    </div>
-  </div>
-
   <div id="app-screen">
     <header class="app-header">
-      <span class="client-name" id="client-name">Blue River Gutters</span>
+      <span class="client-name">Blue River Gutters</span>
       <span class="upload-count" id="upload-count">0 photos</span>
     </header>
     
@@ -404,17 +281,8 @@
 
   <script>
     const API_BASE = 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api/capture';
-    const CLIENT_SLUG = 'blue-river-gutters';
+    const PORTAL_ID = '781247fe-9939-422e-adf0-8cc898f4b7c6';
     
-    let portalId = null;
-    let portalName = 'Blue River Gutters';
-    
-    const loginScreen = document.getElementById('login-screen');
-    const appScreen = document.getElementById('app-screen');
-    const pinDigits = document.querySelectorAll('.pin-digit');
-    const loginBtn = document.getElementById('login-btn');
-    const loginError = document.getElementById('login-error');
-    const clientNameEl = document.getElementById('client-name');
     const uploadCount = document.getElementById('upload-count');
     const captureBtn = document.getElementById('capture-btn');
     const galleryBtn = document.getElementById('gallery-btn');
@@ -425,91 +293,6 @@
     const uploadStatus = document.getElementById('upload-status');
     const uploadDetail = document.getElementById('upload-detail');
     const recentGrid = document.getElementById('recent-grid');
-    
-    pinDigits.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        const value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
-        if (value && index < 3) pinDigits[index + 1].focus();
-        e.target.classList.toggle('filled', value.length > 0);
-        checkPinComplete();
-      });
-      
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !e.target.value && index > 0) {
-          pinDigits[index - 1].focus();
-        }
-      });
-      
-      input.addEventListener('paste', (e) => {
-        e.preventDefault();
-        const paste = (e.clipboardData || window.clipboardData).getData('text');
-        const digits = paste.replace(/\D/g, '').slice(0, 4);
-        digits.split('').forEach((digit, i) => {
-          if (pinDigits[i]) {
-            pinDigits[i].value = digit;
-            pinDigits[i].classList.add('filled');
-          }
-        });
-        const focusIndex = Math.min(digits.length, 3);
-        pinDigits[focusIndex].focus();
-        checkPinComplete();
-      });
-    });
-    
-    function checkPinComplete() {
-      const pin = Array.from(pinDigits).map(d => d.value).join('');
-      loginBtn.disabled = pin.length !== 4;
-    }
-    
-    function getPin() {
-      return Array.from(pinDigits).map(d => d.value).join('');
-    }
-    
-    async function authenticate() {
-      const pin = getPin();
-      loginError.textContent = '';
-      loginBtn.disabled = true;
-      loginBtn.textContent = 'Checking...';
-      
-      try {
-        const resp = await fetch(`${API_BASE}/auth`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: CLIENT_SLUG, pin })
-        });
-        
-        const data = await resp.json();
-        
-        if (!resp.ok || !data.success) {
-          throw new Error(data.error || 'Invalid PIN');
-        }
-        
-        portalId = data.portal_id;
-        portalName = data.portal_name;
-        
-        sessionStorage.setItem('capture_portal_id', portalId);
-        sessionStorage.setItem('capture_portal_name', portalName);
-        
-        showApp();
-        
-      } catch (err) {
-        loginError.textContent = err.message;
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Unlock';
-        pinDigits.forEach(d => d.value = '');
-        pinDigits[0].focus();
-      }
-    }
-    
-    loginBtn.addEventListener('click', authenticate);
-    
-    function showApp() {
-      loginScreen.style.display = 'none';
-      appScreen.style.display = 'flex';
-      clientNameEl.textContent = portalName;
-      loadRecentUploads();
-    }
     
     captureBtn.addEventListener('click', () => cameraInput.click());
     galleryBtn.addEventListener('click', () => galleryInput.click());
@@ -535,7 +318,7 @@
       
       try {
         const formData = new FormData();
-        formData.append('portal_id', portalId);
+        formData.append('portal_id', PORTAL_ID);
         formData.append('image', file);
         
         const resp = await fetch(`${API_BASE}/upload`, {
@@ -577,11 +360,11 @@
     
     async function loadRecentUploads() {
       try {
-        const resp = await fetch(`${API_BASE}/recent?portal_id=${portalId}`);
+        const resp = await fetch(`${API_BASE}/recent?portal_id=${PORTAL_ID}`);
         const data = await resp.json();
         const uploads = data.uploads || [];
         
-        const statsResp = await fetch(`${API_BASE}/stats?portal_id=${portalId}`);
+        const statsResp = await fetch(`${API_BASE}/stats?portal_id=${PORTAL_ID}`);
         const stats = await statsResp.json();
         uploadCount.textContent = `${stats.total_uploads || 0} photos`;
         
@@ -597,20 +380,8 @@
       }
     }
     
-    function init() {
-      const savedPortalId = sessionStorage.getItem('capture_portal_id');
-      const savedPortalName = sessionStorage.getItem('capture_portal_name');
-      
-      if (savedPortalId && savedPortalName) {
-        portalId = savedPortalId;
-        portalName = savedPortalName;
-        showApp();
-      } else {
-        pinDigits[0].focus();
-      }
-    }
-    
-    init();
+    // Load on start
+    loadRecentUploads();
   </script>
 </body>
 </html>
