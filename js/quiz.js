@@ -361,6 +361,10 @@ async function submitEmail(event) {
         });
         
         if (response.ok) {
+            // Fire Meta/Facebook Lead pixel event for conversion tracking
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
             showResults(result);
         } else {
             throw new Error('Failed to subscribe');
